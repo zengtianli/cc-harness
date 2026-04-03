@@ -1,3 +1,7 @@
+---
+description: 前端开发规范。当构建 Streamlit / Web 前端 UI 时自动加载。
+---
+
 # 前端开发规范
 
 构建 Web 前端（Streamlit 或其他）时，遵守以下原则：
