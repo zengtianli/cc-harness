@@ -1,0 +1,61 @@
+# 文件类型到目标子目录的映射
+# 格式：文件扩展名 -> 目标子目录
+
+# GIS 数据
+gis:
+  extensions:
+    - .shp
+    - .shx
+    - .dbf
+    - .prj
+    - .gdb
+    - .geojson
+    - .kml
+    - .kmz
+  target_subdir: data
+
+# 表格数据
+data:
+  extensions:
+    - .xlsx
+    - .xls
+    - .csv
+  target_subdir: data
+
+# 文档
+document:
+  extensions:
+    - .docx
+    - .doc
+    - .pdf
+  target_subdir: docs
+
+# 代码脚本（不归类到项目，提示用户）
+code:
+  extensions:
+    - .py
+    - .sh
+    - .js
+    - .ts
+    - .r
+  target_subdir: null  # null 表示需要特殊处理
+
+# 图片
+image:
+  extensions:
+    - .png
+    - .jpg
+    - .jpeg
+    - .tif
+    - .tiff
+  target_subdir: references
+
+# 压缩包
+archive:
+  extensions:
+    - .zip
+    - .rar
+    - .7z
+    - .tar
+    - .gz
+  target_subdir: data

@@ -1,0 +1,27 @@
+# Harness: CC skill/command/agent 分发注册表
+# source of truth 在 cc-harness repo
+
+source: ~/Dev/cc-harness/skills
+
+global_skills:
+  - context
+  - structure
+  - plan-first
+  - quarto
+
+projects:
+  risk-map:
+    path: ~/Work/risk-map
+    skills: [risk-map, resources, plan-first]
+  eco-flow:
+    path: ~/Work/eco-flow
+    skills: [eco-flow, resources, plan-first]
+  zdys:
+    path: ~/Work/zdys
+    skills: [zdys, resources, plan-first]
+  water-src:
+    path: ~/Work/water-src
+    skills: [water-src, resources, plan-first]
+
+standalone:
+  - water-quality
