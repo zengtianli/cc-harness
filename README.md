@@ -17,12 +17,13 @@ The single source of truth for all Claude Code customizations — slash commands
 
 | Layer | What | Where |
 |-------|------|-------|
-| **Commands** | 28 slash commands (`/ship`, `/deploy`, `/harness`, ...) | `commands/` |
+| **Commands** | 19 active slash commands + 12 archived | `commands/` |
 | **Skills** | 14 auto-triggered context injections | `skills/` |
 | **Agents** | 2 specialized agent definitions | `agents/` |
-| **Rules** | Command rule files (gen-report, review-deep) | `rules/` |
+| **Rules** | Command rule files | `rules/` |
 | **Harness tool** | 6-dimension config quality scanner | `tools/harness/` |
 | **Context tool** | Token monitor, snapshot, health check | `tools/context/` |
+| **Stats tool** | Command usage frequency tracker | `tools/cmd_stats.py` |
 
 `install.sh` symlinks `commands/`, `skills/`, and `agents/` into `~/.claude/`, so Claude Code picks them up automatically across all projects.
 
@@ -54,63 +55,56 @@ Commands are slash commands invoked as `/command-name [args]` in Claude Code. Ea
 
 | Command | Usage | Description |
 |---------|-------|-------------|
-| `/ship` | `/ship`, `/ship all`, `/ship dockit hydro-risk` | Commit + push one or more repos. Auto-generates conventional commit messages. `all` mode reads `repo-map.json` to find every dirty repo. |
-| `/deploy` | `/deploy`, `/deploy --backend-only` | Deploy current project to VPS. Detects `deploy.sh`, builds frontend if needed, runs deploy, verifies with curl. |
-| `/pull` | `/pull`, `/pull all`, `/pull dockit learn` | Batch `git pull --ff-only` for one or more repos. |
-| `/dashboard` | `/dashboard`, `/dashboard --scan-only` | Scan Claude Code sessions with LLM analyzer, then deploy the dashboard app. `--scan-only` skips deploy. `--force` ignores cache. |
+| `/ship` | `/ship`, `/ship all` | Commit + push one or more repos. Auto-generates conventional commit messages. |
+| `/deploy` | `/deploy` | Deploy current project to VPS. Detects `deploy.sh`, builds frontend if needed. |
+| `/pull` | `/pull`, `/pull all` | Batch `git pull --ff-only` for one or more repos. |
+| `/dashboard` | `/dashboard`, `/dashboard --scan-only` | Scan Claude Code sessions with LLM analyzer, then deploy the dashboard app. |
 | `/scan` | `/scan` | Scan Claude Code sessions, analyze task status with LLM, generate `tasks.json`. |
 
 ### Repo Management
 
 | Command | Usage | Description |
 |---------|-------|-------------|
-| `/groom` | `/groom`, `/groom hydro-risk learn`, `/groom --check` | Full repo maintenance pipeline: pull → audit → fix → review → push. Orchestrates atomic commands. |
-| `/audit` | `/audit`, `/audit hydro-risk` | Audit repo integrity against `repo-standards.json` — checks files and GitHub metadata. |
-| `/promote` | `/promote`, `/promote all --check` | Lightweight GitHub metadata audit: description, topics, homepage, screenshots. Subset of `/groom` focused on public visibility. |
-| `/repo-map` | `/repo-map scan`, `/repo-map sync`, `/repo-map show` | Manage the GitHub ↔ local path registry (`repo-map.json`). `scan` discovers repos on disk, `sync` propagates to consumers, `show` prints the table. |
-| `/auggie-map` | `/auggie-map hydro-risk` | Generate a binary file map (`_files.md`) for large projects, push to GitHub so Auggie can index files not tracked in git. |
-
-### Infrastructure
-
-| Command | Usage | Description |
-|---------|-------|-------------|
-| `/vps-status` | `/vps-status`, `/vps-status nginx` | SSH into VPS, show running services, ports, disk, memory, Docker containers. With a service name arg, also shows recent logs. |
-| `/cf-dns` | `/cf-dns list`, `/cf-dns add status`, `/cf-dns delete old-sub` | Manage Cloudflare DNS records via API. `add` creates A record + Origin Rule in one step. |
-| `/fix-printer` | `/fix-printer` | Diagnose and fix office Canon iR C3322L printer — network detection, VPN bypass, CUPS config, queue cleanup. |
+| `/groom` | `/groom`, `/groom --check` | Full repo maintenance pipeline: pull → audit → fix → review → push. |
+| `/audit` | `/audit`, `/audit hydro-risk` | Audit repo integrity against `repo-standards.json`. |
+| `/promote` | `/promote`, `/promote all --check` | GitHub metadata audit: description, topics, homepage, screenshots. |
+| `/repo-map` | `/repo-map scan`, `/repo-map show` | Manage the GitHub ↔ local path registry (`repo-map.json`). |
 
 ### Document Processing
 
 | Command | Usage | Description |
 |---------|-------|-------------|
-| `/md2word` | `/md2word path/to/file.md` | Full MD/DOCX → Word pipeline: template styling → text formatting (punctuation, units) → image caption centering. 4-step automated workflow. |
-| `/review-docx` | `/review-docx path/to/report.docx` | Review a Word document: extract text, analyze for banned words / wrong punctuation / missing citations, write track-changes comments back into the file. |
-| `/review-deep` | `/review-deep path/to/report.docx` | 4-dimension LLM deep review (completeness / structure / tone / data consistency), outputs Word comments. |
-| `/gen-report` | `/gen-report county-name` | Generate a new county report chapter-by-chapter from a reference report — extract → data prep → LLM per-chapter → merge. |
+| `/md2word` | `/md2word path/to/file.md` | MD/DOCX → Word pipeline: template styling → text formatting → image caption centering. |
+| `/review` | `/review path/to/report.docx` | Review a Word document. Default: formatting check. `--deep`: 4-dimension LLM review. `--all`: both passes. |
 
-### Hydro Project Tools
+### Migration & Build
 
 | Command | Usage | Description |
 |---------|-------|-------------|
-| `/build-hydro` | `/build-hydro capacity`, `/build-hydro all` | Build Tauri desktop installers for hydro apps. Reports artifact paths and sizes. |
-| `/migrate-hydro` | `/migrate-hydro capacity` | Port a hydro Streamlit app's calculation logic to the corresponding Tauri desktop app. Reads Python → writes Rust + React. |
-| `/prep-basic-info` | `/prep-basic-info county-name` | Basic info data prep: web search + download + LLM extraction → `01-06.md` files. |
-| `/prep-ecoflow-calc` | `/prep-ecoflow-calc county-name` | Ecological flow calculation (Tennant + QP methods, Python replaces CurveFitting). |
-| `/prep-engineering` | `/prep-engineering county-name` | Engineering survey data prep: filter → merge → MD extraction → simplify → survey table. |
+| `/migrate` | `/migrate capacity` | Port a Python/Streamlit app to Tauri desktop (Rust backend + React frontend). |
 
 ### Scaffolding
 
 | Command | Usage | Description |
 |---------|-------|-------------|
-| `/harness` | `/harness`, `/harness ~/Dev/new-project`, `/harness --check` | Detect project type (streamlit/cli/scripts/docs/...) and maturity stage (seed/growing/established/mature), then generate or upgrade Claude Code config: CLAUDE.md, README, .gitignore, hooks, rules. Grows with the project — re-run as the project evolves. |
+| `/harness` | `/harness`, `/harness ~/Dev/new-project` | Detect project type and maturity stage, generate or upgrade Claude Code config. |
 
 ### Session & Workflow
 
 | Command | Usage | Description |
 |---------|-------|-------------|
-| `/recap` | `/recap` | End-of-session retrospective: review conversation, extract lessons, update memory/skills/commands/CLAUDE.md, generate `session-retro-{date}.md`. |
-| `/context` | `/context monitor`, `/context health` | Monitor Claude Code session health — token usage, tool call distribution, context bloat detection, snapshot save/restore. |
-| `/tidy` | `/tidy`, `/tidy ~/Work/project/docs` | Deep-clean a directory: find garbage files, version chains, misplaced files. Presents table per directory, waits for approval before executing. |
-| `/health` | `/health`, `/health --llm` | File hygiene + git status check. Discovers issues, can invoke `/tidy` for cleanup. |
+| `/recap` | `/recap` | End-of-session retrospective: review conversation, extract lessons, update memory. |
+| `/handoff` | `/handoff` | Session wrap-up: recap + config upgrade + handoff file generation in one step. |
+| `/context` | `/context monitor`, `/context health` | Monitor session health — token usage, tool call distribution, context bloat detection. |
+| `/tidy` | `/tidy`, `/tidy ~/Work/docs` | Deep-clean a directory: find garbage files, version chains, misplaced files. |
+| `/health` | `/health` | File hygiene + git status check. Can invoke `/tidy` for cleanup. |
+| `/cmd-stats` | `/cmd-stats`, `/cmd-stats --days 7` | Show slash command usage frequency from session transcripts. |
+
+### Archived Commands
+
+12 commands moved to `commands/archive/` (zero usage or superseded). Still accessible via `archive:name` prefix:
+
+`auggie-map` · `build-hydro` · `cf-dns` · `fix-printer` · `gen-report` · `migrate-hydro` · `prep-basic-info` · `prep-ecoflow-calc` · `prep-engineering` · `review-deep` · `review-docx` · `vps-status`
 
 ---
 
@@ -137,7 +131,7 @@ Skills are auto-triggered context injections. Claude Code loads skill knowledge 
 | **zdys** | ~/Work/zdys | Zhedong diversion operational status, dispatch models, irrigation demand calculation |
 | **water-src** | ~/Work/water-src | Drinking water source safety assessment methodology |
 | **water-quality** | (standalone) | Qiandao Lake diversion classified water supply management |
-| **resources** | risk-map, eco-flow, zdys, water-src | Shared resource catalog: reservoir data, GIS basemaps, admin boundaries, water resource yearbooks, industry standards |
+| **resources** | risk-map, eco-flow, zdys, water-src | Shared resource catalog: reservoir DB, GIS basemaps, admin boundaries, water resource yearbooks |
 
 ### Tool Skills
 
@@ -151,8 +145,6 @@ Skills are auto-triggered context injections. Claude Code loads skill knowledge 
 
 ## Agents Reference
 
-Agents are specialized autonomous workers for complex multi-step tasks.
-
 | Agent | Purpose |
 |-------|---------|
 | **bid-chapter-writer** | Write bid document chapters following company templates and formatting standards |
@@ -165,13 +157,8 @@ Agents are specialized autonomous workers for complex multi-step tasks.
 ### Harness — Config Auditor
 
 ```bash
-# Full audit
-python3 tools/harness/harness.py /path/to/project
-
-# JSON output
-python3 tools/harness/harness.py /path/to/project --json
-
-# Security scan only
+python3 tools/harness/harness.py /path/to/project        # Full audit
+python3 tools/harness/harness.py /path/to/project --json  # JSON output
 python3 tools/harness/harness.py /path/to/project --security-only
 ```
 
@@ -184,30 +171,20 @@ python3 tools/harness/harness.py /path/to/project --security-only
 | **D5 Session** | Compact Instructions, HANDOFF.md, context budget documentation |
 | **D6 Structure** | Orphan files, reference chain, naming conventions, gitignore |
 
-### Security Scanner
-
-The scanner checks skills for 6 categories of risk:
-
-1. **Prompt injection** — instruction override, role hijacking
-2. **Data exfiltration** — HTTP POST with secrets, base64 encoding
-3. **Destructive commands** — rm -rf /, force-push main, chmod 777
-4. **Hardcoded credentials** — api_key/secret_key with long strings
-5. **Obfuscation** — eval $(), base64 decode piped to shell
-6. **Safety override** — bypass/disable safety/rules/hooks
-
-The scanner distinguishes between skills that **discuss** security patterns (benign) vs. those that **use** them (flagged).
-
 ### Context — Session Monitor
 
 ```bash
-# Token usage for latest session
-python3 tools/context/context.py monitor
-
-# Health check (anti-pattern detection)
-python3 tools/context/context.py health
-
-# Save context snapshot
+python3 tools/context/context.py monitor    # Token usage for latest session
+python3 tools/context/context.py health     # Health check (anti-pattern detection)
 python3 tools/context/context.py snapshot save
+```
+
+### Command Stats
+
+```bash
+python3 tools/cmd_stats.py                  # All-time usage
+python3 tools/cmd_stats.py --days 7         # Last 7 days
+python3 tools/cmd_stats.py --registered     # Only registered commands
 ```
 
 ## Running Tests
