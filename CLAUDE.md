@@ -6,7 +6,7 @@
 
 | 项目 | 路径/值 |
 |------|---------|
-| Commands | `commands/` (28 slash commands) |
+| Commands | `commands/` (19 active + 12 archived) |
 | Skills | `skills/` (14 auto-triggered skills) |
 | Agents | `agents/` (2 agent definitions) |
 | Rules | `rules/` (command 规则文件) |
