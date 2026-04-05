@@ -12,7 +12,7 @@ Checks README structure, badges, screenshots, gitignore, dependency pinning agai
 python3 ~/Dev/scripts/repo_audit.py
 
 # Audit specific projects
-python3 ~/Dev/scripts/repo_audit.py cc-harness dockit
+python3 ~/Dev/scripts/repo_audit.py cc-configs dockit
 
 # Audit + auto-fix gitignore gaps
 python3 ~/Dev/scripts/repo_audit.py --fix-gitignore
@@ -31,7 +31,7 @@ Supports both Streamlit apps (Playwright URL screenshots) and CLI tools (termina
 python3 ~/Dev/scripts/repo_screenshot.py streamlit hydro-rainfall https://hydro-rainfall.tianlizeng.cloud
 
 # Screenshot a CLI tool
-python3 ~/Dev/scripts/repo_screenshot.py cli cc-harness "python3 harness.py ~/Dev/dockit"
+python3 ~/Dev/scripts/repo_screenshot.py cli cc-configs "python3 tools/harness/harness.py ~/Dev/dockit"
 
 # Batch all Streamlit apps
 python3 ~/Dev/scripts/repo_screenshot.py batch

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""cc-harness: Claude Code configuration auditor + skill distribution manager.
+"""cc-configs harness: Claude Code configuration auditor + skill distribution manager.
 
 Subcommands:
   audit   <path>       Six-dimension quality audit of a project's CC setup
@@ -325,7 +325,7 @@ def cmd_audit(project_path: str, claude_home: str = None, json_output: bool = Fa
 
 def main():
     parser = argparse.ArgumentParser(
-        description="cc-harness: CC config auditor + skill distribution",
+        description="cc-configs harness: CC config auditor + skill distribution",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     sub = parser.add_subparsers(dest="cmd")

@@ -16,7 +16,7 @@ def _render_metrics(results: dict) -> str:
         "",
         f"**项目**: {project_path}",
         f"**日期**: {date.today().isoformat()}",
-        f"**工具**: cc-harness v0.1.0",
+        f"**工具**: cc-configs/harness v0.1.0",
         "",
         "## 项目分级判定",
         "",

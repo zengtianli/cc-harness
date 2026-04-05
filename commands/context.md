@@ -1,6 +1,6 @@
 Claude Code 会话监控与上下文工程工具。保障 compact 后不丢失关键细节。
 
-CLI：`python3 ~/Dev/cc-context/context.py $ARGUMENTS`
+CLI：`python3 ~/Dev/cc-configs/tools/context/context.py $ARGUMENTS`
 
 子命令（通过 $ARGUMENTS 传入）：
 - `monitor` — 当前会话的 token 统计、工具调用分布

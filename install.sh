@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# cc-harness install: symlink skills/commands/agents/harness.yaml to ~/.claude/
+# cc-configs install: symlink skills/commands/agents/harness.yaml to ~/.claude/
 set -euo pipefail
 
 REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
 CLAUDE_DIR="$HOME/.claude"
 
-echo "cc-harness install"
+echo "cc-configs install"
 echo "repo:   $REPO_DIR"
 echo "target: $CLAUDE_DIR"
 echo ""

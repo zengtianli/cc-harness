@@ -1,0 +1,81 @@
+name: 生态流量报告
+description: 小型水库生态流量核定与保障实施方案
+
+# 参考报告拆分目录（景宁成品）
+ref_chapters_dir: ~/Work/eco-flow/模板/ref_chapters
+
+# 变量替换映射（replace 策略用）
+replacements:
+  景宁畲族自治县: "{county}"
+  景宁县: "{county}"
+  景宁: "{county_short}"
+  丽水市: "{city}"
+  丽水: "{city_short}"
+  瓯江: "{river_system}"         # 需按县市覆盖
+  小溪: "{main_river}"           # 需按县市覆盖
+
+chapters:
+  - id: "00"
+    title: 前置内容
+    strategy: skip               # 封面/目录等，不生成
+    notes: 封面页、声明、目录等，手动处理
+
+  - id: "01"
+    title: 前言
+    strategy: replace
+    model: haiku
+
+  - id: "02"
+    title: 1 编制目的与依据
+    strategy: replace
+    model: haiku
+    notes: 编制目的、依据、原则各县基本一致，只需替换县名和数量
+
+  - id: "03"
+    title: 2 河湖水系及工程生态流量确定状况
+    strategy: rewrite
+    model: sonnet
+    split_by: "## "              # 按二级标题分段生成
+    data_files:
+      - "{data_dir}/01_基本信息.md"
+      - "{data_dir}/02_行政区划.md"
+      - "{data_dir}/03_经济社会.md"
+      - "{data_dir}/04_河流水系.md"
+      - "{data_dir}/05_水文气象.md"
+      - "{data_dir}/06_水资源概况.md"
+      - "{data_dir}/表2-1*.xlsx"
+    notes: |
+      2.1 区域概况从县市数据文件重写
+      2.2 工程排查和名录取决于当地水库数据
+      表格直接从 xlsx 插入，不让 LLM 编造
+
+  - id: "04"
+    title: 3 生态流量目标确定
+    strategy: rewrite
+    model: sonnet
+    split_by: "## "
+    data_files:
+      - "{data_dir}/表2-1*.xlsx"
+      - "{data_dir}/计算结果/*.xlsx"
+    notes: |
+      3.1 方法选择各县一致，替换即可
+      3.2 计算过程完全依赖水库数据，表格直插
+      3.3 综合分析基于实际计算结果
+
+  - id: "05"
+    title: 4 工程生态流量保障措施
+    strategy: rewrite
+    model: sonnet
+    data_files:
+      - "{data_dir}/表2-1*.xlsx"
+      - "{data_dir}/工程资料/*.md"
+    notes: |
+      泄放设施必须先介绍每座水库现状，再提改造方案
+      监测设施和调度方案结构通用，数据替换
+
+  - id: "06"
+    title: 5 结论
+    strategy: regenerate
+    model: sonnet
+    depends_on: ["02", "03", "04", "05"]
+    notes: 汇总前面章节核心成果

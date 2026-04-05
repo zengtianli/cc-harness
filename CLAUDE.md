@@ -1,60 +1,69 @@
-# cc-harness — Claude Code 配置质量审计工具
+# cc-configs — Claude Code 配置中心
+
+所有 Claude Code 自定义配置（commands/skills/agents/rules）和配套 CLI 工具的单一 source of truth。
 
 ## Quick Reference
 
 | 项目 | 路径/值 |
 |------|---------|
-| 入口 | `harness.py` |
-| 分析器 | `analyzers/` (D1-D6 六维度) |
-| 采集器 | `collectors/` (metrics/hooks/config/skills) |
-| 安全扫描 | `security/scanner.py` |
-| 报告输出 | `reporters/` (scorecard + markdown) |
-| 测试 | `tests/` |
+| Commands | `commands/` (28 slash commands) |
+| Skills | `skills/` (14 auto-triggered skills) |
+| Agents | `agents/` (2 agent definitions) |
+| Rules | `rules/` (command 规则文件) |
+| 审计工具 | `tools/harness/harness.py` |
+| Context 工具 | `tools/context/context.py` |
+| 注册表 | `harness.yaml` |
 
 ## 常用命令
 
 ```bash
-# 全量审计（最常用）
-python3 harness.py /path/to/project
+# 审计项目 CC 配置
+python3 tools/harness/harness.py audit /path/to/project
 
-# JSON 格式输出（便于脚本处理）
-python3 harness.py /path/to/project --json
+# JSON 格式审计输出
+python3 tools/harness/harness.py /path/to/project --json
 
-# 仅运行安全扫描
-python3 harness.py /path/to/project --security-only
+# Context 监控
+python3 tools/context/context.py monitor
 
-# 指定 Claude home 目录
-python3 harness.py /path/to/project --claude-home ~/.claude
+# Context 健康检查
+python3 tools/context/context.py health
 
 # 运行测试
-python3 -m pytest tests/ -v
+python3 -m pytest tools/harness/tests/ -v
+python3 -m pytest tools/context/tests/ -v
 ```
-
-## 审计维度
-
-| 维度 | 检查内容 |
-|------|---------|
-| D1 Context | CLAUDE.md 质量、token 预算、凭证泄露 |
-| D2 Hooks | PostToolUse 覆盖、schema 有效性 |
-| D3 Agents | Skill 数量、重叠、frontmatter |
-| D4 Verification | done-conditions、构建/测试命令 |
-| D5 Session | Compact Instructions、HANDOFF.md |
-| D6 Structure | 孤立文件、命名规范、gitignore |
 
 ## 项目结构
 
 ```
-harness.py          # CLI 入口，Tier 检测 + 调度
-analyzers/          # 六维度分析逻辑（context/hooks/agents/verification/session/structure）
-collectors/         # 数据采集（metrics/hooks/config/skills）
-security/           # 安全扫描器（6 类风险检测）
-reporters/          # 输出格式化（scorecard + markdown）
-tests/              # pytest 测试套件
+commands/               # slash commands (symlink → ~/.claude/commands)
+skills/                 # auto-triggered skills (symlink → ~/.claude/skills)
+agents/                 # agent definitions (symlink → ~/.claude/agents)
+rules/                  # command 规则文件
+tools/
+  harness/              # CC 配置审计工具
+    harness.py          # CLI 入口
+    analyzers/          # 六维度分析 (D1-D6)
+    collectors/         # 数据采集
+    security/           # 安全扫描
+    reporters/          # 报告输出
+    tests/              # harness 测试
+  context/              # CC 上下文工程工具
+    context.py          # CLI 入口
+    monitor/            # token 监控
+    snapshot/           # 上下文快照
+    health/             # 健康检查
+    hooks/              # CC hooks 安装
+    tests/              # context 测试
+harness.yaml            # skill 分发注册表 (symlink → ~/.claude/)
+install.sh              # symlink 安装脚本
 ```
 
 ## 开发注意事项
 
-- **纯 stdlib**，不依赖任何第三方包，不需要 pip install
-- Tier 自动判定（Simple/Standard/Complex），避免误报
-- 安全扫描区分"讨论"模式（benign）vs "使用"模式（flagged）
-- 新增分析维度：在 `analyzers/` 加模块，在 `harness.py` 注册即可
+- **纯 stdlib**，不依赖任何第三方包
+- `install.sh` 将 commands/skills/agents/harness.yaml symlink 到 `~/.claude/`
+- tools/ 下的工具通过 commands 中的 slash command 调用，不直接 symlink
+- 新增 command：在 `commands/` 加 `.md` 文件即可
+- 新增 skill：在 `skills/` 加目录或 `.md` 文件

@@ -19,7 +19,7 @@ Commit and push changes in one or more projects under ~/Dev.
 3. **Output a summary table** at the end:
    ```
    ✓ dockit        a7ff7b1  docs: fix Python version badge
-   ✓ cc-harness    e96c3c4  docs: unify README format
+   ✓ cc-configs    e96c3c4  docs: unify README format
    ✗ hydro-annual  (nothing to commit)
    ```
 

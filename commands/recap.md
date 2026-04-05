@@ -36,11 +36,11 @@
    - 新的 reference？外部资源位置？
    - 检查现有记忆是否需要更新或删除
 
-2. **Skills**（`~/Dev/cc-harness/skills/`）
+2. **Skills**（`~/Dev/cc-configs/skills/`）
    - 现有 skill 需要更新吗？
    - 需要新建 skill 吗？
 
-3. **Commands**（`~/Dev/cc-harness/commands/`）
+3. **Commands**（`~/Dev/cc-configs/commands/`）
    - 现有 command 需要更新吗？
    - 需要新建 command 吗？
 

@@ -73,8 +73,7 @@ If missing, use `repo_manager.py screenshot` with the appropriate mode:
 Output a table at the end:
 ```
 ✅ dockit          — all good
-🔧 cc-harness     — added 5 topics, set homepage
-🔧 cc-context     — added 4 topics  
+🔧 cc-configs     — added 5 topics, set homepage
 ⚠️  oauth-proxy    — skipped (internal)
 ```
 
