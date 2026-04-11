@@ -23,5 +23,13 @@ projects:
     path: ~/Work/water-src
     skills: [water-src, resources, plan-first]
 
+  capacity:
+    path: ~/Work/capacity
+    skills: [capacity, resources, plan-first]
+
+  international-assets:
+    path: ~/Dev/international-assets
+    skills: [cc-dashboard]
+
 standalone:
   - water-quality
