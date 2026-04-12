@@ -40,6 +40,29 @@
    - 现有 skill 需要更新吗？
    - 需要新建 skill 吗？
 
+   **Skill 候选池**（`~/Dev/cc-configs/skill-candidates.md`）
+   
+   分析本轮对话，识别是否有**重复出现的工作模式**尚未被 skill/command 覆盖：
+   
+   - 是否有多步操作被手动执行了 2+ 次？
+   - 是否有固定的判断逻辑被反复描述？（比如"先查 X，如果没有就 Y"）
+   - 是否有特定领域的知识被反复注入？（比如每次都要解释某个业务规则）
+   
+   如果发现候选模式：
+   1. 读取 `~/Dev/cc-configs/skill-candidates.md`（如不存在则创建）
+   2. 检查是否已有类似候选
+   3. 如果是新候选，追加一条记录：
+      ```
+      ## {候选名称}
+      - 发现时间: {date}
+      - 出现次数: 1
+      - 模式描述: {什么场景下做什么}
+      - 涉及项目: {project}
+      - 潜在 skill 类型: command / skill / agent
+      ```
+   4. 如果已有类似候选，更新出现次数
+   5. 如果某候选出现次数 >= 3，提示用户："候选 {name} 已出现 {N} 次，建议正式创建 skill"
+
 3. **Commands**（`~/Dev/cc-configs/commands/`）
    - 现有 command 需要更新吗？
    - 需要新建 command 吗？
@@ -123,6 +146,7 @@
 主题：{主题}
 成果：{N} 个文件产出
 记忆：更新 {N} 条 / 新增 {N} 条
+技能候选：{N} 个新增 / {N} 个达到创建阈值
 待办：{N} 项未完成
 
 文件：~/Dev/docs/knowledge/session-retro-{date}.md
