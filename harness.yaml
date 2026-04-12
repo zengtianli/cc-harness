@@ -31,5 +31,10 @@ projects:
     path: ~/Dev/international-assets
     skills: [cc-dashboard]
 
+  zls:
+    path: ~/zls
+    skills: []  # skills are project-local, not managed by harness
+    notes: 人大常委会报告写作工作区，skills 在项目 .claude/skills/ 下自管
+
 standalone:
   - water-quality

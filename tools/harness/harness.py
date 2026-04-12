@@ -17,7 +17,7 @@ from pathlib import Path
 
 import yaml
 
-REPO_DIR = Path(__file__).resolve().parent
+REPO_DIR = Path(__file__).resolve().parent.parent.parent
 CONFIG_PATH = REPO_DIR / "harness.yaml"
 GLOBAL_SKILLS_DIR = Path.home() / ".claude" / "skills"
 
