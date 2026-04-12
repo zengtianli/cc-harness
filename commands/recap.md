@@ -63,6 +63,18 @@
    4. 如果已有类似候选，更新出现次数
    5. 如果某候选出现次数 >= 3，提示用户："候选 {name} 已出现 {N} 次，建议正式创建 skill"
 
+   **Skill/Command 使用追踪**（`~/Dev/cc-configs/skill-tracker.json`）
+
+   更新本轮使用过的 skill/command 的追踪数据：
+   1. 读取 `~/Dev/cc-configs/skill-tracker.json`
+   2. 对本轮使用过的每个 skill/command：
+      - 更新 `last_used` 为今天日期
+      - `use_count` +1
+      - 如果用户纠正了该 skill/command 的行为：`correction_count` +1，更新 `last_correction`，在 `notes` 追加纠正内容摘要
+   3. 写回文件
+
+   如果某个 skill/command 的 `correction_count >= 3`，提示用户："skill {name} 已被纠正 {N} 次，建议重写"
+
 3. **Commands**（`~/Dev/cc-configs/commands/`）
    - 现有 command 需要更新吗？
    - 需要新建 command 吗？
@@ -147,6 +159,7 @@
 成果：{N} 个文件产出
 记忆：更新 {N} 条 / 新增 {N} 条
 技能候选：{N} 个新增 / {N} 个达到创建阈值
+追踪：更新 {N} 个 skill/command 使用记录
 待办：{N} 项未完成
 
 文件：~/Dev/docs/knowledge/session-retro-{date}.md

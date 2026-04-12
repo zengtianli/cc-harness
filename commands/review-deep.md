@@ -11,6 +11,14 @@ description: 4维度LLM深度审阅（完整性/结构性/立场措辞/数据一
 - 核心脚本：`/Users/tianli/miniforge3/bin/python3 ~/Dev/doctools/scripts/document/review_deep.py`
 - 规则目录：`~/Dev/cc-configs/rules/review-deep/`
 
+## 并行策略
+
+当审阅多个文档时：
+- 为每个文档生成独立子代理（Agent tool），并行执行 4 维度审阅
+- 每个子代理独立完成审阅并返回结果
+- 主线程汇总所有审阅意见，输出统一报告
+- 单个文档时直接执行，不生成子代理
+
 ## 流程
 
 ### 1. 确定输入

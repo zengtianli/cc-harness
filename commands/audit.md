@@ -8,6 +8,14 @@
 - `all` → 所有 non-ignored repo
 - `--category <cat>` → 按分类过滤（hydro/tools/infra/knowledge/personal/work）
 
+## 并行策略
+
+当审计多个目标时（如 `/audit ~/Dev/doctools ~/Dev/devtools ~/Dev/mactools`）：
+- 为每个目标生成独立子代理（Agent tool），并行执行审计
+- 每个子代理独立完成单个 repo 的审计并返回结果
+- 主线程汇总所有结果，输出统一报告
+- 单个目标时直接执行，不生成子代理
+
 ## 检查项
 
 ### 文件存在性
