@@ -4,17 +4,17 @@
 
 ```bash
 # Word 文档
-/Users/tianli/miniforge3/bin/python3 ~/Dev/doctools/scripts/document/docx_tools.py <file.docx>
+/opt/homebrew/bin/python3 ~/Dev/doctools/scripts/document/docx_tools.py <file.docx>
 
 # Excel 文件
-/Users/tianli/miniforge3/bin/python3 ~/Dev/hydro-risk/read_xlsx.py <file.xlsx> --list
+/opt/homebrew/bin/python3 ~/Dev/hydro-risk/read_xlsx.py <file.xlsx> --list
 ```
 
 ## 格式修复
 
 ```bash
 # Word 一键格式化
-/Users/tianli/miniforge3/bin/python3 ~/Dev/doctools/scripts/document/docx_text_formatter.py <file.docx>
+/opt/homebrew/bin/python3 ~/Dev/doctools/scripts/document/docx_text_formatter.py <file.docx>
 
 # Word 表格样式
 # [已废弃] apply_table_style.py
@@ -56,7 +56,7 @@
 
 ```bash
 # Python 路径
-/Users/tianli/miniforge3/bin/python3
+/opt/homebrew/bin/python3
 
 # 脚本根目录（已废弃，各工具已迁移到 ~/Dev/ 下独立仓库）
 ```
