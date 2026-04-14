@@ -8,7 +8,7 @@
 
 ## VPS 服务部署
 - 发现时间: 2026-04-12
-- 出现次数: 2
+- 出现次数: 5 ⚠️ 建议正式创建 skill
 - 模式描述: 创建 systemd service + Nginx reverse proxy + CF DNS/Origin Rule + deploy.sh 的完整流程。本次对 website 和之前 dashboard 都执行了类似流程。
 - 涉及项目: website, repo-dashboard
 - 潜在 skill 类型: command
