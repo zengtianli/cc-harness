@@ -141,7 +141,7 @@ for p in doc.paragraphs:
 ### 4. 执行修复
 
 - MD 文件：用 Edit 工具或 sed 批量处理
-- DOCX 文件：**一个 Python 脚本按 Step 1→2→3 顺序执行**，用 `/Users/tianli/miniforge3/bin/python3`
+- DOCX 文件：**一个 Python 脚本按 Step 1→2→3 顺序执行**，用 `/opt/homebrew/bin/python3`
 - 文件名含中文引号时 python-docx 的 `Document()` 会报错，用 `glob.glob()` 拿到实际路径再传入
 
 ### 5. 验证与完成
@@ -174,5 +174,5 @@ for p in doc.paragraphs:
 - 保留原有标题文字，只替换/去除编号部分
 - 如果无法确定某个标题应该在哪个层级，问用户
 - Word 自动编号通过样式绑定 numPr 实现，不要在文本中硬编码编号
-- Python 运行路径：`/Users/tianli/miniforge3/bin/python3`
+- Python 运行路径：`/opt/homebrew/bin/python3`
 - XML 命名空间：`W = 'http://schemas.openxmlformats.org/wordprocessingml/2006/main'`

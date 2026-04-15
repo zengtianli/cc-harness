@@ -8,7 +8,7 @@ description: 生态流量计算（Tennant法+QP法，Python替代CurveFitting）
 
 ## 工具位置
 
-- 计算脚本：`/Users/tianli/miniforge3/bin/python3 ~/Work/eco-flow/code/脚本/core/eco_flow_calc.py`
+- 计算脚本：`/opt/homebrew/bin/python3 ~/Work/eco-flow/code/脚本/core/eco_flow_calc.py`
 - 逐日流量数据：`~/Work/eco-flow/data/小型水库流量_水文to水资源.xlsx`（47个水库，1962-2023）
 - 已有计算结果（验证用）：`~/Work/eco-flow/data/生态流量核定.xlsx`
 
@@ -42,7 +42,7 @@ description: 生态流量计算（Tennant法+QP法，Python替代CurveFitting）
 ### 4. 执行计算
 
 ```bash
-/Users/tianli/miniforge3/bin/python3 ~/Work/eco-flow/code/脚本/core/eco_flow_calc.py \
+/opt/homebrew/bin/python3 ~/Work/eco-flow/code/脚本/core/eco_flow_calc.py \
   --flow-data ~/Work/eco-flow/data/小型水库流量_水文to水资源.xlsx \
   --county <县名> \
   --merge-file "<合并数据文件>" \

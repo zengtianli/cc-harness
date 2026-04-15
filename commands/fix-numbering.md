@@ -8,7 +8,7 @@ description: 检查并修复 DOCX 文档中表/图的编号及正文引用一致
 
 ## 工具
 
-- 提取文本：`/Users/tianli/miniforge3/bin/python3 ~/Dev/doctools/scripts/document/docx_tools.py extract <file>`
+- 提取文本：`/opt/homebrew/bin/python3 ~/Dev/doctools/scripts/document/docx_tools.py extract <file>`
 - python-docx 直接操作 XML（处理 w:t 跨节点的编号替换）
 
 ## 流程

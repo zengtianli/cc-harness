@@ -8,7 +8,7 @@ description: 4维度LLM深度审阅（完整性/结构性/立场措辞/数据一
 
 ## 工具位置
 
-- 核心脚本：`/Users/tianli/miniforge3/bin/python3 ~/Dev/doctools/scripts/document/review_deep.py`
+- 核心脚本：`/opt/homebrew/bin/python3 ~/Dev/doctools/scripts/document/review_deep.py`
 - 规则目录：`~/Dev/cc-configs/rules/review-deep/`
 
 ## 并行策略
@@ -37,7 +37,7 @@ description: 4维度LLM深度审阅（完整性/结构性/立场措辞/数据一
 ### 3. 执行审阅
 
 ```bash
-/Users/tianli/miniforge3/bin/python3 ~/Dev/doctools/scripts/document/review_deep.py \
+/opt/homebrew/bin/python3 ~/Dev/doctools/scripts/document/review_deep.py \
   "<输入文件>" \
   --rules <规则名> \
   --model haiku

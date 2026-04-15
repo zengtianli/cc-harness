@@ -9,7 +9,7 @@ description: 修复 DOCX 中的文献引用角标（[数字] → 右上角上标
 ## 工具
 
 ```
-/Users/tianli/miniforge3/bin/python3 ~/Dev/doctools/scripts/document/fix_superscript_refs.py <file> [-o <output>] [--dry-run]
+/opt/homebrew/bin/python3 ~/Dev/doctools/scripts/document/fix_superscript_refs.py <file> [-o <output>] [--dry-run]
 ```
 
 ## 流程
@@ -23,7 +23,7 @@ description: 修复 DOCX 中的文献引用角标（[数字] → 右上角上标
 ### 2. 先预览
 
 ```bash
-/Users/tianli/miniforge3/bin/python3 ~/Dev/doctools/scripts/document/fix_superscript_refs.py "<文件>" --dry-run
+/opt/homebrew/bin/python3 ~/Dev/doctools/scripts/document/fix_superscript_refs.py "<文件>" --dry-run
 ```
 
 报告哪些段落有需要修复的引用。
@@ -33,7 +33,7 @@ description: 修复 DOCX 中的文献引用角标（[数字] → 右上角上标
 如果有需要修复的引用：
 
 ```bash
-/Users/tianli/miniforge3/bin/python3 ~/Dev/doctools/scripts/document/fix_superscript_refs.py "<文件>" -o "<输出文件>"
+/opt/homebrew/bin/python3 ~/Dev/doctools/scripts/document/fix_superscript_refs.py "<文件>" -o "<输出文件>"
 ```
 
 - 默认输出覆盖原文件
