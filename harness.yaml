@@ -1,39 +1,38 @@
 # Harness: CC skill/command/agent 分发注册表
 # source of truth 在 cc-configs repo
 
-source: ~/Dev/cc-configs/skills
+source: ~/Dev/cc-configs/domain-skills
 
 global_skills:
   - context
-  - structure
   - plan-first
-  - quarto
+  - harness
 
 projects:
   risk-map:
     path: ~/Work/risk-map
-    skills: [risk-map, resources, plan-first]
+    skills: [risk-map, resources, plan-first, structure]
   eco-flow:
     path: ~/Work/eco-flow
-    skills: [eco-flow, resources, plan-first]
+    skills: [eco-flow, resources, plan-first, structure]
   zdys:
     path: ~/Work/zdys
-    skills: [zdys, resources, plan-first]
+    skills: [zdys, resources, plan-first, structure]
   water-src:
     path: ~/Work/water-src
-    skills: [water-src, resources, plan-first]
-
+    skills: [water-src, resources, plan-first, structure]
   capacity:
     path: ~/Work/capacity
     skills: [capacity, resources, plan-first]
-
+  bids:
+    path: ~/Work/bids
+    skills: [bid, resources, plan-first]
   international-assets:
     path: ~/Dev/international-assets
     skills: [cc-dashboard]
-
   zls:
     path: ~/zls
-    skills: []  # skills are project-local, not managed by harness
+    skills: []
     notes: 人大常委会报告写作工作区，skills 在项目 .claude/skills/ 下自管
 
 standalone:
