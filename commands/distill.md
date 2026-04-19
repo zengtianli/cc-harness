@@ -1,10 +1,10 @@
 ---
-description: 从当前标书项目提炼可复用知识到全局（commands/踩坑/模板）
+description: 从当前项目提炼可复用知识到全局（commands/踩坑/模板/playbook/slash 生态审计）
 ---
 
 用户提供了参数: $ARGUMENTS
 
-从当前标书项目中提炼可复用的 commands、踩坑经验、脚本模式，内化到全局配置。
+从当前项目中提炼可复用的 commands、踩坑经验、脚本模式、Playbook 骨架，内化到全局配置。**适用任意 ~/Dev/ 或 ~/Work/ 项目**（标书 / 水利 / 站群 / CC 配置本身 / 任意代码仓），不再特化于标书。
 
 ## 参数
 
@@ -51,8 +51,68 @@ done
 |------|------|------|------|
 | Command | batch-revise | 🆕 | 泛化后提升到全局 |
 | Command | read-docx | ✅ 已存在 | 检查是否需要更新 |
-| 踩坑 | 大段替换用直接重建 | 🆕 | 补进 bids/CLAUDE.md |
+| 踩坑 | 大段替换用直接重建 | 🆕 | 补进 domain CLAUDE.md |
 | 脚本 | rebuild_xxx.py | 模板 | 记录模式到 CLAUDE.md |
+
+### 3.5 Slash 生态审计（全局）
+
+扫描 `~/Dev/cc-configs/commands/*.md` 所有 description 行，按 **4 类问题**产出 `~/Dev/docs/knowledge/slash-audit-{YYYYMMDD}.md`：
+
+| 问题类型 | 识别规则 | 举例 | 建议 |
+|---------|---------|------|------|
+| **① 重叠** | 2+ 命令同类动作 | `/recap` vs `/handoff`（后者 Phase 1 就是前者） | 合并 / 明确分工写入 CLAUDE.md |
+| **② 职责错位** | "命令" 实际是 skill 级工作流 | `/distill` 本身（编排 Phase 1-7），`/frontend-tweak`（守门 skill） | 降级为 skill 或保持但文档注明 |
+| **③ 空隙** | 高频动作无对应 skill | 本次 `/ship-site` 内部的 nginx 写入若未来要拆出 | 新增 skill（含理由） |
+| **④ 冗余** | 命令被更强命令完全包含 | `/recap` ⊂ `/handoff`；某些 bash wrapper | 标"可删除 / 保留作快捷方式" |
+
+**产出格式**（示例）：
+
+```markdown
+# Slash 生态审计 — 2026-04-19
+
+## 统计
+- 总 commands: 52
+- 总 skills: 46（global）+ N（domain）
+- 软链 ~/.claude/commands/ → ~/Dev/cc-configs/commands/
+
+## 重叠（2 处）
+
+### /recap ⊂ /handoff
+- 描述：/handoff Phase 1 就是调用 /recap
+- 建议：**保留两者**（/recap 单独用于"只要复盘不要交接"），但在 /handoff 文档首节明确依赖关系
+- 理由：两者受众不同（/recap = CC 自己，/handoff = 下次会话）
+
+### /retro vs /distill
+- 描述：都产生 playbook / session 知识
+- 建议：**保持**（retro 记本次具体，distill 记通用化），但加一段「何时选哪个」对照表到两份文档首部
+- 理由：颗粒度不同，合并会损失信息密度
+
+## 职责错位（N 处）
+
+### /distill
+- 描述：7 个 Phase 的工作流，不是原子命令
+- 建议：**保留 command 身份**但新增 skill 别名 `distill-skill`（未来用户可在 CLAUDE.md 引用为 skill）
+- 理由：用户已熟悉 /distill 口令，不打破 muscle memory
+
+## 空隙（N 处）
+
+### 缺 `/menus-refresh` 薄封装
+- 描述：改 navbar.yaml 后必跑 `menus.py render-navbar -w` + `build-website-navbar -w` + audit 三步
+- 建议：新增 `/menus-refresh` 3 行 bash wrapper
+- 理由：高频动作（R7 以来已跑 10+ 次），手工 bash 易漏步
+
+## 冗余（N 处）
+
+（暂无明显可删）
+
+## 行动（--apply 模式）
+
+1. [ ] Edit /handoff.md 首节加「/recap 依赖说明」
+2. [ ] 新建 /menus-refresh
+3. [ ] Edit /retro.md 与 /distill.md 各加一段「何时选哪个」
+```
+
+**--apply 模式下**：每条建议前用 AskUserQuestion 确认再执行；不 apply 则仅产出报告。
 
 ### 4. 执行提炼（`--apply`）
 
@@ -71,13 +131,19 @@ done
 
 **识别领域**（从 cwd 绝对路径前缀匹配）：
 
-| cwd 前缀 | domain |
-|---------|--------|
-| `~/Work/bids/` | `bids` |
-| `~/Work/eco-flow/` | `eco-flow` |
-| `~/Work/zdwp/projects/reclaim/` | `reclaim` |
-| `~/Work/zdwp/projects/*/` | `zdwp-<子项目名>` |
-| 其他 | 询问用户 |
+| cwd 前缀 | domain | playbook 文件 |
+|---------|--------|-------------|
+| `~/Work/bids/` | `bids` | `~/Work/_playbooks/bids/` |
+| `~/Work/eco-flow/` | `eco-flow` | `~/Work/_playbooks/eco-flow/` |
+| `~/Work/zdwp/projects/reclaim/` | `reclaim` | `~/Work/_playbooks/reclaim/` |
+| `~/Work/zdwp/projects/*/` | `zdwp-<子项目名>` | `~/Work/_playbooks/zdwp-*/` |
+| `~/Dev/<name>/`（站群相关：configs/menus 改动、navbar、stack 等）| `stations` | `~/Dev/configs/playbooks/stations.md` |
+| `~/Dev/<name>/`（新站上线相关：site-add / ship-site / launch） | `web-scaffold` | `~/Dev/configs/playbooks/web-scaffold.md` |
+| `~/Dev/hydro-*/` | `hydro` | `~/Dev/configs/playbooks/hydro.md` |
+| `~/Dev/cc-configs/` 或 slash 整顿 | `cc-meta` | `~/Dev/configs/playbooks/META.md` §5 新增 |
+| 其他 | 询问用户 | — |
+
+**Dev 项目的 playbook 优先落**：`~/Dev/configs/playbooks/`（与 ~/Work/_playbooks/ 并列，分别对应 "开发" 与 "工作" 两个根）。
 
 **识别"任务简称"**：优先读 `HANDOFF.md` 的首行 H1 或 `_project.yaml` 的 `name` 字段；找不到则询问用户。
 
