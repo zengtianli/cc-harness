@@ -29,7 +29,7 @@ projects:
     path: ~/Work/bids
     skills: [bid, resources, plan-first]
   international-assets:
-    path: ~/Dev/international-assets
+    path: ~/Dev/content/investment
     skills: [cc-dashboard]
   zls:
     path: ~/zls
