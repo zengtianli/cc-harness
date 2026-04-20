@@ -17,11 +17,11 @@ description: Auggie 索引管理（dash=扫描部署 dashboard, fix=补全缺失
 
 1. 运行 scanner 生成 scan.json：
    ```bash
-   python3 ~/Dev/auggie-dashboard/lib/scanner.py ~/Dev/auggie-dashboard/data/scan.json
+   python3 ~/Dev/labs/auggie-dashboard/lib/scanner.py ~/Dev/labs/auggie-dashboard/data/scan.json
    ```
 2. 部署到 VPS：
    ```bash
-   bash ~/Dev/auggie-dashboard/deploy.sh
+   bash ~/Dev/labs/auggie-dashboard/deploy.sh
    ```
 3. 输出摘要：总 repo 数、cloud complete、needs attention、missing _files.md
 
@@ -35,7 +35,7 @@ description: Auggie 索引管理（dash=扫描部署 dashboard, fix=补全缺失
 
 1. 运行：
    ```bash
-   python3 ~/Dev/auggie-dashboard/lib/fix_files_md.py [--dry-run]
+   python3 ~/Dev/labs/auggie-dashboard/lib/fix_files_md.py [--dry-run]
    ```
 2. 对每个新增的 _files.md 执行 `git add _files.md && git commit && git push`
 3. 完成后运行 `dash` 子命令刷新 dashboard
