@@ -30,17 +30,17 @@ The single source of truth for all Claude Code customizations — slash commands
 ## Install
 
 ```bash
-git clone https://github.com/zengtianli/cc-configs.git ~/Dev/cc-configs
-cd ~/Dev/cc-configs
+git clone https://github.com/zengtianli/cc-configs.git ~/Dev/tools/cc-configs
+cd ~/Dev/tools/cc-configs
 bash install.sh
 ```
 
 This creates symlinks:
 
 ```
-~/.claude/commands  → ~/Dev/cc-configs/commands
-~/.claude/skills    → ~/Dev/cc-configs/skills
-~/.claude/agents    → ~/Dev/cc-configs/agents
+~/.claude/commands  → ~/Dev/tools/cc-configs/commands
+~/.claude/skills    → ~/Dev/tools/cc-configs/skills
+~/.claude/agents    → ~/Dev/tools/cc-configs/agents
 ```
 
 Update by pulling the repo — symlinks keep everything in sync.

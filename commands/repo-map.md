@@ -2,7 +2,7 @@ Manage the GitHub ↔ local path bidirectional mapping.
 
 ## Registry
 
-Single source of truth: `~/Dev/configs/repo-map.json`
+Single source of truth: `~/Dev/tools/configs/repo-map.json`
 
 Fields per repo:
 - `local` — local path (~/Dev/xxx or ~/Work/xxx)

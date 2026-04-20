@@ -5,7 +5,7 @@
 从 $ARGUMENTS 确定目标（同 /ship 的参数规范）：
 - 无参数 → 当前目录（必须是 git repo）
 - `.` → 当前目录
-- `<name> [name2 ...]` → 在 `~/Dev/configs/repo-map.json` 查 `local` 路径
+- `<name> [name2 ...]` → 在 `~/Dev/tools/configs/repo-map.json` 查 `local` 路径
 - `all` → repo-map.json 中所有 `"ignored": false` 的 repo
 
 ## 流程

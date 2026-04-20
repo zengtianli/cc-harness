@@ -56,7 +56,7 @@ done
 
 ### 3.5 Slash 生态审计（全局）
 
-扫描 `~/Dev/cc-configs/commands/*.md` 所有 description 行，按 **4 类问题**产出 `~/Dev/stations/docs/knowledge/slash-audit-{YYYYMMDD}.md`：
+扫描 `~/Dev/tools/cc-configs/commands/*.md` 所有 description 行，按 **4 类问题**产出 `~/Dev/stations/docs/knowledge/slash-audit-{YYYYMMDD}.md`：
 
 | 问题类型 | 识别规则 | 举例 | 建议 |
 |---------|---------|------|------|
@@ -73,7 +73,7 @@ done
 ## 统计
 - 总 commands: 52
 - 总 skills: 46（global）+ N（domain）
-- 软链 ~/.claude/commands/ → ~/Dev/cc-configs/commands/
+- 软链 ~/.claude/commands/ → ~/Dev/tools/cc-configs/commands/
 
 ## 重叠（2 处）
 
@@ -137,13 +137,13 @@ done
 | `~/Work/eco-flow/` | `eco-flow` | `~/Work/_playbooks/eco-flow/` |
 | `~/Work/zdwp/projects/reclaim/` | `reclaim` | `~/Work/_playbooks/reclaim/` |
 | `~/Work/zdwp/projects/*/` | `zdwp-<子项目名>` | `~/Work/_playbooks/zdwp-*/` |
-| `~/Dev/<name>/`（站群相关：configs/menus 改动、navbar、stack 等）| `stations` | `~/Dev/configs/playbooks/stations.md` |
-| `~/Dev/<name>/`（新站上线相关：site-add / ship-site / launch） | `web-scaffold` | `~/Dev/configs/playbooks/web-scaffold.md` |
-| `~/Dev/hydro-*/` | `hydro` | `~/Dev/configs/playbooks/hydro.md` |
-| `~/Dev/cc-configs/` 或 slash 整顿 | `cc-meta` | `~/Dev/configs/playbooks/META.md` §5 新增 |
+| `~/Dev/<name>/`（站群相关：configs/menus 改动、navbar、stack 等）| `stations` | `~/Dev/tools/configs/playbooks/stations.md` |
+| `~/Dev/<name>/`（新站上线相关：site-add / ship-site / launch） | `web-scaffold` | `~/Dev/tools/configs/playbooks/web-scaffold.md` |
+| `~/Dev/hydro-*/` | `hydro` | `~/Dev/tools/configs/playbooks/hydro.md` |
+| `~/Dev/tools/cc-configs/` 或 slash 整顿 | `cc-meta` | `~/Dev/tools/configs/playbooks/META.md` §5 新增 |
 | 其他 | 询问用户 | — |
 
-**Dev 项目的 playbook 优先落**：`~/Dev/configs/playbooks/`（与 ~/Work/_playbooks/ 并列，分别对应 "开发" 与 "工作" 两个根）。
+**Dev 项目的 playbook 优先落**：`~/Dev/tools/configs/playbooks/`（与 ~/Work/_playbooks/ 并列，分别对应 "开发" 与 "工作" 两个根）。
 
 **识别"任务简称"**：优先读 `HANDOFF.md` 的首行 H1 或 `_project.yaml` 的 `name` 字段；找不到则询问用户。
 

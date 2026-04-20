@@ -1,7 +1,7 @@
 # Harness: CC skill/command/agent 分发注册表
 # source of truth 在 cc-configs repo
 
-source: ~/Dev/cc-configs/domain-skills
+source: ~/Dev/tools/cc-configs/domain-skills
 
 global_skills:
   - context

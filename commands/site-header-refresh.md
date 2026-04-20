@@ -2,7 +2,7 @@
 description: 把站内开场样式（site-header.html）从 yaml SSOT 同步到所有消费者
 ---
 
-把 `~/Dev/configs/menus/sites/<name>.yaml` 的 `header` 字段渲染成统一格式的 site-header.html，写入各子站 repo。
+把 `~/Dev/tools/configs/menus/sites/<name>.yaml` 的 `header` 字段渲染成统一格式的 site-header.html，写入各子站 repo。
 
 ## 用法
 

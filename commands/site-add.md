@@ -101,4 +101,4 @@ order: 10       # 首页排序
 
 - 下一步：`/ship-site <name>` — 一键部署（覆盖 nginx + CF DNS/Origin/Access + 首次 rsync）
 - 再下一步：`/launch` — 新项目一条龙（/site-add → /groom → /repo-map → /promote → /ship-site → /deploy）
-- Playbook：`~/Dev/configs/playbooks/web-scaffold.md`
+- Playbook：`~/Dev/tools/configs/playbooks/web-scaffold.md`

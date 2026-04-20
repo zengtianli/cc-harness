@@ -8,7 +8,7 @@ from typing import Optional
 HOOK_CONFIG = {
     "type": "command",
     "event": "notification",
-    "command": "python3 ~/Dev/cc-configs/tools/context/context.py snapshot save --quiet",
+    "command": "python3 ~/Dev/tools/cc-configs/tools/context/context.py snapshot save --quiet",
     "timeout": 10000,
 }
 

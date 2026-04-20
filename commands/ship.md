@@ -5,7 +5,7 @@ Commit and push changes in one or more projects under ~/Dev.
 1. **Determine scope** from $ARGUMENTS:
    - No args → current working directory (must be a git repo)
    - `.` → current working directory
-   - `all` → read `~/Dev/configs/repo-map.json`, ship ALL repos that have uncommitted changes
+   - `all` → read `~/Dev/tools/configs/repo-map.json`, ship ALL repos that have uncommitted changes
    - `<name> [name2 ...]` → look up name in `repo-map.json` to resolve local path, then ship
 
 2. **For each project with changes:**

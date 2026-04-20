@@ -100,7 +100,7 @@ $ARGUMENTS 为目标路径（默认 `.`）。
 
 | 配置 | 内容 |
 |------|------|
-| **skills 绑定** | 检查 `~/Dev/cc-configs/skills/` 是否有适用的 skill，建议绑定 |
+| **skills 绑定** | 检查 `~/Dev/tools/cc-configs/skills/` 是否有适用的 skill，建议绑定 |
 | **agent 定义** | 如果项目有复杂多步工作流，建议创建专用 agent |
 | **验证命令** | 在 CLAUDE.md 中添加 done-conditions 和验证命令 |
 

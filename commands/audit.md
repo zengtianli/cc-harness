@@ -42,7 +42,7 @@ gh repo view zengtianli/<name> --json description,repositoryTopics,homepageUrl
 
 ## 参考
 
-- `~/Dev/configs/repo-standards.json` — 完整性标准
+- `~/Dev/tools/configs/repo-standards.json` — 完整性标准
 - `python3 ~/Dev/devtools/repo_manager.py audit` — 审计工具
 
 ## 输出

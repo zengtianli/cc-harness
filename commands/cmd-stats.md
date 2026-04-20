@@ -9,7 +9,7 @@ description: 统计 slash command 使用频率，基于会话 transcript 数据
 运行统计脚本：
 
 ```bash
-/opt/homebrew/bin/python3 ~/Dev/cc-configs/tools/cmd_stats.py
+/opt/homebrew/bin/python3 ~/Dev/tools/cc-configs/tools/cmd_stats.py
 ```
 
 ## 参数
@@ -25,13 +25,13 @@ description: 统计 slash command 使用频率，基于会话 transcript 数据
 
 ```bash
 # 全量统计
-/opt/homebrew/bin/python3 ~/Dev/cc-configs/tools/cmd_stats.py
+/opt/homebrew/bin/python3 ~/Dev/tools/cc-configs/tools/cmd_stats.py
 
 # 最近 7 天
-/opt/homebrew/bin/python3 ~/Dev/cc-configs/tools/cmd_stats.py --days 7
+/opt/homebrew/bin/python3 ~/Dev/tools/cc-configs/tools/cmd_stats.py --days 7
 
 # 只看注册的命令，JSON 输出
-/opt/homebrew/bin/python3 ~/Dev/cc-configs/tools/cmd_stats.py --registered --json
+/opt/homebrew/bin/python3 ~/Dev/tools/cc-configs/tools/cmd_stats.py --registered --json
 ```
 
 ## 输出

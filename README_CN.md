@@ -30,17 +30,17 @@ Claude Code 配置中心 — 斜杠命令 + 自动触发技能 + Agent 定义 + 
 ## 安装
 
 ```bash
-git clone https://github.com/zengtianli/cc-configs.git ~/Dev/cc-configs
-cd ~/Dev/cc-configs
+git clone https://github.com/zengtianli/cc-configs.git ~/Dev/tools/cc-configs
+cd ~/Dev/tools/cc-configs
 bash install.sh
 ```
 
 创建的 symlink：
 
 ```
-~/.claude/commands     → ~/Dev/cc-configs/commands
-~/.claude/skills       → ~/Dev/cc-configs/skills
-~/.claude/agents       → ~/Dev/cc-configs/agents
+~/.claude/commands     → ~/Dev/tools/cc-configs/commands
+~/.claude/skills       → ~/Dev/tools/cc-configs/skills
+~/.claude/agents       → ~/Dev/tools/cc-configs/agents
 ```
 
 更新只需 `git pull`，symlink 保持同步。

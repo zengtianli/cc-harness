@@ -1,8 +1,8 @@
 ---
-description: 检测站群菜单/导航 yaml SSOT (~/Dev/configs/menus/) 与各消费者源码的漂移
+description: 检测站群菜单/导航 yaml SSOT (~/Dev/tools/configs/menus/) 与各消费者源码的漂移
 ---
 
-跨 5 个菜单/导航源做只读对账，配套 `~/Dev/configs/menus/` 物理目录使用。
+跨 5 个菜单/导航源做只读对账，配套 `~/Dev/tools/configs/menus/` 物理目录使用。
 
 ## 用法
 
