@@ -14,7 +14,7 @@ description: 脚手架新建一个 ~/Dev/<name> 静态站点项目（projects.ya
   - `stack` — yaml → HTML 卡片站（参考 ~/Dev/stations/stack）
   - `changelog` — yaml → 时间线（参考 cc-evolution）
   - `docs` — 文档站
-  - `md-docs` — **跨仓读 markdown + frontmatter → HTML**（参考 ~/Dev/assets）
+  - `md-docs` — **跨仓读 markdown + frontmatter → HTML**（参考 ~/Dev/stations/assets）
 - `--source <repo>` 仅 `md-docs` 需要：指定源 Markdown 仓（如 `international-assets`），generate.py 将读取 `~/Dev/<source>/docs/*.md`，仅渲染带 frontmatter `public: true` 的文章
 
 ### 2. 目录检查
@@ -72,7 +72,7 @@ description: 脚手架新建一个 ~/Dev/<name> 静态站点项目（projects.ya
 ├── CLAUDE.md            # 说明源仓 + 分组 key + 加新文章流程
 ├── README.md
 ├── deploy.sh            # rsync 到 VPS:/var/www/<name>
-├── generate.py          # 从 ~/Dev/assets/generate.py 拷贝，改：
+├── generate.py          # 从 ~/Dev/stations/assets/generate.py 拷贝，改：
 │                        #   DOCS_DIR = Path.home()/"Dev"/"<source>"/"docs"
 │                        #   GROUPS = [...按业务场景定义...]
 │                        #   SITE_HEADER 面包屑/标题
@@ -82,7 +82,7 @@ description: 脚手架新建一个 ~/Dev/<name> 静态站点项目（projects.ya
 └── site/                # generate.py 产物（index + per-article 独立页）
 ```
 
-**参考实现**：`~/Dev/assets/generate.py`（2026-04-19 首次落地，已在生产）
+**参考实现**：`~/Dev/stations/assets/generate.py`（2026-04-19 首次落地，已在生产）
 
 **首次 generate 前必做**：在源仓给要公开的 .md 加 frontmatter，最少：
 ```yaml
