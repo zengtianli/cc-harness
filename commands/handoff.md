@@ -33,7 +33,21 @@
 
 ### Phase 3: 生成 HANDOFF.md
 
-在**当前工作目录**生成 `HANDOFF.md`（覆盖已有的）。
+#### Step 3.0 · 判主项目（确定落地目录）
+
+本轮改动最集中的 repo 根作为 HANDOFF target dir。启发式：
+
+1. **盘点本轮改动** — 扫本会话所有 Edit/Write 调用的文件绝对路径
+2. **分桶计数** — 按 `~/Dev/{stations,labs,content,tools,devtools,migrated}/<top>` 归组（顶层一级子目录）
+3. **挑 target**：
+   - 唯一桶命中 ≥70% 改动 → 落到该 repo 根（如 `~/Dev/stations/web-stack/HANDOFF.md`）
+   - 跨 3+ repo 且**根级文件**（`~/Dev/CLAUDE.md` / `~/Dev/tools/configs/playbooks/` / 目录结构本身）占主导 → 落 `~/Dev/HANDOFF.md`
+   - 模糊时 → `AskUserQuestion` 给候选（top 3 改动最多的 repo + `~/Dev/`）让用户选
+4. 选中 repo 无 `.git/` 也可以 — HANDOFF 本就是文档，非 git 强依赖
+
+#### Step 3.1 · 写入
+
+在判定的 target dir 下生成 `HANDOFF.md`（覆盖已有的）。
 
 **格式：**
 
@@ -92,3 +106,5 @@
 - 如果本轮没有待完成项（任务全部做完），Phase 3 可以简化，只保留"当前进展"和"关键文件"
 - `quick` 模式下跳过 Phase 1 和 Phase 2，直接执行 Phase 3 和 Phase 4
 - 如果当前目录已有 HANDOFF.md，直接覆盖（旧的已经过时）
+- **HANDOFF 落地规则**：越靠近具体改动 repo 越好。单 station 改动 → `~/Dev/stations/<name>/HANDOFF.md`；跨站群/纯 ~/Dev 结构变更才落 `~/Dev/HANDOFF.md`。不做 symlink — 让 HANDOFF 就待在它归属的项目里
+- **旧 HANDOFF 归档**：若 target dir 已有过时的 HANDOFF（话题已换）且有保留价值，先 `mv HANDOFF.md ~/Dev/stations/docs/handoffs/{YYYYMMDD}-{topic}.md` 归档再覆盖
