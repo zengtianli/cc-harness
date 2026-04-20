@@ -1,41 +1,52 @@
 ---
-description: Auggie 索引管理（dash=扫描部署 dashboard, fix=补全缺失 _files.md）
+description: 刷新 auggie dashboard — 拉最新 GitHub repo 清单 → scan.json → 同步到 VPS
 ---
 
-用户提供了参数: $ARGUMENTS
+# /auggie — 刷新 auggie dashboard
 
-## 子命令路由
+$ARGUMENTS 忽略。默认跑 `dash`（之前的 `fix` 子命令已废，`_files.md` 机制已删）。
 
-解析 `$ARGUMENTS` 第一个词：
-- `dash` — 扫描索引状态并部署 dashboard
-- `fix` — 补全缺失 _files.md 并 commit+push
-- 为空 → 默认 `dash`
+## dash — 3 步刷新链路
 
----
-
-## dash — 扫描并部署 Dashboard
-
-1. 运行 scanner 生成 scan.json：
+1. **拉 GitHub 最新清单**
    ```bash
-   python3 ~/Dev/labs/auggie-dashboard/lib/scanner.py ~/Dev/labs/auggie-dashboard/data/scan.json
+   python3 ~/Dev/labs/auggie-dashboard/lib/scanner.py \
+       ~/Dev/labs/auggie-dashboard/data/scan.json
    ```
-2. 部署到 VPS：
+   产出当前所有 repo（公开 + 私有）的 7 字段 JSON。
+
+2. **同步到 ops-console 消费者**
    ```bash
-   bash ~/Dev/labs/auggie-dashboard/deploy.sh
+   cp ~/Dev/labs/auggie-dashboard/data/scan.json \
+      ~/Dev/stations/ops-console/data/auggie-scan.json
    ```
-3. 输出摘要：总 repo 数、cloud complete、needs attention、missing _files.md
 
----
-
-## fix — 补全缺失 _files.md
-
-扫描 ~/Dev 和 ~/Work 所有 git+GitHub repo，为缺少 _files.md 的补上清单。
-
-支持 `--dry-run` 只列出不写入。
-
-1. 运行：
+3. **scp 到 VPS**
    ```bash
-   python3 ~/Dev/labs/auggie-dashboard/lib/fix_files_md.py [--dry-run]
+   scp ~/Dev/stations/ops-console/data/auggie-scan.json \
+       root@104.218.100.67:/opt/ops-console/data/auggie-scan.json
    ```
-2. 对每个新增的 _files.md 执行 `git add _files.md && git commit && git push`
-3. 完成后运行 `dash` 子命令刷新 dashboard
+   不 rebuild Next.js，页面 `revalidate: 60` 60s 内自动拿到新数据。
+
+## 验证
+
+```bash
+curl -s --noproxy '*' https://dashboard.tianlizeng.cloud/api/auggie \
+  | python3 -c "import json, sys; d=json.load(sys.stdin); print(len(d['repos']))"
+```
+
+## 数据 schema（7 字段）
+
+```json
+{
+  "name": "dotfiles",
+  "visibility": "private",
+  "language": "Shell",
+  "pushed_at": "2026-04-20T12:31:39Z",
+  "description": "dotfiles for macOS",
+  "html_url": "https://github.com/zengtianli/dotfiles",
+  "archived": false
+}
+```
+
+页面在 `dashboard.tianlizeng.cloud/auggie`。
