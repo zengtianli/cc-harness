@@ -31,7 +31,7 @@ Supports both Streamlit apps (Playwright URL screenshots) and CLI tools (termina
 python3 ~/Dev/scripts/repo_screenshot.py streamlit hydro-rainfall https://hydro-rainfall.tianlizeng.cloud
 
 # Screenshot a CLI tool
-python3 ~/Dev/scripts/repo_screenshot.py cli cc-configs "python3 tools/harness/harness.py ~/Dev/dockit"
+python3 ~/Dev/scripts/repo_screenshot.py cli cc-configs "python3 tools/harness/harness.py ~/Dev/stations/dockit"
 
 # Batch all Streamlit apps
 python3 ~/Dev/scripts/repo_screenshot.py batch
@@ -91,7 +91,7 @@ Fix any issues found, then re-run to confirm clean.
 
 ## Gold Standard Template Reference
 
-The definitive example is **dockit** (`~/Dev/dockit/README.md`).
+The definitive example is **dockit** (`~/Dev/stations/dockit/README.md`).
 
 Badge colors:
 - Live Demo: `blue`
