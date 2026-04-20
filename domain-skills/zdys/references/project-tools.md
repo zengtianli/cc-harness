@@ -4,7 +4,7 @@
 
 ```bash
 # Word 文档
-/opt/homebrew/bin/python3 ~/Dev/doctools/scripts/document/docx_tools.py <file.docx>
+/opt/homebrew/bin/python3 ~/Dev/tools/doctools/scripts/document/docx_tools.py <file.docx>
 
 # Excel 文件
 /opt/homebrew/bin/python3 ~/Dev/hydro-risk/read_xlsx.py <file.xlsx> --list
@@ -14,7 +14,7 @@
 
 ```bash
 # Word 一键格式化
-/opt/homebrew/bin/python3 ~/Dev/doctools/scripts/document/docx_text_formatter.py <file.docx>
+/opt/homebrew/bin/python3 ~/Dev/tools/doctools/scripts/document/docx_text_formatter.py <file.docx>
 
 # Word 表格样式
 # [已废弃] apply_table_style.py

@@ -9,13 +9,13 @@ Checks README structure, badges, screenshots, gitignore, dependency pinning agai
 
 ```bash
 # Audit all projects
-python3 ~/Dev/scripts/repo_audit.py
+python3 ~/Dev/tools/scripts/repo_audit.py
 
 # Audit specific projects
-python3 ~/Dev/scripts/repo_audit.py cc-configs dockit
+python3 ~/Dev/tools/scripts/repo_audit.py cc-configs dockit
 
 # Audit + auto-fix gitignore gaps
-python3 ~/Dev/scripts/repo_audit.py --fix-gitignore
+python3 ~/Dev/tools/scripts/repo_audit.py --fix-gitignore
 ```
 
 **Checks performed:**
@@ -28,16 +28,16 @@ Supports both Streamlit apps (Playwright URL screenshots) and CLI tools (termina
 
 ```bash
 # Screenshot a Streamlit app
-python3 ~/Dev/scripts/repo_screenshot.py streamlit hydro-rainfall https://hydro-rainfall.tianlizeng.cloud
+python3 ~/Dev/tools/scripts/repo_screenshot.py streamlit hydro-rainfall https://hydro-rainfall.tianlizeng.cloud
 
 # Screenshot a CLI tool
-python3 ~/Dev/scripts/repo_screenshot.py cli cc-configs "python3 tools/harness/harness.py ~/Dev/stations/dockit"
+python3 ~/Dev/tools/scripts/repo_screenshot.py cli cc-configs "python3 tools/harness/harness.py ~/Dev/stations/dockit"
 
 # Batch all Streamlit apps
-python3 ~/Dev/scripts/repo_screenshot.py batch
+python3 ~/Dev/tools/scripts/repo_screenshot.py batch
 
 # Batch all (including CLI)
-python3 ~/Dev/scripts/repo_screenshot.py batch --include-cli
+python3 ~/Dev/tools/scripts/repo_screenshot.py batch --include-cli
 ```
 
 **Output:** `docs/screenshots/demo.png` (1280x800) in each project directory.
@@ -47,10 +47,10 @@ Generates bilingual READMEs, SVG demo previews, badges, and pushes to GitHub.
 
 ```bash
 # Promote all registered repos
-python3 ~/Dev/scripts/promote_repos.py
+python3 ~/Dev/tools/scripts/promote_repos.py
 
 # Promote specific repos
-python3 ~/Dev/scripts/promote_repos.py hydro-rainfall dockit
+python3 ~/Dev/tools/scripts/promote_repos.py hydro-rainfall dockit
 ```
 
 **Note:** This tool generates from templates, overwriting existing READMEs. Use for initial setup only.
@@ -84,7 +84,7 @@ When creating a new project under ~/Dev:
 ## SOP: Periodic Audit
 
 ```bash
-python3 ~/Dev/scripts/repo_audit.py
+python3 ~/Dev/tools/scripts/repo_audit.py
 ```
 
 Fix any issues found, then re-run to confirm clean.

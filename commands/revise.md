@@ -16,9 +16,9 @@ description: 根据审稿意见修改论文，以修订标记+批注形式插入
 
 ## 工具位置
 
-- 提取文本：`/opt/homebrew/bin/python3 ~/Dev/doctools/scripts/document/docx_tools.py extract <file>`
-- 写入修订：`/opt/homebrew/bin/python3 ~/Dev/doctools/scripts/document/docx_tools.py track-changes review <file> -o <output> -r <rules.json> -a <author>`
-- 读取修订：`/opt/homebrew/bin/python3 ~/Dev/doctools/scripts/document/docx_tools.py track-changes read <file>`
+- 提取文本：`/opt/homebrew/bin/python3 ~/Dev/tools/doctools/scripts/document/docx_tools.py extract <file>`
+- 写入修订：`/opt/homebrew/bin/python3 ~/Dev/tools/doctools/scripts/document/docx_tools.py track-changes review <file> -o <output> -r <rules.json> -a <author>`
+- 读取修订：`/opt/homebrew/bin/python3 ~/Dev/tools/doctools/scripts/document/docx_tools.py track-changes read <file>`
 
 ## 流程
 
@@ -60,7 +60,7 @@ description: 根据审稿意见修改论文，以修订标记+批注形式插入
 ### 4. 写入文档
 
 ```bash
-/opt/homebrew/bin/python3 ~/Dev/doctools/scripts/document/docx_tools.py track-changes review \
+/opt/homebrew/bin/python3 ~/Dev/tools/doctools/scripts/document/docx_tools.py track-changes review \
   "<输入文件>" \
   -o "<输出文件>" \
   -r "<rules文件>" \

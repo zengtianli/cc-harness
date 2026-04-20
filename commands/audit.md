@@ -10,7 +10,7 @@
 
 ## 并行策略
 
-当审计多个目标时（如 `/audit ~/Dev/doctools ~/Dev/devtools ~/Dev/mactools`）：
+当审计多个目标时（如 `/audit ~/Dev/tools/doctools ~/Dev/devtools ~/Dev/tools/mactools`）：
 - 为每个目标生成独立子代理（Agent tool），并行执行审计
 - 每个子代理独立完成单个 repo 的审计并返回结果
 - 主线程汇总所有结果，输出统一报告

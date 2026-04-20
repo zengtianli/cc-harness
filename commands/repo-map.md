@@ -14,7 +14,7 @@ Fields per repo:
 ## Consumers (files that embed parts of this mapping)
 
 1. `~/Dev/devtools/scripts/tools/git_smart_push.py` — reads `repo-map.json` at runtime, filters by `auto_push: true`
-2. `~/Dev/vps/github_webhook_receiver.py` — `REPO_PATHS` dict (repos with non-null `vps`). Updated by `sync`.
+2. `~/Dev/tools/vps/github_webhook_receiver.py` — `REPO_PATHS` dict (repos with non-null `vps`). Updated by `sync`.
 3. `~/Dev/CLAUDE.md` — repo map table section. Updated by `sync`.
 4. `~/.claude/commands/ship.md` — `/ship all` reads `repo-map.json` to resolve paths.
 

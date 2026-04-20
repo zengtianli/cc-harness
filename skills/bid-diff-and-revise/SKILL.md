@@ -78,7 +78,7 @@ python3 ~/.claude/skills/bid-diff-and-revise/scripts/gen_rules.py \
   --out <目标目录>/_revise_rules.json
 
 # 6b. 调用 docx_tools.py 写 track-changes
-python3 ~/Dev/doctools/scripts/document/docx_tools.py track-changes review \
+python3 ~/Dev/tools/doctools/scripts/document/docx_tools.py track-changes review \
   <目标.docx> \
   -o <目标目录>/（修改稿）<名字>.docx \
   -r <目标目录>/_revise_rules.json \
@@ -119,7 +119,7 @@ python3 ~/.claude/skills/bid-diff-and-revise/scripts/verify_after_accept.py \
 
 ## 外部依赖
 
-- `~/Dev/doctools/scripts/document/docx_tools.py track-changes review` — 主要写入工具
+- `~/Dev/tools/doctools/scripts/document/docx_tools.py track-changes review` — 主要写入工具
 - `python-docx`（pip 包）
 
 ## 产出位置约定

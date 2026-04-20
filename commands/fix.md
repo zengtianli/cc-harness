@@ -24,7 +24,7 @@ description: 修复 DOCX 文档问题（refs=引用角标, heading=标题编号,
 
 将 `[1]` `[3-4]` `[18-19]` 等文献引用改为右上角上标格式。
 
-**工具**: `/opt/homebrew/bin/python3 ~/Dev/doctools/scripts/document/fix_superscript_refs.py`
+**工具**: `/opt/homebrew/bin/python3 ~/Dev/tools/doctools/scripts/document/fix_superscript_refs.py`
 
 1. 先 `--dry-run` 预览
 2. 执行修复（默认覆盖原文件，`-o` 指定输出路径）
