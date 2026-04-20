@@ -22,7 +22,7 @@ bash ~/Dev/devtools/scripts/api-smoke.sh $ARGUMENTS
 
 ## 脚本行为
 
-- 从 `~/Dev/website/lib/services.ts` 读 streamlit port → 推算 FastAPI port = streamlit + 100（audiobook 例外保持 9200）
+- 从 `~/Dev/stations/website/lib/services.ts` 读 streamlit port → 推算 FastAPI port = streamlit + 100（audiobook 例外保持 9200）
 - 启动：`pkill -f "uvicorn api:app.*$port"` → `rm -f /tmp/$name-api.log` → `uv run uvicorn api:app --host 127.0.0.1 --port $port >| /tmp/$name-api.log 2>&1 &`（`>|` 防 zsh noclobber）
 - 等 4 秒
 - `curl --noproxy '*'`（绕 clashx）依次：
@@ -45,6 +45,6 @@ bash ~/Dev/devtools/scripts/api-smoke.sh $ARGUMENTS
 
 ## 相关
 
-- `~/Dev/web-stack/infra/deploy/verify.py` — 生产环境浏览器端验证
+- `~/Dev/stations/web-stack/infra/deploy/verify.py` — 生产环境浏览器端验证
 - `~/Dev/devtools/lib/hydro_api_helpers.py` — 所有 api.py 共享的 Python 工具
 - `playbooks/hydro.md` — 完整编排上下文

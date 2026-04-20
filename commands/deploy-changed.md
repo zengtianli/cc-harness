@@ -25,10 +25,10 @@ bash ~/Dev/devtools/scripts/deploy-changed.sh $ARGUMENTS
 扫三个来源的 `git diff --name-only <since> HEAD`：
 
 - `~/Dev/devtools/lib/` — 共享 Python 模块，变了 → **所有** 已迁站点
-- `~/Dev/web-stack/` — `apps/<name>-web/*` 变了 → 对应站；`packages/*` 变了 → 所有站
-- `~/Dev/hydro-*`、`~/Dev/audiobook` — 该 repo 任意变动 → 对应站
+- `~/Dev/stations/web-stack/` — `apps/<name>-web/*` 变了 → 对应站；`packages/*` 变了 → 所有站
+- `~/Dev/hydro-*`、`~/Dev/stations/audiobook` — 该 repo 任意变动 → 对应站
 
-去重后合并调 `~/Dev/web-stack/infra/deploy/deploy-batch.sh <sites...>`。
+去重后合并调 `~/Dev/stations/web-stack/infra/deploy/deploy-batch.sh <sites...>`。
 
 若零变更 → 打印「nothing changed」退 0（不算错）。
 
@@ -46,7 +46,7 @@ bash ~/Dev/devtools/scripts/deploy-changed.sh $ARGUMENTS
 
 ## 相关
 
-- `~/Dev/web-stack/infra/deploy/deploy.sh` — 单站底层
-- `~/Dev/web-stack/infra/deploy/deploy-batch.sh` — 多站并行
-- `~/Dev/web-stack/infra/deploy/sync-global.sh` — 共享 devtools/lib 同步
+- `~/Dev/stations/web-stack/infra/deploy/deploy.sh` — 单站底层
+- `~/Dev/stations/web-stack/infra/deploy/deploy-batch.sh` — 多站并行
+- `~/Dev/stations/web-stack/infra/deploy/sync-global.sh` — 共享 devtools/lib 同步
 - `/api-smoke` — 部署前本地 smoke test

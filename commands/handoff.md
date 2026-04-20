@@ -18,7 +18,7 @@
 1. 回顾对话，提取主题、进程、成果、踩坑
 2. 分析做对/做错/工程模式/沟通
 3. 更新 CC 侧记录（Memory、Skills、Commands、CLAUDE.md）
-4. 生成 session-retro 文件到 `~/Dev/docs/knowledge/session-retro-{YYYYMMDD}.md`
+4. 生成 session-retro 文件到 `~/Dev/stations/docs/knowledge/session-retro-{YYYYMMDD}.md`
 
 ### Phase 2: 配置升级检查（/harness）
 
@@ -74,7 +74,7 @@
 ```
 --- Handoff 完成 ---
 
-复盘：~/Dev/docs/knowledge/session-retro-{date}.md
+复盘：~/Dev/stations/docs/knowledge/session-retro-{date}.md
 记忆：更新 {N} 条 / 新增 {N} 条
 配置：{更新了什么 / 无需更新}
 交接：{HANDOFF.md 的绝对路径}

@@ -20,10 +20,10 @@ python3 ~/Dev/devtools/lib/tools/menus.py build-site-content -w
 
 | 站 | repo | 输出 |
 |---|---|---|
-| cmds | ~/Dev/cmds/site-content.css | 命令文档站 |
-| stack | ~/Dev/stack/site-content.css | 项目地图站 |
-| logs | ~/Dev/logs/site-content.css | 时间线站 |
-| ops-console | ~/Dev/ops-console/site-content.css | 控制台站 |
+| cmds | ~/Dev/stations/cmds/site-content.css | 命令文档站 |
+| stack | ~/Dev/stations/stack/site-content.css | 项目地图站 |
+| logs | ~/Dev/stations/logs/site-content.css | 时间线站 |
+| ops-console | ~/Dev/stations/ops-console/site-content.css | 控制台站 |
 
 ## 后续
 

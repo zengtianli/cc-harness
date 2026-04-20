@@ -151,7 +151,7 @@ $ARGUMENTS 为目标路径（默认 `.`）。
 
 ### README.md 生成规则
 
-复用 `/audit` 的 readme_template 体系。金标准参考：`~/Dev/dockit/README.md`。
+复用 `/audit` 的 readme_template 体系。金标准参考：`~/Dev/stations/dockit/README.md`。
 
 必须包含：
 - 语言切换：`**English** | [中文](README_CN.md)`

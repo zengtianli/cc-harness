@@ -11,7 +11,7 @@ description: 脚手架新建一个 ~/Dev/<name> 静态站点项目（projects.ya
 ### 1. 参数解析
 - `<name>` 必填，项目目录名（也是默认子域名）
 - `--template` 可选：默认 `stack`
-  - `stack` — yaml → HTML 卡片站（参考 ~/Dev/stack）
+  - `stack` — yaml → HTML 卡片站（参考 ~/Dev/stations/stack）
   - `changelog` — yaml → 时间线（参考 cc-evolution）
   - `docs` — 文档站
   - `md-docs` — **跨仓读 markdown + frontmatter → HTML**（参考 ~/Dev/assets）
@@ -35,14 +35,14 @@ description: 脚手架新建一个 ~/Dev/<name> 静态站点项目（projects.ya
 
 关键模板来源：
 - `~/Dev/cc-evolution/` — 静态 HTML 生成器范式
-- `~/Dev/stack/` — 项目说明书范式（含 scan_cc_inventory 模式）
+- `~/Dev/stations/stack/` — 项目说明书范式（含 scan_cc_inventory 模式）
 - `~/Dev/devtools/lib/templates/nginx-static.conf` — Nginx 模板
 
 ### 4. 初始化内容
 - 拷贝对应 template 的 generate.py 和 deploy.sh
 - 在 deploy.sh 里把域名替换成 `<name>.tianlizeng.cloud`
 - 生成最小可用的 projects.yaml（或 template 指定的数据文件）
-- 写 CLAUDE.md 说明项目架构（参考 ~/Dev/stack/CLAUDE.md 格式）
+- 写 CLAUDE.md 说明项目架构（参考 ~/Dev/stations/stack/CLAUDE.md 格式）
 
 ### 5. 第一次生成
 - 运行 `python3 generate.py` 验证能出 site/index.html

@@ -2,7 +2,7 @@
 description: 扫描 services.ts 所有子域 HTTP/Access/Navbar 状态，输出诊断矩阵
 ---
 
-一键健康探针 — 验证 `~/Dev/website/lib/services.ts` 里所有子域的可达性、CF Access 一致性、navbar 部署情况。
+一键健康探针 — 验证 `~/Dev/stations/website/lib/services.ts` 里所有子域的可达性、CF Access 一致性、navbar 部署情况。
 
 ## 用法
 

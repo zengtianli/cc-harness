@@ -26,7 +26,7 @@ if [[ -z "$purpose" ]]; then
   exit 1
 fi
 
-yaml="$HOME/Dev/stack/projects.yaml"
+yaml="$HOME/Dev/stations/stack/projects.yaml"
 today=$(date +%F)
 
 # 更新 projects.yaml

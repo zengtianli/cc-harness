@@ -45,7 +45,7 @@ elif --kind app:    cd ~/Dev/<name> && /deploy
 ### Phase 5: 在 stack 登记
 提示用户：
 > 已上线：https://<name>.tianlizeng.cloud
-> 建议把条目加到 ~/Dev/website/lib/services.ts（stack 页下次 generate 会自动识别 CC commands，但项目要手工加到 services.ts）
+> 建议把条目加到 ~/Dev/stations/website/lib/services.ts（stack 页下次 generate 会自动识别 CC commands，但项目要手工加到 services.ts）
 
 ## 规则
 

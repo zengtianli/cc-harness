@@ -18,10 +18,10 @@ bash ~/Dev/devtools/scripts/tools/navbar_refresh.sh "$@"
 
 ## 覆盖范围
 
-- `~/Dev/stack/site-navbar.html`  — GHA 部署到 `stack.tianlizeng.cloud`
-- `~/Dev/cmds/site-navbar.html`   — GHA 部署到 `cmds.tianlizeng.cloud`
+- `~/Dev/stations/stack/site-navbar.html`  — GHA 部署到 `stack.tianlizeng.cloud`
+- `~/Dev/stations/cmds/site-navbar.html`   — GHA 部署到 `cmds.tianlizeng.cloud`
 - `~/Dev/cc-evolution/site-navbar.html` — GHA 部署到 `changelog.tianlizeng.cloud`
-- `~/Dev/audiobook/site-navbar.html`    — `deploy.sh` 部署到 `audiobook.tianlizeng.cloud`
+- `~/Dev/stations/audiobook/site-navbar.html`    — `deploy.sh` 部署到 `audiobook.tianlizeng.cloud`
 
 ## 不处理
 

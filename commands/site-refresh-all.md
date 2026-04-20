@@ -36,13 +36,13 @@ python3 ~/Dev/devtools/lib/tools/menus.py build-site-content -w
 bash ~/Dev/devtools/scripts/tools/navbar_refresh.sh
 
 # 7. React 共享组件 + TS 数据 copy → ops-console
-cp ~/Dev/website/components/mega-navbar.tsx     ~/Dev/ops-console/components/mega-navbar.tsx
-cp ~/Dev/website/lib/shared-navbar.generated.ts ~/Dev/ops-console/lib/shared-navbar.generated.ts
+cp ~/Dev/stations/website/components/mega-navbar.tsx     ~/Dev/stations/ops-console/components/mega-navbar.tsx
+cp ~/Dev/stations/website/lib/shared-navbar.generated.ts ~/Dev/stations/ops-console/lib/shared-navbar.generated.ts
 
 # 8. 静态站重生成 HTML（stack / cmds / logs）
-cd ~/Dev/stack  && python3 generate.py
-cd ~/Dev/cmds   && python3 generate.py
-cd ~/Dev/logs   && python3 generate.py
+cd ~/Dev/stations/stack  && python3 generate.py
+cd ~/Dev/stations/cmds   && python3 generate.py
+cd ~/Dev/stations/logs   && python3 generate.py
 
 # 9. audit 8 类全绿
 python3 ~/Dev/devtools/lib/tools/menus.py audit

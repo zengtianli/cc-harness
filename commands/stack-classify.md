@@ -25,7 +25,7 @@ python3 ~/Dev/devtools/lib/tools/classify.py $ARGUMENTS
 |---|---|
 | `Project` | 目录名 |
 | `Stack` | nextjs / streamlit / fastapi / python-cli / node / static / config / docs / monorepo / unknown |
-| `Deployed` | 子域（从 `~/Dev/website/lib/services.ts` 读）或 `—` |
+| `Deployed` | 子域（从 `~/Dev/stations/website/lib/services.ts` 读）或 `—` |
 | `30d Commits` | 近 30 天 git 提交数 |
 | `Migration Target` | `apps/<name>-web` / `already-nextjs` / `to-monorepo` / `keep-as-is` / `archive-candidate` / `fastapi-only` / `n/a` |
 | `Notes` | 备注 |
@@ -57,7 +57,7 @@ python3 ~/Dev/devtools/lib/tools/classify.py $ARGUMENTS
 | Stack | 目标 |
 |---|---|
 | streamlit | `apps/<name>-web` — pilot pattern，Python 保留 + FastAPI wrapper |
-| nextjs | `already-nextjs` — 可选并入 `~/Dev/web-stack` |
+| nextjs | `already-nextjs` — 可选并入 `~/Dev/stations/web-stack` |
 | fastapi | `fastapi-only` — 后端复用，前端走 monorepo |
 | python-cli / config / docs / node / monorepo | `keep-as-is` |
 | static + deployed | `keep-as-is`（视觉刷新走 `/site-refresh-all`） |

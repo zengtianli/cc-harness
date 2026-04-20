@@ -56,7 +56,7 @@ rsync -avz --delete $SOURCE/ root@104.218.100.67:$REMOTE/
 
 ### 8. 登记（提示用户手工加）
 告诉用户：
-> 记得在 `~/Dev/website/lib/services.ts` 加一条（accessType: cf-access 除非 --no-access）
+> 记得在 `~/Dev/stations/website/lib/services.ts` 加一条（accessType: cf-access 除非 --no-access）
 
 ## 规则
 
