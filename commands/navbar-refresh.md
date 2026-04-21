@@ -1,8 +1,10 @@
 ---
-description: 把共享 navbar 模板同步到 4 个消费者 repo，有变更就 commit+push
+description: 把共享 navbar 模板同步到 6 个消费者 repo，有变更就 commit+push
 ---
 
-在 `~/Dev/devtools/lib/templates/site-navbar.html` 改完后跑这个命令：对 **stack / cmds / cc-evolution / audiobook** 各自的 `site-navbar.html` 做 cp → git diff → commit + push。GHA 各自接力重新部署。
+在 `~/Dev/devtools/lib/templates/site-navbar.html` 改完后跑这个命令：对 **stack / cmds / audiobook / assets / logs / ops-console** 各自的 `site-navbar.html` 做 cp → git diff → commit + push。GHA 或 deploy.sh 各自接力重新部署。
+
+消费者清单**不硬编码**，由 `navbar_refresh.sh` 自动扫描 `~/Dev/stations/*/site-navbar.html`（maxdepth 3，排除 _archive / devtools / configs / .next / node_modules）。新站加 `site-navbar.html` 即可自动纳入。
 
 ## 用法
 
@@ -16,12 +18,16 @@ description: 把共享 navbar 模板同步到 4 个消费者 repo，有变更就
 bash ~/Dev/devtools/scripts/tools/navbar_refresh.sh "$@"
 ```
 
-## 覆盖范围
+## 覆盖范围（auto-discovery）
 
-- `~/Dev/stations/stack/site-navbar.html`  — GHA 部署到 `stack.tianlizeng.cloud`
-- `~/Dev/stations/cmds/site-navbar.html`   — GHA 部署到 `cmds.tianlizeng.cloud`
-- `~/Dev/cc-evolution/site-navbar.html` — GHA 部署到 `changelog.tianlizeng.cloud`
-- `~/Dev/stations/audiobook/site-navbar.html`    — `deploy.sh` 部署到 `audiobook.tianlizeng.cloud`
+当前扫出 6 个消费者：
+
+- `~/Dev/stations/stack/site-navbar.html`        — `stack.tianlizeng.cloud`
+- `~/Dev/stations/cmds/site-navbar.html`         — `cmds.tianlizeng.cloud`
+- `~/Dev/stations/audiobook/site-navbar.html`    — `audiobook.tianlizeng.cloud`
+- `~/Dev/stations/assets/site-navbar.html`       — `assets.tianlizeng.cloud`
+- `~/Dev/stations/logs/site-navbar.html`         — `logs.tianlizeng.cloud`
+- `~/Dev/stations/ops-console/site-navbar.html`  — `dashboard.tianlizeng.cloud`
 
 ## 不处理
 
