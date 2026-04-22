@@ -36,15 +36,15 @@
       "notes": []
     },
     "harness": {
-      "last_used": null,
-      "use_count": 0,
+      "last_used": "2026-04-21",
+      "use_count": 1,
       "correction_count": 0,
       "last_correction": null,
       "notes": []
     },
     "plan-first": {
-      "last_used": null,
-      "use_count": 0,
+      "last_used": "2026-04-21",
+      "use_count": 2,
       "correction_count": 0,
       "last_correction": null,
       "notes": []
@@ -113,7 +113,14 @@
       "notes": []
     },
     "recap": {
-      "last_used": "2026-04-13",
+      "last_used": "2026-04-21",
+      "use_count": 3,
+      "correction_count": 0,
+      "last_correction": null,
+      "notes": []
+    },
+    "retro": {
+      "last_used": "2026-04-21",
       "use_count": 1,
       "correction_count": 0,
       "last_correction": null,
@@ -171,11 +178,13 @@
       "notes": []
     },
     "deploy": {
-      "last_used": "2026-04-14",
-      "use_count": 4,
+      "last_used": "2026-04-21",
+      "use_count": 5,
       "correction_count": 1,
       "last_correction": "2026-04-14",
-      "notes": ["middleware rewrite 在 standalone 下 protocol 必须设 http，否则 SSL EPROTO"]
+      "notes": [
+        "middleware rewrite 在 standalone 下 protocol 必须设 http，否则 SSL EPROTO"
+      ]
     },
     "dissect-report": {
       "last_used": null,
@@ -283,8 +292,8 @@
       "notes": []
     },
     "recap": {
-      "last_used": "2026-04-14",
-      "use_count": 3,
+      "last_used": "2026-04-21",
+      "use_count": 4,
       "correction_count": 0,
       "last_correction": null,
       "notes": []
@@ -332,8 +341,8 @@
       "notes": []
     },
     "ship": {
-      "last_used": null,
-      "use_count": 0,
+      "last_used": "2026-04-21",
+      "use_count": 1,
       "correction_count": 0,
       "last_correction": null,
       "notes": []
@@ -353,6 +362,34 @@
       "notes": [
         "新建于本轮，MD并入docx的标准流程"
       ]
+    },
+    "menus-audit": {
+      "last_used": "2026-04-21",
+      "use_count": 1,
+      "correction_count": 0,
+      "last_correction": null,
+      "notes": []
+    },
+    "navbar-refresh": {
+      "last_used": "2026-04-21",
+      "use_count": 1,
+      "correction_count": 0,
+      "last_correction": null,
+      "notes": []
+    },
+    "site-content-refresh": {
+      "last_used": "2026-04-21",
+      "use_count": 1,
+      "correction_count": 0,
+      "last_correction": null,
+      "notes": []
+    },
+    "warmup": {
+      "last_used": "2026-04-21",
+      "use_count": 2,
+      "correction_count": 0,
+      "last_correction": null,
+      "notes": []
     }
   }
 }
