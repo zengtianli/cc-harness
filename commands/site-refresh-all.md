@@ -35,16 +35,22 @@ python3 ~/Dev/devtools/lib/tools/menus.py build-site-content -w
 # 6. navbar.html 同步到 5 消费者（auto commit + push）
 bash ~/Dev/devtools/scripts/tools/navbar_refresh.sh
 
-# 7. React 共享组件 + TS 数据 copy → ops-console
-cp ~/Dev/stations/website/components/mega-navbar.tsx     ~/Dev/stations/ops-console/components/mega-navbar.tsx
+# 7. React mega-navbar 共享组件 → website + ops-console（devtools SSOT）
+python3 ~/Dev/devtools/lib/tools/menus.py build-react-mega-navbar -w
+
+# 8. shared-navbar.generated.ts → ops-console copy（website 已自动生成，ops-console 需要镜像）
 cp ~/Dev/stations/website/lib/shared-navbar.generated.ts ~/Dev/stations/ops-console/lib/shared-navbar.generated.ts
 
-# 8. 静态站重生成 HTML（stack / cmds / logs）
+# 9. services.ts AUTO-GEN from entities/*.yaml
+python3 ~/Dev/devtools/lib/tools/menus.py build-services-ts -w
+
+# 10. 静态站重生成 HTML（stack / cmds / logs / assets）
 cd ~/Dev/stations/stack  && python3 generate.py
 cd ~/Dev/stations/cmds   && python3 generate.py
 cd ~/Dev/stations/logs   && python3 generate.py
+cd ~/Dev/stations/assets && python3 generate.py
 
-# 9. audit 8 类全绿
+# 11. audit 11 类全绿（graph-invariants + consumer-registry + react-mega-navbar-drift + 8 类消费者）
 python3 ~/Dev/devtools/lib/tools/menus.py audit
 ```
 
@@ -52,7 +58,7 @@ python3 ~/Dev/devtools/lib/tools/menus.py audit
 
 audit 全绿后，**必须**告诉用户：
 
-> ✅ 本地全对齐，audit 8/8 绿。下一步你来指挥：
+> ✅ 本地全对齐，audit 11/11 绿。下一步你来指挥：
 >
 > 要部署哪些站？参考受影响范围：
 > - 改了 `NAVBAR_CSS` / `site-navbar.html` → 全 6 站（website + ops-console + stack + cmds + logs + audiobook）
