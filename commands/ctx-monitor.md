@@ -12,6 +12,6 @@ CLI：`python3 ~/Dev/tools/cc-configs/tools/context/context.py $ARGUMENTS`
 - `hooks install` — 安装 CC hooks
 
 典型场景：
-- 会话中途卡顿：`/context monitor` 看 token 消耗在哪
-- 怀疑上下文膨胀：`/context health` 检查是否有重复读取/查询
-- 准备交接下个会话：`/context snapshot save`
+- 会话中途卡顿：`/ctx-monitor monitor` 看 token 消耗在哪
+- 怀疑上下文膨胀：`/ctx-monitor health` 检查是否有重复读取/查询
+- 准备交接下个会话：`/ctx-monitor snapshot save`

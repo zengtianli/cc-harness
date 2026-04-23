@@ -14,8 +14,15 @@
 
 按顺序执行，任一步失败立即停止：
 
+### 0. Pre-flight（并行扫，任一阻断项 → 停止等确认）
+同时检查以下维度，输出清单后**暂停等用户确认**再继续：
+- `$SOURCE/index.html` 存在？
+- CF DNS / Access 是否已有同名记录（冲突 or 幂等？）
+- VPS `/var/www/<name>` 是否已存在（rsync 会覆盖！）
+- VPS nginx `sites-enabled/<hostname>` 是否已存在
+- VPS 连通性：`ssh root@104.218.100.67 "echo ok"`
+
 ### 1. 本地预检
-- 确认 `$SOURCE/index.html` 存在，不存在则报错退出
 - 计算 `HOSTNAME=<name>.tianlizeng.cloud`
 - 计算 `REMOTE=/var/www/<name>`
 

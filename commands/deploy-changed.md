@@ -14,6 +14,15 @@ description: Scan recent git diffs across web-stack + hydro-* + audiobook + devt
 /deploy-changed --dry               # 只打印会部署哪些站，不实际跑
 ```
 
+## Pre-flight（`--dry` 隐含，非 `--dry` 时强制）
+
+执行前先打印：
+- 哪些 repo 有变更（`git diff --name-only`）
+- 推断出的目标站点列表
+- 是否涉及共享模块（devtools/lib / packages/*）→ 标注「全量部署」警告
+
+输出后**暂停等确认**，用户说「继续」才真正部署。`--dry` 跳过暂停直接退出。
+
 ## 执行
 
 ```bash
