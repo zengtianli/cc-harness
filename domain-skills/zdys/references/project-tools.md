@@ -7,7 +7,7 @@
 /opt/homebrew/bin/python3 ~/Dev/tools/doctools/scripts/document/docx_tools.py <file.docx>
 
 # Excel 文件
-/opt/homebrew/bin/python3 ~/Dev/hydro-risk/read_xlsx.py <file.xlsx> --list
+/opt/homebrew/bin/python3 ~/Dev/stations/web-stack/services/hydro-risk/read_xlsx.py <file.xlsx> --list
 ```
 
 ## 格式修复

@@ -23,7 +23,7 @@ python3 ~/Dev/devtools/lib/tools/menus.py render-site-header --all -w
 | cmds | ~/Dev/stations/cmds | 📚 CC Docs · Claude Code 命令 & 技能说明书 |
 | stack | ~/Dev/stations/stack | 🗂 Stack · ~/Dev 项目架构地图 |
 | journal | ~/Dev/journal | 📔 Journal · HANDOFF / 方案 / 复盘时间线 |
-| cc-evolution | ~/Dev/cc-evolution | 🔄 Changelog · CC 自我进化变更日志 |
+| cc-evolution | ~/Dev/_archive/cc-evolution-20260419 | 🔄 Changelog · CC 自我进化变更日志 |
 | ops-console | ~/Dev/stations/ops-console | 📊 Dashboard · VPS 服务 · 任务 · Git 提交总览 |
 
 ## 渲染产物

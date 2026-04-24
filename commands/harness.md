@@ -44,7 +44,7 @@ $ARGUMENTS 为目标路径（默认 `.`）。
 📋 项目诊断
 类型：streamlit
 阶段：growing → established
-路径：~/Dev/hydro-rainfall
+路径：~/Dev/stations/web-stack/services/hydro-rainfall
 源文件：37 个 Python, 2 个 YAML
 部署：VPS (hydro-rainfall.tianlizeng.cloud)
 现有配置：CLAUDE.md ✓  README.md ✓  README_CN.md ✗  .gitignore ✓  hooks ✗

@@ -67,4 +67,4 @@ python3 ~/Dev/devtools/lib/tools/classify.py $ARGUMENTS
 
 - 不搬目录（要搬走 `/tidy` 或手工）
 - 不修改 `.git` / remote
-- 不碰 `~/Dev/_archived/`（除非 `--include-archived`）
+- 不碰 `~/Dev/_archive/`（除非 `--include-archived`）

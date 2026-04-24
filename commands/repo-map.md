@@ -42,7 +42,7 @@ Based on $ARGUMENTS:
 Display formatted table grouped by category:
 ```
 hydro (12)  ★=auto_push
-  hydro-rainfall    ~/Dev/hydro-rainfall    zengtianli/hydro-rainfall    /opt/hydro/hydro-rainfall
+  hydro-rainfall    ~/Dev/stations/web-stack/services/hydro-rainfall    zengtianli/hydro-rainfall    /opt/hydro/hydro-rainfall
   ...
 work (2)
 ★ zdwp              ~/Work/zdwp             zengtianli/zdwp              /var/www/zdwp

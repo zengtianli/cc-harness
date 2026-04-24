@@ -61,7 +61,7 @@ python main.py --b3 --year 2020 <NC数据目录>
 /opt/homebrew/bin/python3 ~/Dev/tools/doctools/scripts/document/docx_tools.py <file.docx>
 
 # Excel 文件
-/opt/homebrew/bin/python3 ~/Dev/hydro-risk/read_xlsx.py <file.xlsx> --list
+/opt/homebrew/bin/python3 ~/Dev/stations/web-stack/services/hydro-risk/read_xlsx.py <file.xlsx> --list
 
 # NC 文件
 # [已废弃] read_nc.py

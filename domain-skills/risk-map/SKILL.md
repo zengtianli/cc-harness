@@ -38,9 +38,9 @@ Phase 4: 最终成果输出          ── 1小时，整理导出
 
 | 类型 | 路径 |
 |------|------|
-| QGIS 脚本（12个） | `~/Dev/hydro-qgis/pipeline/` |
-| Excel 脚本（14个） | `~/Dev/hydro-risk/` |
-| 共享库 | `~/Dev/hydro-risk/lib/` |
+| QGIS 脚本（12个） | `~/Dev/labs/hydro-qgis/pipeline/` |
+| Excel 脚本（14个） | `~/Dev/stations/web-stack/services/hydro-risk/` |
+| 共享库 | `~/Dev/stations/web-stack/services/hydro-risk/lib/` |
 | 本地步骤脚本 | `scripts/`（01~07） |
 
 ## 项目结构

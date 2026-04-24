@@ -26,7 +26,7 @@ description: 脚手架新建一个 ~/Dev/<name> 静态站点项目（projects.ya
 ~/Dev/<name>/
 ├── CLAUDE.md
 ├── README.md
-├── deploy.sh           # 从 ~/Dev/cc-evolution/deploy.sh 拷贝，替换域名
+├── deploy.sh           # 从 ~/Dev/_archive/cc-evolution-20260419/deploy.sh 拷贝，替换域名
 ├── generate.py         # 从 stack/generate.py 拷贝或简化版
 ├── projects.yaml       # 占位（或对应模板）
 └── site/
@@ -34,7 +34,7 @@ description: 脚手架新建一个 ~/Dev/<name> 静态站点项目（projects.ya
 ```
 
 关键模板来源：
-- `~/Dev/cc-evolution/` — 静态 HTML 生成器范式
+- `~/Dev/_archive/cc-evolution-20260419/` — 静态 HTML 生成器范式
 - `~/Dev/stations/stack/` — 项目说明书范式（含 scan_cc_inventory 模式）
 - `~/Dev/devtools/lib/templates/nginx-static.conf` — Nginx 模板
 

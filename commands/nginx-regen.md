@@ -51,4 +51,4 @@ ssh root@104.218.100.67 'nginx -t && systemctl reload nginx'
 
 ## 背景
 
-前身是 `~/Dev/stations/web-stack/infra/nginx/render.py`，但它硬编码了 reorg 前的 `~/Dev/website/lib/services.ts` 路径（已失效）。2026-04-22 提升到 devtools，修正路径，统一输出到 `tools/configs/nginx/out/`。
+前身是 `~/Dev/stations/web-stack/infra/nginx/render.py`，但它硬编码了 reorg 前的 `~/Dev/stations/website/lib/services.ts` 路径（已失效）。2026-04-22 提升到 devtools，修正路径，统一输出到 `tools/configs/nginx/out/`。

@@ -5,7 +5,7 @@
 ### 脚本位置
 
 ```
-~/Dev/hydro-risk/
+~/Dev/stations/web-stack/services/hydro-risk/
 ```
 
 ### 三套表格
@@ -27,10 +27,10 @@
 
 **运行**：
 ```bash
-python ~/Dev/hydro-risk/1.1_database_protection_area.py
-python ~/Dev/hydro-risk/1.2_database_dike_section.py
-python ~/Dev/hydro-risk/1.3_database_dike.py
-python ~/Dev/hydro-risk/1.4_database_river_centerline.py
+python ~/Dev/stations/web-stack/services/hydro-risk/1.1_database_protection_area.py
+python ~/Dev/stations/web-stack/services/hydro-risk/1.2_database_dike_section.py
+python ~/Dev/stations/web-stack/services/hydro-risk/1.3_database_dike.py
+python ~/Dev/stations/web-stack/services/hydro-risk/1.4_database_river_centerline.py
 ```
 
 ### 套2: 预报调度填充
@@ -56,7 +56,7 @@ python ~/Dev/hydro-risk/1.4_database_river_centerline.py
 **批量运行**：
 ```bash
 for i in 01 02 03 04 05 06 07 08 09; do
-    python ~/Dev/hydro-risk/3.${i}_*.py
+    python ~/Dev/stations/web-stack/services/hydro-risk/3.${i}_*.py
 done
 ```
 
@@ -171,7 +171,7 @@ water_depth	loss
 
 ```bash
 # 进入脚本目录
-cd ~/Dev/hydro-risk/
+cd ~/Dev/stations/web-stack/services/hydro-risk/
 
 # 查看可用脚本
 ls *.py

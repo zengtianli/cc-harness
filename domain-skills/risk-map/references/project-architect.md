@@ -99,9 +99,9 @@ Phase 3: 脚本执行
 脚本已迁移到全局脚本库：
 
 ```
-~/Dev/hydro-qgis/pipeline/    # 12个QGIS核心脚本
-~/Dev/hydro-risk/            # 14个Excel填充脚本
-~/Dev/hydro-risk/lib/        # 共享库
+~/Dev/labs/hydro-qgis/pipeline/    # 12个QGIS核心脚本
+~/Dev/stations/web-stack/services/hydro-risk/            # 14个Excel填充脚本
+~/Dev/stations/web-stack/services/hydro-risk/lib/        # 共享库
 ```
 
 本地保留：

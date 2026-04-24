@@ -24,7 +24,7 @@ python3 ~/Dev/devtools/lib/tools/stack_migrate_hydro.py $ARGUMENTS
 
 1. `cd ~/Dev/<repo> && uv add python-multipart`（上传需要）
 2. `cd ~/Dev/<repo> && uv sync`
-3. 把 `api.py::/api/compute` 的 501 占位替换成真实计算（参考 `~/Dev/hydro-reservoir/api.py::_run_reservoir()`）
+3. 把 `api.py::/api/compute` 的 501 占位替换成真实计算（参考 `~/Dev/stations/web-stack/services/hydro-reservoir/api.py::_run_reservoir()`）
 4. `cd ~/Dev/stations/web-stack && pnpm install`
 5. 本地联调：`cd ~/Dev/<repo> && uv run uvicorn api:app --port <api_port>` + `cd ~/Dev/stations/web-stack && pnpm --filter <repo>-web dev`
 
