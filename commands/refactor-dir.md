@@ -75,14 +75,20 @@ python3 ~/Dev/devtools/lib/tools/paths.py rewrite-dead
 python3 ~/Dev/devtools/lib/tools/paths.py build-const -w
 ```
 
-### Step 7 · scan-dead 验证
+### Step 7 · scan-dead 验证（**硬阻塞**）
 
 ```bash
 python3 ~/Dev/devtools/lib/tools/paths.py scan-dead --strict
 ```
 
-- exit 0 = 零新死链，通过
-- exit 非 0 = 有死链 → 打印详情 + **不自动回滚**（可能是历史债，由用户判断）
+- exit 0 = 零新死链，通过，继续 Step 8
+- **exit 非 0 = 硬阻塞，禁止继续到 Step 8**
+  - **必须打印详情**：逐条列出哪些文件 / 哪几行引用了不存在路径（原样输出 scan-dead stdout）
+  - **必须给出修复建议**：
+    - 若是本次 mv 产生的新死链 → 修这些引用（Edit 原文件），或退到 Step 5 重跑 `rewrite-dead`
+    - 若是历史债（mv 前就存在）→ 要么 Edit 修复，要么把父前缀追加到 `~/Dev/paths.yaml` 的 `allow_missing:` 节（前瞻引用 / 外部目录场景）
+    - 修完后 **重跑 `/refactor-dir <old> <new>`** 走完整流程重新验证，不要单独补跑 Step 7
+  - **不自动回滚 mv**（新死链可能是历史债显露，回滚反而掩盖问题）；但流程就此中止，由用户决策
 
 ### Step 8 · Summary 打印
 

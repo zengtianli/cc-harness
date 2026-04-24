@@ -33,6 +33,18 @@
 
 ### Phase 3: 生成 HANDOFF.md
 
+#### Step 3.0a · Paths 健康体检（提示不阻塞）
+
+生成 HANDOFF 前先扫路径健康度：
+
+```bash
+python3 ~/Dev/devtools/lib/tools/paths.py audit --brief
+```
+
+- 输出单行形如 `paths: 25 registered / 20 dead / 0 drift`
+- **dead > 0 时不阻塞**（handoff 是收尾动作，硬阻塞会把已完成工作卡住），但**必须把这一行原样记入生成的 HANDOFF.md「踩过的坑」或「待完成」节**，提示下个会话先处理路径死链
+- exit 码忽略，只采纳 stdout 内容
+
 #### Step 3.0 · 判主项目（确定落地目录）
 
 本轮改动最集中的 repo 根作为 HANDOFF target dir。启发式：

@@ -86,6 +86,18 @@
 
 对每个需要更新的项，直接执行更新。
 
+### Step 3.5: Paths 健康体检（提示不阻塞）
+
+在更新完 memory / skills / commands 后，跑一次路径健康度扫描：
+
+```bash
+python3 ~/Dev/devtools/lib/tools/paths.py audit --brief
+```
+
+- 输出单行形如 `paths: 25 registered / 20 dead / 0 drift`
+- **dead > 0 时不阻塞 recap**，但记入 Step 4 生成的 retro 文件「未完成项」节，提示下一轮处理
+- exit 码忽略，只采纳 stdout 内容
+
 ### Step 4: 用户侧记录
 
 生成 session retro 文件：
