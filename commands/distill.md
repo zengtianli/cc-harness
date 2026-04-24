@@ -4,7 +4,7 @@ description: 从当前项目提炼可复用知识到全局（commands/踩坑/模
 
 用户提供了参数: $ARGUMENTS
 
-从当前项目中提炼可复用的 commands、踩坑经验、脚本模式、Playbook 骨架，内化到全局配置。**适用任意 ~/Dev/ 或 ~/Work/ 项目**（标书 / 水利 / 站群 / CC 配置本身 / 任意代码仓），不再特化于标书。
+从当前项目中提炼可复用的 commands、踩坑经验、脚本模式、Playbook 骨架，内化到全局配置。**适用任意 ~/Dev/ 或 ~/Dev/Work/ 项目**（标书 / 水利 / 站群 / CC 配置本身 / 任意代码仓），不再特化于标书。
 
 ## 参数
 
@@ -41,7 +41,7 @@ for f in .claude/commands/*.md; do
 done
 ```
 
-同时检查 `~/Work/bids/CLAUDE.md` 的踩坑记录，看本项目 HANDOFF 中是否有新教训。
+同时检查 `~/Dev/Work/bids/CLAUDE.md` 的踩坑记录，看本项目 HANDOFF 中是否有新教训。
 
 ### 3. 生成提炼报告
 
@@ -133,36 +133,36 @@ done
 
 | cwd 前缀 | domain | playbook 文件 |
 |---------|--------|-------------|
-| `~/Work/bids/` | `bids` | `~/Work/_playbooks/bids/` |
-| `~/Work/eco-flow/` | `eco-flow` | `~/Work/_playbooks/eco-flow/` |
-| `~/Work/zdwp/projects/reclaim/` | `reclaim` | `~/Work/_playbooks/reclaim/` |
-| `~/Work/zdwp/projects/*/` | `zdwp-<子项目名>` | `~/Work/_playbooks/zdwp-*/` |
+| `~/Dev/Work/bids/` | `bids` | `~/Dev/Work/_playbooks/bids/` |
+| `~/Dev/Work/eco-flow/` | `eco-flow` | `~/Dev/Work/_playbooks/eco-flow/` |
+| `~/Dev/Work/zdwp/projects/reclaim/` | `reclaim` | `~/Dev/Work/_playbooks/reclaim/` |
+| `~/Dev/Work/zdwp/projects/*/` | `zdwp-<子项目名>` | `~/Dev/Work/_playbooks/zdwp-*/` |
 | `~/Dev/<name>/`（站群相关：configs/menus 改动、navbar、stack 等）| `stations` | `~/Dev/tools/configs/playbooks/stations.md` |
 | `~/Dev/<name>/`（新站上线相关：site-add / ship-site / launch） | `web-scaffold` | `~/Dev/tools/configs/playbooks/web-scaffold.md` |
 | `~/Dev/hydro-*/` | `hydro` | `~/Dev/tools/configs/playbooks/hydro.md` |
 | `~/Dev/tools/cc-configs/` 或 slash 整顿 | `cc-meta` | `~/Dev/tools/configs/playbooks/META.md` §5 新增 |
 | 其他 | 询问用户 | — |
 
-**Dev 项目的 playbook 优先落**：`~/Dev/tools/configs/playbooks/`（与 ~/Work/_playbooks/ 并列，分别对应 "开发" 与 "工作" 两个根）。
+**Dev 项目的 playbook 优先落**：`~/Dev/tools/configs/playbooks/`（与 ~/Dev/Work/_playbooks/ 并列，分别对应 "开发" 与 "工作" 两个根）。
 
 **识别"任务简称"**：优先读 `HANDOFF.md` 的首行 H1 或 `_project.yaml` 的 `name` 字段；找不到则询问用户。
 
 **检查 playbook 是否存在**：
 ```bash
-ls ~/Work/_playbooks/<domain>/ 2>/dev/null | grep "<项目名>-<任务简称>"
+ls ~/Dev/Work/_playbooks/<domain>/ 2>/dev/null | grep "<项目名>-<任务简称>"
 ```
 
 **分支 A：首次 distill（无 playbook）**
 
-1. 创建 `~/Work/_playbooks/<domain>/<项目名>-<任务简称>-<YYYY-MM-DD>.md`
-2. 按 `~/Work/_playbooks/README.md` 模板填：
+1. 创建 `~/Dev/Work/_playbooks/<domain>/<项目名>-<任务简称>-<YYYY-MM-DD>.md`
+2. 按 `~/Dev/Work/_playbooks/README.md` 模板填：
    - **时间轴**：从本次会话的 user/assistant 消息中提取关键节点（触发→关键决策→完成），写成 `T+Nh` 格式
    - **CC 命令 / Skills**：从 tool_use 记录中抽本次用过的 slash commands + skill（不含 Bash/Read 等底层工具）
    - **脚本清单**：扫 `scripts/` 新增的 `.py`，每个标可复用度（高/中/低）+ 一句话做啥
    - **踩坑**：抽 HANDOFF.md "踩过的坑" 节 + 本次会话中的 `⚠️` / `修正` / `错误` 关键字附近内容
    - **下次复用建议**：总结"如果再遇到同类任务，按这个节奏走"
    - **可抽 skill 候选**：识别本次产出的流程骨架是否稳定到可独立封装
-3. 在 `~/Work/_playbooks/INDEX.md` 对应领域表格加一行
+3. 在 `~/Dev/Work/_playbooks/INDEX.md` 对应领域表格加一行
 
 **分支 B：已有 playbook（追加）**
 
@@ -176,8 +176,8 @@ ls ~/Work/_playbooks/<domain>/ 2>/dev/null | grep "<项目名>-<任务简称>"
 
 ### 7. 验证 Playbook 归档
 
-- `test -f ~/Work/_playbooks/<domain>/<file>.md` 确认生成
-- `grep "<项目名>" ~/Work/_playbooks/INDEX.md` 确认索引注册
+- `test -f ~/Dev/Work/_playbooks/<domain>/<file>.md` 确认生成
+- `grep "<项目名>" ~/Dev/Work/_playbooks/INDEX.md` 确认索引注册
 - 输出 playbook 路径让用户一键打开
 
 ## 关键约束
@@ -186,4 +186,4 @@ ls ~/Work/_playbooks/<domain>/ 2>/dev/null | grep "<项目名>-<任务简称>"
 2. **不覆盖已有全局 command**——如果全局已有同名且内容不同，列出 diff 让用户决定
 3. **踩坑不重复**：先检查 bids/CLAUDE.md 是否已有相同教训
 4. **变更前向用户确认**
-5. **Playbook 写入时保持"时间轴+命令清单"简洁颗粒度**——参考 `~/Work/_playbooks/README.md`，不堆八股
+5. **Playbook 写入时保持"时间轴+命令清单"简洁颗粒度**——参考 `~/Dev/Work/_playbooks/README.md`，不堆八股

@@ -20,8 +20,8 @@
 - docx 解包残留：包含 `word/`、`_rels/`、`[Content_Types].xml` 的目录
 - 版本冗余：`deliverables/`、`docs/` 下同一文档的多个版本
 
-### 3. ~/Work/ 目录额外检查
-- 如果在 `~/Work/zdwp/` 下，额外运行 `python3 ~/Dev/devtools/scripts/tools/zdwp_health.py`
+### 3. ~/Dev/Work/ 目录额外检查
+- 如果在 `~/Dev/Work/zdwp/` 下，额外运行 `python3 ~/Dev/devtools/scripts/tools/zdwp_health.py`
 - 大目录（>1GB）提醒
 
 ## 输出

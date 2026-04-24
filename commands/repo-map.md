@@ -5,7 +5,7 @@ Manage the GitHub ↔ local path bidirectional mapping.
 Single source of truth: `~/Dev/tools/configs/repo-map.json`
 
 Fields per repo:
-- `local` — local path (~/Dev/xxx or ~/Work/xxx)
+- `local` — local path (~/Dev/xxx or ~/Dev/Work/xxx)
 - `github` — GitHub owner/repo
 - `vps` — VPS deploy path (null if not deployed)
 - `category` — hydro/tools/infra/knowledge/personal/work
@@ -23,7 +23,7 @@ Fields per repo:
 Based on $ARGUMENTS:
 
 ### `scan` (default if no args)
-1. Scan `~/Dev/*/`, `~/Work/*/`, `~/Documents/sync` for `.git` folders
+1. Scan `~/Dev/*/`, `~/Dev/Work/*/`, `~/Documents/sync` for `.git` folders
 2. For each, read `git remote get-url origin` to get the GitHub repo
 3. Compare against `repo-map.json`:
    - ✓ Matched
@@ -45,8 +45,8 @@ hydro (12)  ★=auto_push
   hydro-rainfall    ~/Dev/stations/web-stack/services/hydro-rainfall    zengtianli/hydro-rainfall    /opt/hydro/hydro-rainfall
   ...
 work (2)
-★ zdwp              ~/Work/zdwp             zengtianli/zdwp              /var/www/zdwp
-★ reports           ~/Work/reports          zengtianli/reports           /var/www/reports
+★ zdwp              ~/Dev/Work/zdwp             zengtianli/zdwp              /var/www/zdwp
+★ reports           ~/Dev/Work/reports          zengtianli/reports           /var/www/reports
 ```
 
 ### `check`

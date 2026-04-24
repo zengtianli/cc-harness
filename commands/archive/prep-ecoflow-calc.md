@@ -8,9 +8,9 @@ description: 生态流量计算（Tennant法+QP法，Python替代CurveFitting）
 
 ## 工具位置
 
-- 计算脚本：`/opt/homebrew/bin/python3 ~/Work/eco-flow/code/脚本/core/eco_flow_calc.py`
-- 逐日流量数据：`~/Work/eco-flow/data/小型水库流量_水文to水资源.xlsx`（47个水库，1962-2023）
-- 已有计算结果（验证用）：`~/Work/eco-flow/data/生态流量核定.xlsx`
+- 计算脚本：`/opt/homebrew/bin/python3 ~/Dev/Work/eco-flow/code/脚本/core/eco_flow_calc.py`
+- 逐日流量数据：`~/Dev/Work/eco-flow/data/小型水库流量_水文to水资源.xlsx`（47个水库，1962-2023）
+- 已有计算结果（验证用）：`~/Dev/Work/eco-flow/data/生态流量核定.xlsx`
 
 ## 流程
 
@@ -18,10 +18,10 @@ description: 生态流量计算（Tennant法+QP法，Python替代CurveFitting）
 
 从 `$ARGUMENTS` 解析目标县市名（如 "景宁"）。
 
-读取 `~/Work/eco-flow/sync_config.yaml` 获取县市配置。
+读取 `~/Dev/Work/eco-flow/sync_config.yaml` 获取县市配置。
 
 确定目录：
-- 目标县市目录：`~/Work/eco-flow/{city拼音}-{county}/`
+- 目标县市目录：`~/Dev/Work/eco-flow/{city拼音}-{county}/`
 - 合并数据文件：`{县市目录}/data/合并数据/水库基本情况和生态流量状况_*.xlsx`
 - 输出目录：`{县市目录}/data/计算结果/`
 
@@ -42,12 +42,12 @@ description: 生态流量计算（Tennant法+QP法，Python替代CurveFitting）
 ### 4. 执行计算
 
 ```bash
-/opt/homebrew/bin/python3 ~/Work/eco-flow/code/脚本/core/eco_flow_calc.py \
-  --flow-data ~/Work/eco-flow/data/小型水库流量_水文to水资源.xlsx \
+/opt/homebrew/bin/python3 ~/Dev/Work/eco-flow/code/脚本/core/eco_flow_calc.py \
+  --flow-data ~/Dev/Work/eco-flow/data/小型水库流量_水文to水资源.xlsx \
   --county <县名> \
   --merge-file "<合并数据文件>" \
   -o "<输出目录>" \
-  --verify ~/Work/eco-flow/data/生态流量核定.xlsx
+  --verify ~/Dev/Work/eco-flow/data/生态流量核定.xlsx
 ```
 
 可选参数：

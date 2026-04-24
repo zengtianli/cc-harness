@@ -11,7 +11,7 @@ description: 为大型项目生成二进制文件地图（_files.md），推到 
 ### 1. 解析参数
 
 从 `$ARGUMENTS` 解析：
-- **目标路径**（必填）：项目根目录，如 `~/Work/zdwp`、`~/Work/reports`
+- **目标路径**（必填）：项目根目录，如 `~/Dev/Work/zdwp`、`~/Dev/Work/reports`
 - **--depth N**（可选，默认 3）：扫描深度
 - **--dry-run**（可选）：只生成不提交
 

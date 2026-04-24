@@ -96,7 +96,7 @@ Commands are slash commands invoked as `/command-name [args]` in Claude Code. Ea
 | `/recap` | `/recap` | End-of-session retrospective: review conversation, extract lessons, update memory. |
 | `/handoff` | `/handoff` | Session wrap-up: recap + config upgrade + handoff file generation in one step. |
 | `/context` | `/context monitor`, `/context health` | Monitor session health — token usage, tool call distribution, context bloat detection. |
-| `/tidy` | `/tidy`, `/tidy ~/Work/docs` | Deep-clean a directory: find garbage files, version chains, misplaced files. |
+| `/tidy` | `/tidy`, `/tidy ~/Dev/Work/docs` | Deep-clean a directory: find garbage files, version chains, misplaced files. |
 | `/health` | `/health` | File hygiene + git status check. Can invoke `/tidy` for cleanup. |
 | `/cmd-stats` | `/cmd-stats`, `/cmd-stats --days 7` | Show slash command usage frequency from session transcripts. |
 
@@ -126,10 +126,10 @@ Skills are auto-triggered context injections. Claude Code loads skill knowledge 
 
 | Skill | Bound project | Knowledge provided |
 |-------|--------------|-------------------|
-| **risk-map** | ~/Work/risk-map | Flood risk map data processing, QGIS spatial workflows, Excel template filling |
-| **eco-flow** | ~/Work/eco-flow | Ecological flow calculation (Tennant method), reservoir screening, guarantee plans |
-| **zdys** | ~/Work/zdys | Zhedong diversion operational status, dispatch models, irrigation demand calculation |
-| **water-src** | ~/Work/water-src | Drinking water source safety assessment methodology |
+| **risk-map** | ~/Dev/Work/risk-map | Flood risk map data processing, QGIS spatial workflows, Excel template filling |
+| **eco-flow** | ~/Dev/Work/eco-flow | Ecological flow calculation (Tennant method), reservoir screening, guarantee plans |
+| **zdys** | ~/Dev/Work/zdys | Zhedong diversion operational status, dispatch models, irrigation demand calculation |
+| **water-src** | ~/Dev/Work/water-src | Drinking water source safety assessment methodology |
 | **water-quality** | (standalone) | Qiandao Lake diversion classified water supply management |
 | **resources** | risk-map, eco-flow, zdys, water-src | Shared resource catalog: reservoir DB, GIS basemaps, admin boundaries, water resource yearbooks |
 

@@ -160,7 +160,7 @@ rsync `--delete` 把刚 mkdir 的 data 目录吞掉。
 以下任一满足即加载本 skill：
 - 用户说"工程学 / 精准高效 / 按这个模式"
 - 对话涉及 3+ 个系统（local + VPS + CF / GitHub / Gmail）
-- 当前 CWD 在 `~/Dev` 或 `~/Work` 下的项目
+- 当前 CWD 在 `~/Dev` 或 `~/Dev/Work` 下的项目
 - 单轮对话超过 20 次工具调用
 - 正在跑破坏性操作且未写方案
 

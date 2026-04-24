@@ -1,5 +1,5 @@
 # 关键词到目录的映射
-# zdwp 内项目用 projects/ 前缀，独立项目用 ~/Work/ 前缀
+# zdwp 内项目用 projects/ 前缀，独立项目用 ~/Dev/Work/ 前缀
 
 # ── zdwp 内项目 ──
 
@@ -43,28 +43,28 @@
   keywords: [钱塘江, 取用水监测, 计量能力]
   target: projects/qiantang-monitoring
 
-# ── 独立项目（~/Work/ 下） ──
+# ── 独立项目（~/Dev/Work/ 下） ──
 
 生态流量:
   keywords: [生态流量, 生态基流, 最小流量, 生态需水]
-  target: ~/Work/eco-flow
+  target: ~/Dev/Work/eco-flow
 
 风险图:
   keywords: [风险图, 洪水, 淹没, 洪水风险]
-  target: ~/Work/risk-map
+  target: ~/Dev/Work/risk-map
 
 浙东引水:
   keywords: [浙东, 引水, 水网]
-  target: ~/Work/zdys
+  target: ~/Dev/Work/zdys
 
 水源地:
   keywords: [水源地, 饮用水, 水源保护, 安全保障]
-  target: ~/Work/water-src
+  target: ~/Dev/Work/water-src
 
 岸线规划:
   keywords: [岸线, 河湖保护, 岸线规划]
-  target: ~/Work/shoreline
+  target: ~/Dev/Work/shoreline
 
 建模竞赛:
   keywords: [建模, 竞赛, 数学建模]
-  target: ~/Work/modeling
+  target: ~/Dev/Work/modeling

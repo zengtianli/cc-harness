@@ -11,23 +11,26 @@ global_skills:
 
 projects:
   risk-map:
-    path: ~/Work/risk-map
+    path: ~/Dev/Work/risk-map
     skills: [risk-map, resources, plan-first, structure]
   eco-flow:
-    path: ~/Work/eco-flow
+    path: ~/Dev/Work/eco-flow
     skills: [eco-flow, resources, plan-first, structure]
   zdys:
-    path: ~/Work/zdys
+    path: ~/Dev/Work/zdys
     skills: [zdys, resources, plan-first, structure]
   water-src:
-    path: ~/Work/water-src
+    path: ~/Dev/Work/water-src
     skills: [water-src, resources, plan-first, structure]
   capacity:
-    path: ~/Work/capacity
+    path: ~/Dev/Work/capacity
     skills: [capacity, resources, plan-first]
   bids:
-    path: ~/Work/bids
+    path: ~/Dev/Work/bids
     skills: [bid, resources, plan-first]
+  reclaim:
+    path: ~/Dev/Work/zdwp/projects/reclaim
+    skills: [capacity, resources, plan-first, structure]
   international-assets:
     path: ~/Dev/content/investment
     skills: [cc-dashboard]
@@ -35,6 +38,10 @@ projects:
     path: ~/zls
     skills: []
     notes: 人大常委会报告写作工作区，skills 在项目 .claude/skills/ 下自管
+  water-budget:
+    path: ~/Dev/Work/04 水预算单位名录整理
+    skills: []
+    notes: 浙江省水预算名录回填，skills 在项目 .claude/skills/ 下自管
 
 standalone:
   - water-quality
