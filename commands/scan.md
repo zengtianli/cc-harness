@@ -15,7 +15,7 @@ $ARGUMENTS 可选：
 ## 依赖
 
 - `~/Dev/devtools/scripts/tools/cc_sessions.py` — 会话读取
-- `~/Dev/devtools/lib/tools/llm_client.py` — LLM 分析
+- `~/Dev/devtools/scripts/tools/llm_client.py` — LLM 分析
 - 环境变量在 `~/.personal_env`，不问用户要
 
 ## 输出示例

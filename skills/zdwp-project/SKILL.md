@@ -74,9 +74,9 @@ python ~/Dev/stations/web-stack/services/hydro-geocode/src/geocode_by_address.py
 
 | zdwp 路径 | 指向 |
 |-----------|------|
-| `projects/risk-map/code` | `~/Dev/hydro-risk` |
-| `projects/risk-map/qgis` | `~/Dev/hydro-qgis` |
-| `projects/zhedong-diversion/irrigation` | `~/Dev/hydro-irrigation` |
+| `projects/risk-map/code` | `~/Dev/stations/web-stack/services/hydro-risk` |
+| `projects/risk-map/qgis` | `~/Dev/labs/hydro-qgis` |
+| `projects/zhedong-diversion/irrigation` | `~/Dev/stations/web-stack/services/hydro-irrigation` |
 
 在 zdwp 下开 CC，可同时看到数据和代码。Git 管理在 `~/Dev/` 侧进行。
 

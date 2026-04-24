@@ -2,20 +2,26 @@
 
 When the user wants to manage, audit, screenshot, or promote GitHub repositories under ~/Dev.
 
-## Available Tools
+## Unified Tool: `repo_manager.py`
 
-### 1. repo_audit.py — 项目合规性审计
+All three workflows consolidated into `~/Dev/devtools/repo_manager.py` with subcommands `audit` / `screenshot` / `promote`.
+
+```bash
+alias rm='python3 ~/Dev/devtools/repo_manager.py'
+```
+
+### 1. audit — 项目合规性审计
 Checks README structure, badges, screenshots, gitignore, dependency pinning against DocKit gold standard template.
 
 ```bash
 # Audit all projects
-python3 ~/Dev/tools/scripts/repo_audit.py
+python3 ~/Dev/devtools/repo_manager.py audit
 
 # Audit specific projects
-python3 ~/Dev/tools/scripts/repo_audit.py cc-configs dockit
+python3 ~/Dev/devtools/repo_manager.py audit cc-configs dockit
 
 # Audit + auto-fix gitignore gaps
-python3 ~/Dev/tools/scripts/repo_audit.py --fix-gitignore
+python3 ~/Dev/devtools/repo_manager.py audit --fix-gitignore
 ```
 
 **Checks performed:**
@@ -23,40 +29,40 @@ python3 ~/Dev/tools/scripts/repo_audit.py --fix-gitignore
 - .gitignore: baseline entries (__pycache__, .env, venv, IDE, build artifacts, lint cache)
 - requirements.txt: all dependencies must be version-pinned (>=X.Y.Z)
 
-### 2. repo_screenshot.py — 统一截图工具
-Supports both Streamlit apps (Playwright URL screenshots) and CLI tools (terminal output rendering).
+### 2. screenshot — 统一截图工具
+Supports Streamlit apps (Playwright URL screenshots), CLI tools (terminal output rendering), and Tauri apps.
 
 ```bash
 # Screenshot a Streamlit app
-python3 ~/Dev/tools/scripts/repo_screenshot.py streamlit hydro-rainfall https://hydro-rainfall.tianlizeng.cloud
+python3 ~/Dev/devtools/repo_manager.py screenshot streamlit hydro-rainfall https://hydro-rainfall.tianlizeng.cloud
 
 # Screenshot a CLI tool
-python3 ~/Dev/tools/scripts/repo_screenshot.py cli cc-configs "python3 tools/harness/harness.py ~/Dev/stations/dockit"
+python3 ~/Dev/devtools/repo_manager.py screenshot cli cc-configs "python3 tools/harness/harness.py ~/Dev/stations/dockit"
+
+# Screenshot a Tauri desktop app
+python3 ~/Dev/devtools/repo_manager.py screenshot tauri <repo>
 
 # Batch all Streamlit apps
-python3 ~/Dev/tools/scripts/repo_screenshot.py batch
+python3 ~/Dev/devtools/repo_manager.py screenshot batch
 
 # Batch all (including CLI)
-python3 ~/Dev/tools/scripts/repo_screenshot.py batch --include-cli
+python3 ~/Dev/devtools/repo_manager.py screenshot batch --include-cli
 ```
 
 **Output:** `docs/screenshots/demo.png` (1280x800) in each project directory.
 
-### 3. promote_repos.py — 批量推广
+### 3. promote — 批量推广
 Generates bilingual READMEs, SVG demo previews, badges, and pushes to GitHub.
 
 ```bash
 # Promote all registered repos
-python3 ~/Dev/tools/scripts/promote_repos.py
+python3 ~/Dev/devtools/repo_manager.py promote
 
 # Promote specific repos
-python3 ~/Dev/tools/scripts/promote_repos.py hydro-rainfall dockit
+python3 ~/Dev/devtools/repo_manager.py promote hydro-rainfall dockit
 ```
 
 **Note:** This tool generates from templates, overwriting existing READMEs. Use for initial setup only.
-
-### 4. screenshot_repos.py — 旧版 Streamlit 截图（已被 repo_screenshot.py 替代）
-Legacy tool, only supports Streamlit apps. Use repo_screenshot.py instead.
 
 ---
 
@@ -65,26 +71,24 @@ Legacy tool, only supports Streamlit apps. Use repo_screenshot.py instead.
 When creating a new project under ~/Dev:
 
 1. **README** — Follow DocKit template:
-   - Language selector: `**English** | [中文](README_CN.md)` 
+   - Language selector: `**English** | [中文](README_CN.md)`
    - Badges: License + Python version, `for-the-badge` style, colors: License=green, Python=yellow, Demo=blue
    - Separator `---` after badges and after screenshot
    - Feature table, Install, Quick Start sections
    - README_CN.md as full Chinese mirror
 
-2. **Screenshot** — Generate with repo_screenshot.py:
-   - Streamlit: `repo_screenshot.py streamlit <name> <url>`
-   - CLI: `repo_screenshot.py cli <name> "<command>"`
+2. **Screenshot** — `python3 ~/Dev/devtools/repo_manager.py screenshot {streamlit|cli|tauri} <name> [...]`
 
-3. **.gitignore** — Run `repo_audit.py --fix-gitignore <name>` to ensure baseline coverage
+3. **.gitignore** — `python3 ~/Dev/devtools/repo_manager.py audit --fix-gitignore <name>`
 
 4. **Dependencies** — Pin all versions: `package>=X.Y.Z`
 
-5. **Verify** — Run `repo_audit.py <name>` to confirm compliance
+5. **Verify** — `python3 ~/Dev/devtools/repo_manager.py audit <name>`
 
 ## SOP: Periodic Audit
 
 ```bash
-python3 ~/Dev/tools/scripts/repo_audit.py
+python3 ~/Dev/devtools/repo_manager.py audit
 ```
 
 Fix any issues found, then re-run to confirm clean.
@@ -95,7 +99,7 @@ The definitive example is **dockit** (`~/Dev/stations/dockit/README.md`).
 
 Badge colors:
 - Live Demo: `blue`
-- License: `green`  
+- License: `green`
 - Python version: `yellow`
 
 All badges use `style=for-the-badge`.

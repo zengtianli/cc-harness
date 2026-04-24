@@ -27,7 +27,7 @@ description: 为大型项目生成二进制文件地图（_files.md），推到 
 使用现有脚本生成 `_files.md`：
 
 ```bash
-python3 ~/Dev/scripts-archive/scripts/file/scan_binary_manifest.py \
+python3 ~/Dev/_archive/scripts-archive/scripts/file/scan_binary_manifest.py \
   --target <目标路径> \
   --depth <深度> \
   --clean
@@ -79,5 +79,5 @@ python3 ~/Dev/scripts-archive/scripts/file/scan_binary_manifest.py \
 
 - `_files.md` 已在 zdwp 的 `.gitignore` 白名单中
 - `_PROJECT_MAP.md` 需确认也在白名单中，否则加入
-- 脚本路径：`~/Dev/scripts-archive/scripts/file/scan_binary_manifest.py`
+- 脚本路径：`~/Dev/_archive/scripts-archive/scripts/file/scan_binary_manifest.py`
 - 只扫描二进制文件（docx/pdf/xlsx/shp/zip/tif 等），文本文件本身已被 git 跟踪
