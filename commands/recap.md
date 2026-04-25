@@ -102,7 +102,7 @@ python3 ~/Dev/devtools/lib/tools/paths.py audit --brief
 
 生成 session retro 文件：
 
-**路径**：`~/Dev/stations/docs/knowledge/session-retro-{YYYYMMDD}.md`
+**路径**：`~/Dev/stations/docs-renamed-test/knowledge/session-retro-{YYYYMMDD}.md`
 - 如果同一天有多个 session，追加后缀：`session-retro-{YYYYMMDD}-2.md`
 
 **格式**（参考已有的 session-retro-20260323.md）：
@@ -176,7 +176,7 @@ python3 ~/Dev/devtools/lib/tools/paths.py audit --brief
 追踪：更新 {N} 个 skill/command 使用记录
 待办：{N} 项未完成
 
-文件：~/Dev/stations/docs/knowledge/session-retro-{date}.md
+文件：~/Dev/stations/docs-renamed-test/knowledge/session-retro-{date}.md
 ```
 
 ## 规则

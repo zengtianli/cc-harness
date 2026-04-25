@@ -56,7 +56,7 @@ done
 
 ### 3.5 Slash 生态审计（全局）
 
-扫描 `~/Dev/tools/cc-configs/commands/*.md` 所有 description 行，按 **4 类问题**产出 `~/Dev/stations/docs/knowledge/slash-audit-{YYYYMMDD}.md`：
+扫描 `~/Dev/tools/cc-configs/commands/*.md` 所有 description 行，按 **4 类问题**产出 `~/Dev/stations/docs-renamed-test/knowledge/slash-audit-{YYYYMMDD}.md`：
 
 | 问题类型 | 识别规则 | 举例 | 建议 |
 |---------|---------|------|------|
