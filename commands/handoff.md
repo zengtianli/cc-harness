@@ -65,7 +65,7 @@ python3 ~/Dev/devtools/lib/tools/paths.py audit --brief
 ##### 文件名约定
 
 - 单轮：`HANDOFF.md`
-- 多轮：`HANDOFF-<topic>-v0.N-YYYY-MM-DD.md`（topic 用 kebab-case，参考 `~/Dev/HANDOFF-paths-v1.1-stations-cleanup-20260425.md`）
+- 多轮：`HANDOFF-<topic>-v0.N-YYYY-MM-DD.md`（topic 用 kebab-case，如 `HANDOFF-<topic>-v1.0-<date>.md`）
 
 ##### 多轮 HANDOFF 必含节（在 Step 3.1 默认模板基础上追加）
 
