@@ -1,5 +1,5 @@
 ---
-description: 搬目录 + 零死链的原子工作流。加 paths.yaml migration → mv → rewrite-dead → build-const → scan-dead 验证。
+description: 搬目录 + 零死链的原子工作流。migration → mv → rewrite-dead → build-const → rewrite-allow-missing → rebuild-symlinks → scan-dead/symlinks 验证（文本 + symlink + allow_missing 三盲区收口）。
 argument-hint: <old> <new> [--dry] [--no-rewrite] [--reason "<text>"]
 ---
 
@@ -75,6 +75,37 @@ python3 ~/Dev/devtools/lib/tools/paths.py rewrite-dead
 python3 ~/Dev/devtools/lib/tools/paths.py build-const -w
 ```
 
+### Step 6.5 · rewrite-allow-missing（paths.yaml 自身的 allow_missing 段跟随 migrations）
+
+```bash
+python3 ~/Dev/devtools/lib/tools/paths.py rewrite-allow-missing --apply
+```
+
+- 把 `allow_missing:` 段里命中本次 migration 的 path 前缀整体平移到新路径（仅改 path 行，注释/缩进/顺序不动）
+- 这一步避免老前缀失效后原本被挡的"隐性死链"显形
+- 失败：恢复 paths.yaml 备份（Step 3 改动可手动撤），同 Step 5 失败处理
+
+### Step 6.6 · rebuild-symlinks（重指 migration-hit dangling symlinks）
+
+```bash
+python3 ~/Dev/devtools/lib/tools/paths.py rebuild-symlinks --apply --backup
+```
+
+- 扫所有 ~/Dev 内 symlink，对 `target` 命中本次 migration 但已 dangling 的，按新 target 重建
+- `--backup` 把 `<link>\t<old_target>\t<new_target>` 写进 `~/Dev/_archive/symlink-rewrites/<ts>.tsv`，方便回滚
+- 失败回滚：用 backup tsv 反向重建：`while IFS=$'\t' read l o n; do ln -sfn "$o" "$l"; done < ~/Dev/_archive/symlink-rewrites/<ts>.tsv`
+
+### Step 6.7 · scan-symlinks 验证（**硬阻塞**）
+
+```bash
+python3 ~/Dev/devtools/lib/tools/paths.py scan-symlinks --strict
+```
+
+- exit 0 = 0 个 migration-hit dangling，通过，继续 Step 7
+- exit 1 = 还有 migration-hit 没修，**禁止继续**
+  - 一般是 Step 6.6 的 --apply 部分失败 → 重跑 6.6
+  - orphan / allow_missing dangling 不阻塞（历史债，pre-existing）
+
 ### Step 7 · scan-dead 验证（**硬阻塞**）
 
 ```bash
@@ -110,15 +141,19 @@ python3 ~/Dev/devtools/lib/tools/paths.py scan-dead --strict
 | Step 3 Edit paths.yaml | 工具会原子报错；无 mv 发生 |
 | Step 4 mv 失败 | 用 Edit 工具删回 Step 3 加的 migration 条目 |
 | Step 5 rewrite-dead 失败 | `mv <new> <old>` 反向 + 删 migration 条目 |
+| Step 6.5 rewrite-allow-missing 失败 | git 撤 paths.yaml 改动 + 同 Step 5 失败处理 |
+| Step 6.6 rebuild-symlinks 失败 | 用 `~/Dev/_archive/symlink-rewrites/<ts>.tsv` 反向重建 + 同 Step 5 |
+| Step 6.7 scan-symlinks 仍 dangling | 重跑 6.6；若仍失败查 backup tsv 手动恢复 |
 | Step 7 scan-dead 发现新死链 | **不回滚** — 打印详情让用户判断（新死链可能是先前的历史债显露） |
 
 ## 不做
 
 - 不动 GitHub remote（归档独立 repo 时保留原 origin）
 - 不自动 commit（让用户 diff 后决定）
-- 不动 symlink / systemd / nginx / CF（这些不耦合 ~/Dev 源码路径）
+- 不动 systemd / nginx / CF（这些不耦合 ~/Dev 源码路径）
 - 不递归重命名 `<old>` 的子目录（`<old>` 必须是要搬的叶子 target）
 - 不合并目录（`<new>` 必须不存在）
+- 不修 orphan symlink（target 不在 migrations 里的 dangling，可能指向外部已删目录，由用户决策）
 
 ## 依赖
 
