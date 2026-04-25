@@ -32,7 +32,7 @@ argument-hint: <old> <new> [--dry] [--no-rewrite] [--reason "<text>"]
 - `~/Dev/tools/cc-configs/`
 - `~/Dev/tools/configs/`
 - `~/Dev/devtools/`
-- `~/Dev/stations/docs-renamed-test/`
+- `~/Dev/stations/docs/`
 - `~/Dev/CLAUDE.md` / `~/Dev/HANDOFF.md` / `~/Dev/paths.yaml`
 
 汇总命中数作为 Step 5 rewrite-dead 影响面预估。

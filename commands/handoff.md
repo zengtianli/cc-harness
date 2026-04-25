@@ -18,7 +18,7 @@
 1. 回顾对话，提取主题、进程、成果、踩坑
 2. 分析做对/做错/工程模式/沟通
 3. 更新 CC 侧记录（Memory、Skills、Commands、CLAUDE.md）
-4. 生成 session-retro 文件到 `~/Dev/stations/docs-renamed-test/knowledge/session-retro-{YYYYMMDD}.md`
+4. 生成 session-retro 文件到 `~/Dev/stations/docs/knowledge/session-retro-{YYYYMMDD}.md`
 
 ### Phase 2: 配置升级检查（/harness）
 
@@ -134,7 +134,7 @@ python3 ~/Dev/devtools/lib/tools/paths.py audit --brief
 ```
 --- Handoff 完成 ---
 
-复盘：~/Dev/stations/docs-renamed-test/knowledge/session-retro-{date}.md
+复盘：~/Dev/stations/docs/knowledge/session-retro-{date}.md
 记忆：更新 {N} 条 / 新增 {N} 条
 配置：{更新了什么 / 无需更新}
 交接：{HANDOFF.md 的绝对路径}
@@ -153,4 +153,4 @@ python3 ~/Dev/devtools/lib/tools/paths.py audit --brief
 - `quick` 模式下跳过 Phase 1 和 Phase 2，直接执行 Phase 3 和 Phase 4
 - 如果当前目录已有 HANDOFF.md，直接覆盖（旧的已经过时）
 - **HANDOFF 落地规则**：越靠近具体改动 repo 越好。单 station 改动 → `~/Dev/stations/<name>/HANDOFF.md`；跨站群/纯 ~/Dev 结构变更才落 `~/Dev/HANDOFF.md`。不做 symlink — 让 HANDOFF 就待在它归属的项目里
-- **旧 HANDOFF 归档**：若 target dir 已有过时的 HANDOFF（话题已换）且有保留价值，先 `mv HANDOFF.md ~/Dev/stations/docs-renamed-test/handoffs/{YYYYMMDD}-{topic}.md` 归档再覆盖
+- **旧 HANDOFF 归档**：若 target dir 已有过时的 HANDOFF（话题已换）且有保留价值，先 `mv HANDOFF.md ~/Dev/stations/docs/handoffs/{YYYYMMDD}-{topic}.md` 归档再覆盖
