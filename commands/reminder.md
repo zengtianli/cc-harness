@@ -4,7 +4,7 @@ Parse the user's request in $ARGUMENTS to extract reminder title, datetime, and 
 
 Run the script for each reminder:
 ```
-bash ~/Dev/tools/mactools/scripts/system/create_reminder.sh "<title>" "<YYYY-MM-DD HH:MM>" "<list>"
+bash ~/Dev/tools/mactools/raycast/commands/create_reminder.sh "<title>" "<YYYY-MM-DD HH:MM>" "<list>"
 ```
 
 Rules:
