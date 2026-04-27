@@ -1,3 +1,9 @@
+# ssot-banner v1
+# edits:       手写唯一手改点（CC skill/command/agent 项目分发注册表）
+# consumers:   ~/Dev/tools/cc-configs/tools/harness/harness.py (audit / sync 到 ~/Dev/Work + ~/Dev/* 项目)
+# regenerator: N/A — 手写
+# audit:       python3 ~/Dev/tools/cc-configs/tools/harness/harness.py audit <project>
+#
 # Harness: CC skill/command/agent 分发注册表
 # source of truth 在 cc-configs repo
 
