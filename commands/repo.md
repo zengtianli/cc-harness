@@ -26,9 +26,10 @@ SSOT：`~/Dev/tools/configs/repo-map.json`
 
 **Consumers**（嵌入此映射的文件）：
 1. `~/Dev/devtools/scripts/tools/git_smart_push.py` — 运行时读 JSON，过滤 `auto_push: true`
-2. `~/Dev/tools/vps/github_webhook_receiver.py` — `REPO_PATHS` dict（vps != null 的 repo）。`sync` 更新
-3. `~/Dev/CLAUDE.md` — repo map table 节。`sync` 更新
-4. `/repo ship` — `all` 模式读 `repo-map.json` 解析路径
+2. `~/Dev/CLAUDE.md` — repo map table 节。`sync` 更新
+3. `/repo ship` — `all` 模式读 `repo-map.json` 解析路径
+
+> webhook 自动部署链路已下线（commit 9d8dfb8，2026-04-28）；归档说明见 `stations/docs/knowledge/架构设计/webhook-deployment.md`。
 
 ### 子命令
 
@@ -43,8 +44,7 @@ SSOT：`~/Dev/tools/configs/repo-map.json`
 
 #### `sync`
 1. 读 `repo-map.json`
-2. 重生 consumer #2 #3 嵌入映射：
-   - `webhook_receiver.py` REPO_PATHS — 仅 vps != null
+2. 重生 consumer #2 嵌入映射：
    - `CLAUDE.md` repo map 节 — 全部按 category 分组
 3. 显示 diff，apply，报告
 
