@@ -335,7 +335,8 @@ gh repo view zengtianli/<name> --json description,repositoryTopics,homepageUrl
 #### User-review fixes（逐个确认）
 
 4. **CLAUDE.md generation**
-   读 repo 代码生成：标题 + 一行描述 / Quick Reference 表（关键文件、URL、deploy 路径）/ 常用命令（dev/test/build/deploy）/ 项目结构（tree -L 2）。中文（匹配现有约定）。
+   先用 auggie 拿"项目脑图"：`mcp__auggie__codebase-retrieval(workspace=<repo>, request="项目核心模块、入口、关键数据流、对外接口")`，再读关键文件细化。
+   生成：标题 + 一行描述 / Quick Reference 表（关键文件、URL、deploy 路径）/ 常用命令（dev/test/build/deploy）/ 项目结构（tree -L 2）。中文（匹配现有约定）。
 
 5. **README.md generation/repair**
    - 缺：从 category `readme_template` 生成

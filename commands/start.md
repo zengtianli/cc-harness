@@ -83,6 +83,17 @@ Gaps（按 established 阶段预期）：
 - 推荐 hooks（streamlit 项目可加端口冲突检查）
 ```
 
+**陌生项目深探（可选 · auggie 优先）**：判定为 `growing`/`established`/`mature` 且 CC 对此项目陌生（无 cwd 历史 / 上轮 HANDOFF 缺 / Phase 3 要生成 CLAUDE.md）→ 用 auggie 拿一份"项目脑图"，避免后续问"X 在哪 / 数据怎么走"再单独召回。
+
+```
+mcp__auggie__codebase-retrieval(
+  workspace=<project root>,
+  request="项目核心模块、入口、主要数据流、对外接口"
+)
+```
+
+跳过条件：`seed` 阶段 / 项目在 `~/Dev/tools/configs/auggie-workspaces.yaml` 标 `indexable: false`（数据型 / archive） / 用户已说"快速看一眼"。
+
 `--check` 到此停。
 
 ---

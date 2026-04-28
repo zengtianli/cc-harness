@@ -195,7 +195,8 @@ CC 解析 `failures`，**每轮只修第一条**，重新跑脚本，直到 `pas
 ```
 loop:
   1. 读当前 failures[0]
-  2. 分析根因，实施最小修复
+  2. 分析根因（不熟代码先调 mcp__auggie__codebase-retrieval(workspace=<repo>,
+     request="<failures[0] 涉及的功能/模块语义描述>") 拿跨文件上下文），实施最小修复
   3. 跑脚本
   4. 如 passing: true → 跳出 → 报告成功
   5. 如 failures 没减少（卡住）→ 换策略，记录尝试
@@ -316,15 +317,17 @@ fi
 
 ```
 1. cd worktree
-2. 按规格 Edit
-3. 跑 audit：
+2. （陌生 repo）mcp__auggie__codebase-retrieval(workspace=<repo>,
+   request="<规格涉及的模块/接口/调用链>") 召回上下文
+3. 按规格 Edit
+4. 跑 audit：
    - hydro-*-web → pnpm typecheck && build
    - web-stack services → /api-smoke <name> --compute
    - 静态站 → /menus-audit 对应维度
    - 任何 repo → /repo audit
-4. 绿 → git add -A && git commit -m "<规格>"
+5. 绿 → git add -A && git commit -m "<规格>"
    不绿 → 写 FANOUT_FAIL.md，不 commit
-5. 返回 { repo, passed, diff_summary, audit_output, fail_reason? }
+6. 返回 { repo, passed, diff_summary, audit_output, fail_reason? }
 ```
 
 并行性硬规则：
