@@ -135,7 +135,7 @@ audit 全绿后**必须**告诉用户：
 > - 改了 `site-content.css` → stack + cmds + logs + ops-console
 > - 改了 `sites/<name>.yaml.header` → 只对应一站
 >
-> 告诉我哪些，我 `/deploy <name>` 跑。
+> 告诉我哪些，我 `/deploy <name>` 跑（或 `/deploy fanout` 多站并行 / `/deploy changed` 按 git diff 自动选）。
 
 **不自动调 /deploy**。等用户明确。
 

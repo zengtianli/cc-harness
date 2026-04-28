@@ -78,4 +78,4 @@ git push origin --delete <name>            # 远端
 
 ## 集成
 
-`/ship` 推完 main 之后自动调用本 skill 一次（待办：单独改 ship.md，本次不动）。
+`/repo ship` 推完 main 之后自动调用本 skill 一次（待办：单独改 repo.md，本次不动）。

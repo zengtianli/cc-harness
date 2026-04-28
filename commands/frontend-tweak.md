@@ -75,10 +75,10 @@ python3 ~/Dev/devtools/lib/tools/menus.py audit
 
 **必须 8/8 全绿**。任一 drift 红说明你动了数据结构 → **回滚**。
 
-### Step 6 — /site-refresh-all 同步
+### Step 6 — /refresh-site 同步
 
 ```
-/site-refresh-all
+/refresh-site --kind all
 ```
 
 （或手动：render-navbar -w + build-website-navbar -w + navbar_refresh.sh + cp mega-navbar.tsx & generated.ts → ops-console + menus-audit）
@@ -91,10 +91,10 @@ python3 ~/Dev/devtools/lib/tools/menus.py audit
 
 按用户明确列表跑 `/deploy <name>` × N。
 
-### Step 8 — /ship 收尾
+### Step 8 — /repo ship 收尾
 
 ```
-/ship configs devtools website ops-console
+/repo ship configs devtools website ops-console
 ```
 
 按实际改了哪些 repo 缩减清单。
@@ -113,9 +113,9 @@ python3 ~/Dev/devtools/lib/tools/menus.py audit
 ## 拒绝词（这些不走本 skill）
 
 - "加菜单项 / 加分类" → Plan mode
-- "删子域 / 退役站" → Plan mode + `/site-archive`
+- "删子域 / 退役站" → Plan mode + `/site archive`
 - "换 URL / 改分组逻辑" → Plan mode
-- "加新站 / 搭新页" → Plan mode + `/site-add` + `/ship-site`
+- "加新站 / 搭新页" → Plan mode + `/site add` + `/site ship`
 - "改 yaml / 结构" → Plan mode
 
 遇到拒绝词直接说：
@@ -132,4 +132,4 @@ python3 ~/Dev/devtools/lib/tools/menus.py audit
 ## 相关
 
 - playbook: `~/Dev/tools/configs/playbooks/stations.md`
-- 姊妹 skill: `/site-refresh-all`（同步） · `/menus-audit`（验证） · `/deploy`（部署）
+- 姊妹 skill: `/refresh-site`（同步） · `/menus-audit`（验证） · `/deploy`（部署）

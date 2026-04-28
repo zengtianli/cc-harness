@@ -70,7 +70,7 @@ $ARGUMENTS 为目标路径（默认 `.`）。
 
 | 配置 | 内容 |
 |------|------|
-| **README.md** | 按 `/audit` 的 readme_template 规则生成（app/infra/content/minimal） |
+| **README.md** | 按 `/repo audit` 的 readme_template 规则生成（app/infra/content/minimal） |
 | **README_CN.md** | README.md 的中文翻译 |
 | **.gitignore** | 按语言补全 baseline 条目（复用 `repo-standards.json → common.gitignore_baseline`） |
 | **LICENSE** | MIT（copyright holder = tianli） |
@@ -151,7 +151,7 @@ $ARGUMENTS 为目标路径（默认 `.`）。
 
 ### README.md 生成规则
 
-复用 `/audit` 的 readme_template 体系。金标准参考：`~/Dev/stations/dockit/README.md`。
+复用 `/repo audit` 的 readme_template 体系。金标准参考：`~/Dev/stations/dockit/README.md`。
 
 必须包含：
 - 语言切换：`**English** | [中文](README_CN.md)`
@@ -205,7 +205,7 @@ $ARGUMENTS 为目标路径（默认 `.`）。
 提交? [Y/n]
 ```
 
-如果用户确认，调用 `/ship` 提交。
+如果用户确认，调用 `/repo ship` 提交。
 
 ---
 
@@ -215,5 +215,5 @@ $ARGUMENTS 为目标路径（默认 `.`）。
 - 不覆盖已有内容——只补全或升级
 - 每个配置项都要审批，不批量强推
 - 不生成用不到的配置（seed 阶段不推 hooks，没部署不推 deploy 相关）
-- 复用已有命令的逻辑：.gitignore baseline 来自 repo-standards.json，README 模板来自 /audit 体系
+- 复用已有命令的逻辑：.gitignore baseline 来自 repo-standards.json，README 模板来自 /repo audit 体系
 - 阶段判定要保守——宁可低估，让用户决定是否升级
