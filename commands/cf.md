@@ -1,4 +1,6 @@
-Cloudflare 统一管理 — DNS / Origin Rules / Access Applications。
+---
+description: Cloudflare 统一管理 — DNS / Origin Rules / Access Applications
+---
 
 替代已归档的 `/cf-dns`。后端：`~/Dev/devtools/lib/tools/cf_api.py`，凭证自动从 `~/.personal_env` 读取。
 
@@ -41,4 +43,4 @@ Cloudflare 统一管理 — DNS / Origin Rules / Access Applications。
 ## 参考
 
 - 已归档版：`commands/archive/cf-dns.md`
-- 治理原则：新建任何 CF 配置前先 `list` 看现有约定（见 memory feedback_check_existing_first.md）
+- 治理原则：新建任何 CF 配置前先 `list` 看现有 zone/origin/access 约定，避免重复创建
