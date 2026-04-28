@@ -118,3 +118,79 @@ warmup 产出。每个 indexable workspace 1 record：`status / duration_s / avg
 ## 页面位置
 - `dashboard.tianlizeng.cloud/auggie` — GitHub repo 列表（dash）
 - `dashboard.tianlizeng.cloud/auggie/workspaces` — workspace 注册表 + 健康（sync）
+
+---
+
+## ws-add — 注册新 workspace 到 SSOT（替代旧 /auggie-workspace-add）
+
+`/auggie ws-add <id> <abs-path-or-~-path> [extra options]`
+
+### 何时用
+- 新 clone 一个 repo 到 ~/Dev 想被 auggie 索引
+- 移动 / 重命名了某个已有 workspace 的路径
+- 升降级 indexable（数据型 repo 标 `indexable: false`）
+
+### 参数
+
+| 参数 | 必填 | 说明 |
+|---|---|---|
+| `<id>` | ✅ | 稳定 slug，CC dispatch 用（建议跟 GitHub repo 名一致） |
+| `<path>` | ✅ | `~/Dev/...` 或绝对路径 |
+| `--github=<owner/repo>` |  | 不传则探测 `git -C <path> remote get-url origin` |
+| `--type=code\|docs\|data\|meta` |  | 默认 `code` |
+| `--status=active\|archive\|data\|deprecated` |  | 默认 `active` |
+| `--indexable=true\|false` |  | 默认 `true`；data/archive 默认 `false` |
+| `--notes=<text>` |  | 可选注解 |
+
+### 流程
+
+1. **参数检查**：path 展开后必须存在；`<id>` 在现有 yaml 不能重复（先 grep `~/Dev/tools/configs/auggie-workspaces.yaml`）
+2. **自动探测**（未传时）：github / visibility / type
+3. **体积闸门**：`du -sh <path>` > 500 MB → 强制提示标 `type=data, indexable=false, github=null`
+4. **写 yaml**：在 `auggie-workspaces.yaml` 合适分组（tools/labs/content/Work/migrated）末尾追加，缩进对齐
+5. **重生成 + 校验**：
+   ```bash
+   python3 ~/Dev/devtools/lib/tools/auggie_workspaces.py build
+   python3 ~/Dev/devtools/lib/tools/auggie_workspaces.py audit
+   ```
+6. **验证 dispatch**：`auggie_workspaces.py resolve <id>` 应输出绝对路径
+7. **提示**：是否 `cd ~/Dev/tools/configs && git commit`（pre-commit hook 自动跑 audit gate）
+
+### 反模式 / 守门
+- 不允许把整个 `~/Dev` 加进来（已存在 `dev-meta` 条目，indexable=false）
+- 不允许把 `_archive/*` 子目录加进来
+- `path` 必须是 git repo（`.git/` 存在），否则 auggie 索引意义不大
+
+---
+
+## map — 大型项目二进制文件地图（替代旧 /auggie-map）
+
+`/auggie map <target> [--depth N] [--dry-run]`
+
+为大型项目生成 `_files.md`，让 Auggie 能索引那些不推 GitHub 的二进制文件。
+
+### 参数
+- `<target>`（必填）：项目根目录，如 `~/Dev/Work/zdwp`、`~/Dev/Work/reports`
+- `--depth N`（默认 3）：扫描深度
+- `--dry-run`：只生成不提交
+
+### 流程
+
+1. **验证前置**：目标是 git 仓库；`.gitignore` 含 `!_files.md`（白名单），缺则提示加
+2. **运行扫描**：
+   ```bash
+   python3 ~/Dev/_archive/scripts-archive/scripts/file/scan_binary_manifest.py \
+     --target <target> --depth <N> --clean
+   ```
+3. **生成项目级汇总** `_PROJECT_MAP.md`：目录结构（tree depth 2）+ 文件统计表 + 各目录 `_files.md` 清单
+4. **提交并推送**（除非 `--dry-run`）：
+   - `git add` 所有 `_files.md` + `_PROJECT_MAP.md`
+   - 提交：`chore: update auggie file map`
+   - `git push`
+5. **报告**：生成多少 `_files.md` / 涵盖多少二进制文件 / 是否已推
+
+### 注意
+
+- 只扫二进制（docx/pdf/xlsx/shp/zip/tif 等），文本本身已被 git 跟踪
+- `_files.md` 已在 zdwp `.gitignore` 白名单
+- `_PROJECT_MAP.md` 需确认也在白名单

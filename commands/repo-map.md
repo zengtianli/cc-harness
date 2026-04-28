@@ -62,6 +62,37 @@ Report mismatches with file:line references.
 3. Add to `repo-map.json`
 4. Suggest `sync` to propagate
 
+### `regen`（替代旧 /repo-map-refresh）
+
+完全重新扫 `~/Dev/{stations,tools,labs,content,migrated}/*` 和根下工具基建，**消除手工维护漂移**，写入 `~/Dev/tools/configs/repo-map.json`。
+
+```bash
+/repo-map regen           # 写入
+/repo-map regen --dry-run # 预览（stdout）
+```
+
+实际执行：
+```bash
+python3 ~/Dev/devtools/lib/tools/repo_map_gen.py            # 写入
+python3 ~/Dev/devtools/lib/tools/repo_map_gen.py --stdout   # 预览
+```
+
+**和 `scan` 的区别**：
+- `scan` 是增量对账（找新增 / 缺失），交互式确认每条改动
+- `regen` 是全量重建（直接覆盖 JSON），用于"手工漂移已严重，统一对齐"场景。2026-04-22 调查发现 22 条陈旧 + 8 条缺失 → `regen` 一次清干净
+
+**何时用 `regen`**：
+- 大规模目录重构后（如 station-promote 批量迁移）
+- 怀疑手工编辑造成漂移
+- 跑 `check` 报告大量不一致
+
+**规则**：
+- 只登记含 `.git` 的本地 repo
+- 路径格式统一 `~/Dev/...`
+- remote URL 从 `git config --get remote.origin.url` 读，无远程则 null
+- 分层目录：stations / tools / labs / content / migrated
+- 根下：devtools / doctools / mactools / clashx / dotfiles / ...（ROOT_REPOS 白名单）
+
 ## Rules
 
 - `repo-map.json` is ALWAYS the source of truth
