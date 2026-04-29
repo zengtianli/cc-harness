@@ -17,6 +17,19 @@ description: 自动猜密码解 PDF（银行账单 / 投资报告 / 信用卡对
 - "解一下这个账单" / "qpdf 解密一下"
 - 用户给路径后 Read tool 返回二进制 / "encrypted"
 - HSBC / 渣打 / 中银 / Citi / 美林 等银行/券商发的月结、投资结单
+- 政府报告 / 公报 PDF 标"禁止打印/复制"（permissions-only 加密）
+
+## 加密类型分流（自动）
+
+脚本先 `qpdf --show-encryption` 分类，按类型走不同路径：
+
+| 类型 | 特征 | 处理 |
+|---|---|---|
+| `none` | 完全未加密 | 退出，不动文件 |
+| `permissions-only` | user password 为空，仅权限位限制（禁打印/复制/编辑） | **`qpdf --decrypt` 一发去权限**，不需要密码 |
+| `user-password` | 真加密，必须正确密码才能开 | 走"猜密码"流程（候选规则 × 证件号） |
+
+`--force-guess` 强制即使 permissions-only 也走猜密码（一般用不到）。
 
 ## 用法
 

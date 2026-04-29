@@ -284,6 +284,8 @@ def main() -> int:
     ap.add_argument("--list", action="store_true", help="列出所有规则后退出")
     ap.add_argument("--dry-run", action="store_true", help="只列候选不实际试")
     ap.add_argument("--show", action="store_true", help="成功后明文打印密码（默认遮罩）")
+    ap.add_argument("--force-guess", action="store_true",
+                    help="即使是 permissions-only 也强制走猜密码流程")
     args = ap.parse_args()
 
     if args.list:
@@ -301,11 +303,22 @@ def main() -> int:
         print(f"ERROR: 文件不存在 {path}", file=sys.stderr)
         return 2
 
-    if not is_encrypted(path):
-        print(f"INFO: PDF 未加密（或 qpdf 检测无需密码），无需解密。")
+    enc_type = classify_encryption(path)
+    if enc_type == "none":
+        print(f"INFO: PDF 完全未加密，无需处理。")
         return 0
 
     out = Path(args.out).expanduser().resolve() if args.out else path.with_name(path.stem + "-decrypted.pdf")
+
+    # 仅权限位加密：qpdf --decrypt 直接去权限，不需要密码
+    if enc_type == "permissions-only" and not args.force_guess and not args.password:
+        print("检测到 permissions-only 加密（user password 为空，仅权限位限制）。")
+        if strip_permissions(path, out):
+            print(f"OK: 已去权限位 → {out}")
+            log_hit(path, "permissions-only", "no-password")
+            return 0
+        print("FAIL: qpdf --decrypt 失败", file=sys.stderr)
+        return 4
 
     # 直接 password 模式
     if args.password:
