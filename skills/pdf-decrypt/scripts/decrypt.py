@@ -173,13 +173,45 @@ RULES: dict[str, tuple[str, Rule]] = {
 
 # ---------- qpdf 调用 ----------
 
-def is_encrypted(path: Path) -> bool:
-    """qpdf --requires-password: exit 0 = 需要密码, 2 = 不需要, 其他 = 错误"""
+# 加密类型分类：
+#   none              — 完全未加密
+#   permissions-only  — 仅权限位（user password 为空），qpdf --decrypt 一发可去
+#   user-password     — 真加密，必须正确 user password 才能解
+def classify_encryption(path: Path) -> str:
+    """三态：none / permissions-only / user-password"""
     r = subprocess.run(
+        ["qpdf", "--show-encryption", str(path)],
+        capture_output=True, text=True
+    )
+    out = r.stdout + r.stderr
+    if "File is not encrypted" in out:
+        return "none"
+    # qpdf 用空密码尝试时，如果命中 user password（即 user password 为空），
+    # 会输出 "Supplied password is user password" 且 "User password = "（空值）
+    if "Supplied password is user password" in out:
+        return "permissions-only"
+    # 也可能是 owner-only 模式：qpdf 对空密码返回需要密码 → requires-password 退 0
+    rp = subprocess.run(
         ["qpdf", "--requires-password", str(path)],
         capture_output=True, text=True
     )
-    return r.returncode == 0
+    if rp.returncode == 0:
+        return "user-password"
+    # 兜底：不属于以上几种归为 permissions-only（能开但有限制）
+    return "permissions-only"
+
+
+def strip_permissions(path: Path, out: Path) -> bool:
+    """无密码去权限位：qpdf --decrypt（适用于 permissions-only 加密）"""
+    r = subprocess.run(
+        ["qpdf", "--decrypt", str(path), str(out)],
+        capture_output=True, text=True
+    )
+    if r.returncode in (0, 3) and out.exists() and out.stat().st_size > 0:
+        return True
+    if out.exists():
+        out.unlink()
+    return False
 
 
 def try_password(path: Path, password: str, out: Path) -> bool:
