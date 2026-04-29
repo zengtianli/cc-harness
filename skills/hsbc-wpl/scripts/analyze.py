@@ -254,6 +254,10 @@ def main() -> int:
                          "If omitted, fetch current from HKAB.")
     ap.add_argument("--no-hibor", action="store_true",
                     help="Skip HIBOR fetch / spread inference")
+    ap.add_argument("--start-date", type=str, default=None,
+                    help="Override borrowing start date (YYYY-MM-DD) "
+                         "if loan was drawn after the statement period start. "
+                         "Days count from start-date+1 to interest_to inclusive.")
     ap.add_argument("--json", action="store_true", help="Emit JSON")
     args = ap.parse_args()
 
@@ -264,9 +268,18 @@ def main() -> int:
     text = pdftotext(args.pdf)
     d = extract(text)
 
-    # Effective rate
-    if all(k in d for k in ("cash_bf", "cash_interest", "interest_days")) and d["cash_bf"] > 0:
-        eff = d["cash_interest"] / d["cash_bf"] * (365 / d["interest_days"]) * 100
+    # Effective rate. By default uses interest_days (period header span).
+    # If --start-date given, recompute days from that date to interest_to.
+    days = d.get("interest_days")
+    if args.start_date and "interest_to" in d:
+        s = datetime.fromisoformat(args.start_date)
+        e = datetime.fromisoformat(d["interest_to"])
+        # Convention: HSBC accrues from day after value-date to settlement date inclusive.
+        days = (e - s).days
+        d["actual_borrow_start"] = args.start_date
+        d["actual_borrow_days"] = days
+    if all(k in d for k in ("cash_bf", "cash_interest")) and d["cash_bf"] > 0 and days:
+        eff = d["cash_interest"] / d["cash_bf"] * (365 / days) * 100
         d["effective_rate_pct"] = eff
 
         # HIBOR
