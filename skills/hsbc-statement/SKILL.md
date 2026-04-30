@@ -119,13 +119,22 @@ docs/statements/
 
 ## HIBOR 数据源
 
+权威源（按方便度排序）：
+
+| 源 | URL | 用途 |
+|---|---|---|
+| **HSBC 香港**（推荐） | [hsbc.com.hk/zh-cn/mortgages/tools/hibor-rate/](https://www.hsbc.com.hk/zh-cn/mortgages/tools/hibor-rate/) | HSBC 自己公布的 1M HIBOR（与 HKAB 同源；历史走年度 PDF：2019–2025 全份可下载） |
+| HKAB（行业总会） | [hkab.org.hk/en/rates/hibor](https://www.hkab.org.hk/en/rates/hibor) | 当前 fixing 直接显示；脚本默认抓这里 |
+
 | 模式 | 源 | 何时用 |
 |---|---|---|
 | 默认（无 flag） | 抓 HKAB 主页 1M 当前 fixing | 看量级 |
-| `--hibor X` | 用户手输 % 期间均值 | 月结期 ≥ 一周，需精确 |
+| `--hibor X` | 用户手输 % 期间均值 | 月结期 ≥ 一周，需精确（**期均建议从 HSBC 年度 PDF 取，最权威**） |
 | `--no-hibor` | 不查 | 离线 |
 
-期间均值取法：[hkab.org.hk/en/rates/hibor](https://www.hkab.org.hk/en/rates/hibor) → 历史日期 → 1month → 工作日均值。
+**期间均值取法**（按权威度）：
+1. **HSBC 年度 PDF**（推荐）— 下载对应年份 PDF，按结单期工作日取均值
+2. HKAB 网页日历 — 同源，但一次只能看一天
 
 ## 1% 地板
 

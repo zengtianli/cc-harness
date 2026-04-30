@@ -20,6 +20,12 @@ Usage:
   analyze.py <pdf>... --no-index                   # don't regen README.md
   analyze.py <pdf>... --json                       # JSON output (no MD)
   analyze.py --regen-index --out docs/statements/  # only regen README from existing MDs
+
+HIBOR sources (期间均值优先用 HSBC 年度 PDF):
+  - HSBC HK (权威): https://www.hsbc.com.hk/zh-cn/mortgages/tools/hibor-rate/
+    历史日度: 同页年度 PDF (2019-2025 完整, 工作日均值算 spread)
+  - HKAB (行业总会): https://www.hkab.org.hk/en/rates/hibor
+    当前 fixing 直接显示, 脚本默认抓这里
 """
 from __future__ import annotations
 
