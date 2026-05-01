@@ -1,0 +1,188 @@
+[
+  {
+    "file": "session-retro-20260420-streamlit-to-nextjs.md",
+    "primary_project_path": "~/Dev/stations/web-stack",
+    "confidence": "high",
+    "reason": "全迁 Next.js 到 Turborepo monorepo，主体在 web-stack（后迁 stations/web-stack），9 hydro-* + audiobook 都属 web-stack 项目"
+  },
+  {
+    "file": "session-retro-20260419-three-acts.md",
+    "primary_project_path": "central",
+    "confidence": "high",
+    "reason": "三幕：换汇研究 + 新站上线 + slash 生态治理，跨 investment/website/cc-configs 多项目，无单一主项目"
+  },
+  {
+    "file": "session-retro-20260419-stations.md",
+    "primary_project_path": "central",
+    "confidence": "high",
+    "reason": "站群统一治理 6 轮（navbar/site-header/site-content/yaml SSOT），跨多 station，归中央"
+  },
+  {
+    "file": "session-retro-20260420-mass-migration.md",
+    "primary_project_path": "~/Dev/stations/web-stack",
+    "confidence": "high",
+    "reason": "11 个 Streamlit 站迁 Next.js 大规模迁移，主体 web-stack monorepo + 9 hydro-* scaffold"
+  },
+  {
+    "file": "session-retro-20260419-r7-mega.md",
+    "primary_project_path": "central",
+    "confidence": "high",
+    "reason": "R7 mega menu 重构跨站群多消费者（website/ops-console/cmds/stack/logs/audiobook + configs SSOT），归中央"
+  },
+  {
+    "file": "session-retro-20260419-assets-launch.md",
+    "primary_project_path": "~/Dev/content/investment",
+    "confidence": "high",
+    "reason": "assets.tianlizeng.cloud 上线，源仓是 investment/docs/，把 investment md 发布成静态站"
+  },
+  {
+    "file": "session-retro-20260420-stations-reorg.md",
+    "primary_project_path": "central",
+    "confidence": "high",
+    "reason": "~/Dev 全树重构 38→9 根目录 + station-promote skill 落地，meta 级跨整个工作区"
+  },
+  {
+    "file": "session-retro-20260420-auggie-mcp-ops.md",
+    "primary_project_path": "central",
+    "confidence": "high",
+    "reason": "auggie 治理 + 21 repo 批量 push + ops-console 接入，跨多 repo + 全局 CLAUDE.md，归中央"
+  },
+  {
+    "file": "session-retro-20260420-handoff-per-project.md",
+    "primary_project_path": "central",
+    "confidence": "high",
+    "reason": "/handoff skill 行为重构 + warmup 跨多位置扫描，跨 cc-configs/devtools/configs 多 repo 改动 meta"
+  },
+  {
+    "file": "session-retro-20260421.md",
+    "primary_project_path": "central",
+    "confidence": "high",
+    "reason": "站群深度体检 → 修复 → 全量部署 19 子域，27 commits 11 repos，跨整个站群"
+  },
+  {
+    "file": "session-retro-20260421-cc-options-p1p2.md",
+    "primary_project_path": "~/Dev/stations/web-stack",
+    "confidence": "high",
+    "reason": "cc-options P1+P2 前端 + api.py 改动，主体在 web-stack/apps/cc-options-web 与 services/cc-options"
+  },
+  {
+    "file": "session-retro-20260422-ssot-consolidation.md",
+    "primary_project_path": "central",
+    "confidence": "high",
+    "reason": "SSOT 图模型重构 + 5 项 Tier 1 整合，跨 menus SSOT + devtools + 4 静态站，归中央"
+  },
+  {
+    "file": "session-retro-20260422-vps-oauth-cleanup-hydro-factory-deploy.md",
+    "primary_project_path": "central",
+    "confidence": "high",
+    "reason": "VPS oauth-proxy 清理 + hydro-* factory deploy，跨 tools/vps + web-stack/services + 多站"
+  },
+  {
+    "file": "session-retro-20260424-paths-v0.6-full-refactor.md",
+    "primary_project_path": "~/Dev/devtools",
+    "confidence": "high",
+    "reason": "paths SSOT v0.6 重构主体在 devtools（paths.py + paths_const.* 三端 + skill md），跨 5 repo 但主体 devtools"
+  },
+  {
+    "file": "session-retro-20260425-zsh-noclobber-parallel-cancel.md",
+    "primary_project_path": "central",
+    "confidence": "medium",
+    "reason": "终端 mail 抑制 + cron/launchd 漂移修复，meta 级 macOS 系统配置（zsh/launchd/cron），无对口 repo"
+  },
+  {
+    "file": "session-retro-20260425-paths-v1.1-drift-zero.md",
+    "primary_project_path": "~/Dev/devtools",
+    "confidence": "high",
+    "reason": "paths v1.1 drift 清零（paths.py + paths.yaml），主 commit 在 devtools/feat/paths-ssot；stations 102 files 是顺手收尾"
+  },
+  {
+    "file": "session-retro-20260425-auggie-mcp-fix.md",
+    "primary_project_path": "central",
+    "confidence": "high",
+    "reason": "auggie MCP 排错从坏到通，主要改 ~/.augment/session.json + ~/.claude.json + 全局 CLAUDE.md，meta 级"
+  },
+  {
+    "file": "session-retro-20260425-ssot-blindspots-v1.0.md",
+    "primary_project_path": "~/Dev/devtools",
+    "confidence": "high",
+    "reason": "SSOT 盲区补救（symlink + allow_missing + 运行时拼装路径），主体改 paths.py + refactor-dir.md skill，devtools 为主"
+  },
+  {
+    "file": "session-retro-20260427-auggie-workspace-registry.md",
+    "primary_project_path": "~/Dev/tools/configs",
+    "confidence": "high",
+    "reason": "auggie workspace 注册表 41 repo SSOT 落地，主体是 tools/configs/auggie-workspaces.yaml + lib/tools/auggie_workspaces.py"
+  },
+  {
+    "file": "session-retro-20260427-v0.1-ssot-os.md",
+    "primary_project_path": "central",
+    "confidence": "high",
+    "reason": "ssot-os v0.1 跨 dev-meta/configs/devtools 3 commit + auggie warmup 探索，跨多 repo meta 级"
+  },
+  {
+    "file": "session-retro-20260428-cc-configs-trim.md",
+    "primary_project_path": "~/Dev/tools/cc-configs",
+    "confidence": "high",
+    "reason": "CC 配置三轮瘦身（memory + commands + CLAUDE.md），主体改 cc-configs，commit 主在 cc-configs"
+  },
+  {
+    "file": "session-retro-20260428-stations-unify-v0.2.md",
+    "primary_project_path": "central",
+    "confidence": "high",
+    "reason": "站群统一化 v0.2（footer/token SSOT + 4 静态站合主站子路由），跨多站群 + SSOT，归中央"
+  },
+  {
+    "file": "session-retro-20260429.md",
+    "primary_project_path": "~/Dev/content/investment",
+    "confidence": "high",
+    "reason": "文件头第 3 行明确写 '项目：~/Dev/content/investment'，HSBC 资产策略 5 篇 md 迭代"
+  },
+  {
+    "file": "session-retro-20260429-ssot-cross-domain.md",
+    "primary_project_path": "central",
+    "confidence": "high",
+    "reason": "SSOT 跨域错配重构（references/internal/ 6 类资料迁出），跨 resume/stations/Downloads/software-copyright 多 repo"
+  },
+  {
+    "file": "session-retro-20260429-2.md",
+    "primary_project_path": "central",
+    "confidence": "high",
+    "reason": "v2.0 终极合并 14 子域全合主站子路径，CF DNS 22→8，跨 16 站 + 主站 SSOT/nginx/CF，meta 级站群整合"
+  },
+  {
+    "file": "session-retro-20260429-3.md",
+    "primary_project_path": "central",
+    "confidence": "high",
+    "reason": "v2.0 部署收尾跨 web-stack apps + nginx + deploy.sh + verify.py + cc-options，meta 级跨多 station"
+  },
+  {
+    "file": "session-retro-20260429-personal-kb.md",
+    "primary_project_path": "~/Dev/personal-kb",
+    "confidence": "high",
+    "reason": "personal-kb v0.1 立项（3 SQLite DB + CLI），主体在 personal-kb/"
+  },
+  {
+    "file": "session-retro-20260429-4.md",
+    "primary_project_path": "central",
+    "confidence": "high",
+    "reason": "Q1/Q2/Q3 调查（:8443 / mega 重复 / cc-options 老布局），跨多站群 + auggie 元规则讨论"
+  },
+  {
+    "file": "session-retro-20260429-5.md",
+    "primary_project_path": "central",
+    "confidence": "high",
+    "reason": "HANDOFF 4 待办批量做 18/18 部署 + 3 agent 并行（paths/CF/Q2 IA），跨多站群 + paths/CF SSOT"
+  },
+  {
+    "file": "session-retro-20260501-wpl-calc-v08.md",
+    "primary_project_path": "~/Dev/wpl-calc",
+    "confidence": "high",
+    "reason": "wpl-calc carry v0.8 数学模型重构，wpl-calc 是主项目（数学逻辑 + 测试）"
+  },
+  {
+    "file": "session-retro-20260501-2-ia-career-refactor.md",
+    "primary_project_path": "central",
+    "confidence": "high",
+    "reason": "站群 IA v2.3+v2.4 + /career 私密路由 + applications→career 拆出，跨 stations + content/career + personal-kb，归中央"
+  }
+]

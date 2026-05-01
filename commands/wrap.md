@@ -27,7 +27,7 @@ description: 会话收尾族 — recap 复盘 / retro 写 playbook / handoff 全
 
 ### Phase 1: 复盘（内部调 recap 流程）
 
-执行 `/wrap recap` 的全部步骤：回顾对话 / 提取主题/进程/成果/踩坑 / 分析做对做错 / 更新 CC 侧记录（Memory/Skills/Commands/CLAUDE.md）/ 生成 session-retro 到 `~/Dev/stations/docs/knowledge/session-retro-{YYYYMMDD}.md`
+执行 `/wrap recap` 的全部步骤：回顾对话 / 提取主题/进程/成果/踩坑 / 分析做对做错 / 更新 CC 侧记录（Memory/Skills/Commands/CLAUDE.md）/ 生成 session-retro（默认「主项目 docs/retros/ + 中央 symlink」双向链接，见 retro 节「输出位置规则」）
 
 ### Phase 2: 配置升级检查（/harness）
 
@@ -102,13 +102,16 @@ dead > 0 不阻塞，但必须把这一行原样记入生成的 HANDOFF.md「踩
 
 ```
 --- Handoff 完成 ---
-复盘：~/Dev/stations/docs/knowledge/session-retro-{date}.md
+复盘（物理）：<主项目>/docs/retros/session-retro-{date}.md
+复盘（中央 symlink）：~/Dev/stations/docs/knowledge/session-retro-{date}.md
 记忆：更新 {N} 条 / 新增 {N} 条
 配置：{更新了什么 / 无需更新}
 交接：{HANDOFF.md 的绝对路径}
 待办：{N} 项未完成
 下个会话启动：{建议指令}
 ```
+
+无主项目（`--central` 或跨多 repo）→ 复盘行只显示中央路径。
 
 ### 规则
 - HANDOFF.md 的受众是下一个 CC 会话，写得像技术文档不是散文
@@ -162,7 +165,12 @@ dead > 0 不阻塞但记入 retro 文件「未完成项」节。
 
 ### Step 4: 用户侧记录
 
-生成 `~/Dev/stations/docs/knowledge/session-retro-{YYYYMMDD}.md`（同日多 session 加 `-2.md` 后缀）。
+生成 session retro MD。**默认走「主项目目录 + 中央 symlink」双向链接模式**（见 retro 节「输出位置规则」），即：
+- 物理：`<主项目>/docs/retros/session-retro-{YYYYMMDD}.md`（同日多 session 加 `-2.md` 后缀）
+- 中央 symlink：`~/Dev/stations/docs/knowledge/session-retro-{YYYYMMDD}.md` → 物理
+- 中央索引：`~/Dev/stations/docs/knowledge/INDEX.md` 追加一行
+
+无主项目（跨多 repo）→ 直接落中央，不建 symlink。
 
 格式：1.做对了什么 / 2.走了哪些弯路（和为什么）/ 3.工程模式 / 4.沟通反思 / 5.成果清单（路径表）/ 6.未完成项
 
@@ -176,8 +184,12 @@ dead > 0 不阻塞但记入 retro 文件「未完成项」节。
 技能候选：N 个新增 / N 个达阈值
 追踪：N 个 skill/command 更新
 待办：N 项
-文件：~/Dev/stations/docs/knowledge/session-retro-{date}.md
+文件（物理）：<主项目>/docs/retros/session-retro-{date}.md
+文件（中央 symlink）：~/Dev/stations/docs/knowledge/session-retro-{date}.md
+中央索引：~/Dev/stations/docs/knowledge/INDEX.md（已追加一行）
 ```
+
+无主项目时仅显示中央路径。
 
 ### 规则
 - 诚实，不粉饰错误
@@ -194,10 +206,45 @@ dead > 0 不阻塞但记入 retro 文件「未完成项」节。
 **Playbook，不是工具调用清单**。受众是用户，产出"这类任务的标准 slash command 编排流程"。
 
 ### 参数
-- 无参数 → 写 playbook MD 到 `~/Dev/stations/docs/knowledge/session-retro-{YYYYMMDD}-{topic-slug}.md`
-- `--stdout` → 只输出屏幕
-- `--path <path>` → 指定路径
+- 无参数 → 走「主项目目录 + 中央 symlink」双向链接模式（见下方「输出位置规则」）
+- `--central` → 强制只写中央位置 `~/Dev/stations/docs/knowledge/session-retro-{YYYYMMDD}-{topic-slug}.md`，不建 symlink。明确不属于单一项目（跨多 repo / `~/Dev` meta 级）时用
+- `--stdout` → 只输出屏幕，不落盘
+- `--path <path>` → 显式指定物理文件路径（仍会建中央 symlink + 更新 INDEX.md，除非 `--central`）
 - 短描述（如 `r7 mega`）→ 作为 topic-slug
+
+### 输出位置规则（默认行为）
+
+**Step 1 · 判主项目**（复用 handoff Phase 3.0 的启发式）：
+1. 盘点本轮所有 Edit/Write 文件绝对路径
+2. 按 `~/Dev/{stations,labs,content,tools,devtools,migrated}/<top>` 归组
+3. 唯一桶 ≥70% 改动 → 主项目 = 该 repo 根目录
+4. 跨 3+ repo 且根级文件占主 → 无主项目 → 自动走 `--central`
+5. 模糊用 AskUserQuestion 让用户选
+
+**Step 2 · 写物理文件到主项目**：
+- 路径：`<主项目>/docs/retros/session-retro-{YYYYMMDD}-{topic-slug}.md`
+- 例：`~/Dev/wpl-calc/docs/retros/session-retro-20260501-carry-math-v0.8.md`
+- `docs/retros/` 不存在则 `mkdir -p`
+
+**Step 3 · 中央位置建相对 symlink**：
+- 路径：`~/Dev/stations/docs/knowledge/session-retro-{YYYYMMDD}-{topic-slug}.md`
+- macOS 命令（POSIX）：`cd ~/Dev/stations/docs/knowledge && ln -s "$(python3 -c "import os,sys; print(os.path.relpath(sys.argv[1], '.'))" <物理文件绝对路径>)" session-retro-{YYYYMMDD}-{topic-slug}.md`
+- 或用 `~/Dev/tools/cc-configs/tools/retro-symlink/retro_symlink.py link <物理文件>` 一句话搞定（自动算相对路径 + 更新 INDEX.md）
+
+**Step 4 · 更新中央索引 `~/Dev/stations/docs/knowledge/INDEX.md`**：
+- 文件不存在则创建，骨架：
+  ```markdown
+  # Session Retros 索引
+
+  > 中央查询入口。物理文件分散在各项目 `docs/retros/`，本目录是 symlink 集合。
+
+  ## 时间线
+  ```
+- 在「时间线」节追加一行（按日期倒序，最新在上）：
+  `- {YYYY-MM-DD} · {主项目名} · {topic-slug 中文化简述} → {物理路径绝对地址}`
+- 例：`- 2026-05-01 · wpl-calc · v0.8 carry 数学模型重构 → ~/Dev/wpl-calc/docs/retros/session-retro-20260501-carry-math-v0.8.md`
+
+**`--central` 模式**：跳过 Step 1/2 项目判断，直接落 `~/Dev/stations/docs/knowledge/session-retro-{YYYYMMDD}-{topic-slug}.md`，不建 symlink；INDEX.md 仍追加一行，物理路径写中央位置自身。
 
 ### 硬约束 · playbook 格式
 
@@ -387,4 +434,7 @@ cwd 前缀匹配 domain：
 ## 参考
 
 - Playbook 总入口：`~/Dev/tools/configs/playbooks/META.md`
-- 已有示例：`~/Dev/stations/docs/knowledge/session-retro-20260419-r7-mega.md`
+- 中央 retro 索引：`~/Dev/stations/docs/knowledge/INDEX.md`（symlink 集合 + 时间线）
+- retro symlink 工具：`~/Dev/tools/cc-configs/tools/retro-symlink/retro_symlink.py`（link 单文件 / migrate 批量回迁）
+- 旧示例（单一中央）：`~/Dev/stations/docs/knowledge/session-retro-20260419-r7-mega.md`
+- 新示例（物理 + symlink）：`~/Dev/wpl-calc/docs/retros/session-retro-20260501-carry-math-v0.8.md` ← `~/Dev/stations/docs/knowledge/session-retro-20260501-carry-math-v0.8.md`
