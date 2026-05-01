@@ -261,6 +261,16 @@ def detect_claude_md(cwd: Path) -> list[Finding]:
             )
         )
 
+    if not findings:
+        findings.append(
+            Finding(
+                "claude_md",
+                "info",
+                "CLAUDE.md 文档结构与实际目录一致",
+                detail=f"listed: {sorted(listed)} | actual: {sorted(actual_dirs)}",
+            )
+        )
+
     return findings
 
 
