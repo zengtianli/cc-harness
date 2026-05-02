@@ -35,7 +35,7 @@ projects:
     path: ~/Dev/Work/bids
     skills: [bid, resources, plan-first]
   reclaim:
-    path: ~/Dev/Work/zdwp/projects/reclaim
+    path: ~/Dev/Work/reclaim
     skills: [capacity, resources, plan-first, structure]
   international-assets:
     path: ~/Dev/content/investment
@@ -52,6 +52,18 @@ projects:
     path: ~/Dev/personal-kb
     skills: []
     notes: 个人知识库 SQLite DB（求职/投资/软著），CLI 在 bin/{apply,inv,sc}.py，详见项目 CLAUDE.md
+  devtools:
+    path: ~/Dev/devtools
+    skills: []
+    notes: 工具基建 repo（CC hooks / Git 工具 / paths / menus / repo_manager 等），全局工具，按需在子目录引用
+  wpl-calc:
+    path: ~/Dev/wpl-calc
+    skills: []
+    notes: HSBC WPL / Lombard 计算器（前端工具），无需特殊 skill 分发
+  stations:
+    path: ~/Dev/stations
+    skills: []
+    notes: 站群 meta-repo，子站各自有 .claude/ 配置；本注册项用于 stations/ 根级操作的 context
 
 standalone:
   - water-quality
