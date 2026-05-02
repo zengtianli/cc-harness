@@ -47,6 +47,7 @@ MON_FULL = {"January": 1, "February": 2, "March": 3, "April": 4, "May": 5,
             "November": 11, "December": 12}
 
 PDF_DECRYPT = Path.home() / ".claude/skills/pdf-decrypt/scripts/decrypt.py"
+STMT_DB_CLI = Path.home() / "Dev/personal-kb/bin/stmt.py"  # KB v1.0 Phase 2.B dual-write
 
 
 # ─── core utils ────────────────────────────────────────────────────────
@@ -443,8 +444,42 @@ def compute_rates(d: dict, hibor: float | None, hibor_src: str | None,
 
 # ─── MD renderers ──────────────────────────────────────────────────────
 
+def render_frontmatter(d: dict, kind: str, form: str, archive: str) -> list[str]:
+    """KB v1.0 Phase 2.B — 写 yaml frontmatter 让 stmt.py 能可靠 parse。
+    单层 key: value（不嵌套），stdlib yaml 解析器能处理。
+    """
+    L = ["---"]
+    L.append(f"statement_type: {form}")
+    L.append(f"statement_date: {d.get('statement_date', '')}")
+    if d.get("ac_no"):
+        L.append(f"account_no: {d['ac_no']}")
+    L.append(f"raw_pdf_path: raw/{archive}.pdf")
+    # 关键 numeric — 按可用性写
+    if d.get("net_position") is not None:
+        L.append(f"total_balance: {d['net_position']:.2f}")
+        L.append("total_currency: HKD")
+    elif d.get("portfolio_total_hkd") is not None:
+        L.append(f"total_balance: {d['portfolio_total_hkd']:.2f}")
+        L.append("total_currency: HKD")
+    if d.get("cash_interest") is not None:
+        L.append(f"interest_charged: {d['cash_interest']:.2f}")
+    if d.get("outstanding_loan") is not None:
+        L.append(f"loan_outstanding: {d['outstanding_loan']:.2f}")
+    elif d.get("wpl_outstanding") is not None:
+        L.append(f"loan_outstanding: {d['wpl_outstanding']:.2f}")
+    if d.get("effective_rate_pct") is not None:
+        L.append(f"loan_rate: {d['effective_rate_pct']:.4f}")
+    if d.get("hibor_1m_pct") is not None:
+        L.append(f"hibor: {d['hibor_1m_pct']:.4f}")
+    if d.get("spread_pct") is not None:
+        L.append(f"kfs_rate: {d['spread_pct']:.4f}")
+    L.append("---")
+    L.append("")
+    return L
+
+
 def md_premier_composite(d: dict, archive: str) -> str:
-    L = []
+    L = render_frontmatter(d, "premier-composite", "INVSTM0005", archive)
     L.append("> 隶属：[国际资产配置体系](../../README.md)")
     L.append(">")
     L.append("> 来源：HSBC `INVSTM0005` Premier 综合月结单")
@@ -517,7 +552,7 @@ def md_premier_composite(d: dict, archive: str) -> str:
 
 
 def md_wpl_daily(d: dict, archive: str) -> str:
-    L = []
+    L = render_frontmatter(d, "wpl-daily", "INVSTM0019", archive)
     L.append("> 隶属：[国际资产配置体系](../../README.md)")
     L.append(">")
     L.append("> 来源：HSBC `INVSTM0019` Investment + WPL 单日结单")
@@ -574,7 +609,7 @@ def md_wpl_daily(d: dict, archive: str) -> str:
 
 
 def md_wpl_monthly(d: dict, archive: str) -> str:
-    L = []
+    L = render_frontmatter(d, "wpl-monthly", "INVSTM0021", archive)
     L.append("> 隶属：[国际资产配置体系](../../README.md)")
     L.append(">")
     L.append("> 来源：HSBC `INVSTM0021` Investment + WPL 月结复合结单")
@@ -802,6 +837,20 @@ def process_pdf(pdf: Path, out_dir: Path, args) -> dict | None:
     md_path.write_text(md_text)
     print(f"[ok] {pdf.name} → {md_path}")
 
+    # KB v1.0 Phase 2.B — dual-write to statements.db
+    if not args.no_db and STMT_DB_CLI.exists():
+        try:
+            r = subprocess.run(
+                [sys.executable, str(STMT_DB_CLI), "import-single", str(md_path)],
+                capture_output=True, text=True, timeout=15,
+            )
+            if r.returncode == 0:
+                print(f"  → statements.db: {r.stdout.strip()}")
+            else:
+                print(f"  [warn] stmt.py import-single failed (rc={r.returncode}): {r.stderr.strip()}", file=sys.stderr)
+        except Exception as ex:
+            print(f"  [warn] stmt.py invoke error: {ex}", file=sys.stderr)
+
     if not args.no_archive:
         archive_pdfs(pdf, decrypted, out_dir, archive)
 
@@ -814,6 +863,7 @@ def main() -> int:
     ap.add_argument("--out", type=Path, default=Path("docs/statements/"))
     ap.add_argument("--no-archive", action="store_true")
     ap.add_argument("--no-index", action="store_true")
+    ap.add_argument("--no-db", action="store_true", help="skip dual-write to ~/Dev/personal-kb/data/statements.db")
     ap.add_argument("--regen-index", action="store_true")
     ap.add_argument("--hibor", type=float, default=None)
     ap.add_argument("--no-hibor", action="store_true")

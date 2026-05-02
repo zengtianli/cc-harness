@@ -43,6 +43,9 @@ python3 .../analyze.py monthly.pdf --start-date 2026-04-22
 # 跳过归档（PDF 留原地）
 python3 .../analyze.py *.pdf --no-archive
 
+# 跳过 statements.db dual-write
+python3 .../analyze.py *.pdf --no-db
+
 # JSON 输出（不写 MD，便于脚本消费）
 python3 .../analyze.py *.pdf --json
 
@@ -157,7 +160,27 @@ hsbc-statement (本 skill)
 源码：`~/Dev/tools/cc-configs/skills/hsbc-statement/`
 分发：`~/.claude/skills/hsbc-statement/`（symlink）
 
+## DB Dual-Write（KB v1.0 Phase 2.B）
+
+写 MD 时自动加 yaml frontmatter（`statement_type / statement_date / total_balance / interest_charged / loan_outstanding / loan_rate / hibor / kfs_rate / account_no / raw_pdf_path`），然后 invoke `~/Dev/personal-kb/bin/stmt.py import-single <md_path>` 入 statements.db。
+
+跨月 SQL 查询：
+
+```bash
+# 4 月所有月结
+python3 ~/Dev/personal-kb/bin/stmt.py query "statement_date > '2026-04'"
+
+# Lombard 利率走势（仅 INVSTM0021）
+python3 ~/Dev/personal-kb/bin/stmt.py lombard-history
+
+# 总览
+python3 ~/Dev/personal-kb/bin/stmt.py stats
+```
+
+`--no-db` 跳过 dual-write（开发 / 试跑场景）。stmt.py 不可用时只 warn，不 fail（MD 仍正常写）。
+
 ## 历史
 
 - v0.1 (2026-04-29) — 初版 `hsbc-wpl`，仅 INVSTM0019 + 利率反推
 - v0.2 (2026-04-29) — 改名 `hsbc-statement`，加 INVSTM0005 / INVSTM0021，多 PDF 批处理，自动归档，README 索引
+- v0.3 (2026-05-02) — KB v1.0 Phase 2.B：MD 加 yaml frontmatter + dual-write 到 `~/Dev/personal-kb/data/statements.db`
