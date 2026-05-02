@@ -34,8 +34,13 @@ python3 ~/Dev/devtools/lib/tools/paths.py audit --brief
 
 1. **项目** — CWD、git branch、脏/干净、未推 commit、最近一次 commit
 2. **CC 配置** — 是否有 `.claude/`、CLAUDE.md（+ H1）、`harness.yaml` 的全局 + 本项目 skills、合计加载数
-3. **交接状态** — 当前层 `handoffs/*.md` 全列（每条 age + H1）；`>1` 份并行时高亮 slug 数量；最新一份提取 `- [ ]` / 「下一轮/待办/遗留」条目；本层无 → 走 `~/Dev/handoffs/` Dev-meta 层；legacy `HANDOFF*.md` 兜底
-4. **📍 paths** — `paths.py audit --brief` 的单行输出原样展示；dead > 0 在第 5 段追加 hint "路径死链偏多，考虑跑 `paths.py scan-dead --strict` 定位"
+3. **交接状态** — 多输入感知（与 `/wrap` 对称）：
+   - **当前层 `handoffs/*.md` 全列**（每条 age + H1）；本层无 → 走 `~/Dev/handoffs/` Dev-meta 层；legacy `HANDOFF*.md` 兜底
+   - **单 handoff** → 提取前 6 条待办（priority marker 高亮：`**[P0]**` 加粗 / `~~[defer-vX.Y]~~` 灰化 / `⏳[external]` 等候）
+   - **多 handoff 并行**（`>1` 份）→ 跨全部 handoff 汇总待办（每 slug ≤3 条，总 ≤12），按 slug 分组展示；priority marker 同上规则解析
+   - **slug 推荐**（仅多 handoff 触发）→ warmup 调 `_suggest_slug(cwd, existing, git_branch)`：branch 匹配某 slug → 复用；否则推荐"基于 branch / cwd-name / 含日期"新 slug，避免串线
+   - **其他活跃 handoff**（跨项目最近 3 份）→ 通知性展示（不解析待办，只看到上下文）
+4. **📍 paths** — `paths.py audit --brief` 的单行输出原样展示；dead `1-50` 第 5 段追加 hint；dead `>50` 升级为「下一步」首项 + 建议 `paths.py scan-dead --strict`（与 `/wrap` Phase 3.0a 阶梯一致）
 
 ---
 

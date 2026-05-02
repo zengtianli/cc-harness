@@ -17,6 +17,73 @@ description: 会话收尾族 — recap 复盘 / retro 写 playbook / handoff 全
 
 ---
 
+## § 跨子命令编排协议
+
+四子命令的**唯一入口 / 参数透传 / 数据一致性**底层契约。新增子命令前先来这里加一行。
+
+### 1. 共享产物的唯一写入责任
+
+**每个产物只允许一个子命令写**（其他子命令读不写，避免重复 / 冲突 / 漂移）：
+
+| 产物 | 唯一写入者 | 时机 | 其他子命令 |
+|---|---|---|---|
+| `~/Dev/stations/docs/knowledge/INDEX.md` | **retro** Step 4 | 建中央 symlink 后追加倒序行 | handoff/recap/distill 禁写 |
+| `~/Dev/tools/cc-configs/skill-tracker.json` | **recap** Step 3.2 | 更新 last_used / use_count / correction_count | handoff/retro/distill 禁写 |
+| `~/Dev/tools/cc-configs/skill-candidates.md` | **recap** Step 3.2 | 候选追加或 use_count++ | handoff/retro/distill 禁写 |
+| `<root>/handoffs/<slug>.md` | **handoff** Step 3.1 | 建 / 覆盖更新 | recap/retro/distill 禁写 |
+| `<主项目>/docs/retros/session-retro-{date}-{slug}.md` | **retro** Step 2 / **recap** Step 4 | recap 默认调 retro 内部逻辑（共享 Step 1 主项目判别） | handoff/distill 禁写 |
+| `~/.claude/commands/*.md` | **distill** Phase 4 (`--apply` 模式) | 同名冲突列 diff 让用户决 | 其他子命令禁写 |
+
+### 2. Priority marker 格式（待办标准化）
+
+handoff Step 3.1 / recap Step 4 写入待办时，**统一用 priority marker** — `/start` 才能解析出优先级展示：
+
+```markdown
+- [ ] [P0] 必须本会话闭环（blocking）— 一句话决策
+  - 详细背景 / 约束 / 验收
+- [ ] [P1] 下 1-2 会话内做（critical path）
+- [ ] [P2] nice-to-have（不阻塞）
+- [ ] [defer-v0.3] 明确推延到 v0.3
+- [ ] [external] 等用户操作 / 等第三方（如等 RM 回复 / 等买域名）
+- [ ] 无 marker — 视同 P2
+```
+
+**判别**：
+- `[P0]` = 用户怒怼级 / 数据错误 / 阻塞下一步
+- `[P1]` = 应做但能 defer 一两轮
+- `[defer-vX.Y]` = 用户**明确说**"留下次"才打（不允许 CC 主动 defer，参见全局 CLAUDE.md "完成度纪律"）
+- `[external]` = 阻塞点不在 CC，等外部输入
+
+### 3. handoff ↔ recap 内部调用合约
+
+handoff Phase 1 内部调 recap，**参数透传 + step 复用**避免重跑：
+
+| recap step | handoff Phase 1 行为 |
+|---|---|
+| Step 1 回顾对话 | ✅ 跑（必须） |
+| Step 2 改进经验 | ✅ 跑（必须） |
+| Step 3.1-3.4 Memory/Skills/Commands/CLAUDE.md | ✅ 跑（必须） |
+| Step 3.5 paths audit | ⏭️ **跳过** — 复用 handoff Phase 3.0a 的结果（同会话同结果不重跑） |
+| Step 4 session-retro 写入 | ✅ 跑（必须） — 主项目判别复用 handoff Phase 3.0 |
+
+**独立 `/wrap recap`**（不经 handoff）：Step 3.5 必跑（无上游可复用）。
+
+### 4. multi-slug 共存协调
+
+同项目 `handoffs/` 已有 N 份并行时，handoff 子命令默认改哪个？**判别矩阵**：
+
+| 当前会话与已有 slug 关系 | 决策 | 操作 |
+|---|---|---|
+| 任务描述匹配某 slug（AskUserQuestion 确认） | **同任务多轮** | 复用该 slug，文件覆盖；顶部 banner 加"共 N 轮 → vN.x" |
+| 是某 slug 的明显续接（"PR1 完成 → PR2"） | **同任务续接** | 复用该 slug，banner 推版本号 |
+| 与所有 slug 都无关（新需求 / 新 PR） | **新任务** | 建新 slug，并存互不覆盖 |
+| 用户说"上轮闭环了，新的来了" | **闭旧建新** | `/wrap handoff --close <旧 slug>` 后建新 slug |
+| 模糊不定 | **建新更安全** | AskUserQuestion 让用户拍板，倾向新 slug |
+
+`/start` 入场时调 warmup 跨 handoff 汇总待办，按 priority marker 高亮 — 看到全景再决策。
+
+---
+
 ## handoff — 会话收尾与交接（推荐默认）
 
 一步完成复盘、配置升级、交接文件生成。
@@ -90,8 +157,12 @@ mkdir -p <root>/handoffs/_archive
 {已完成工作，按逻辑分组}
 
 ## 待完成
-- [ ] {具体任务}
-  - {关键决策、设计思路、注意事项}
+- [ ] [P0] {具体任务} — {一句话决策 / 上下文}
+  - {详细背景 / 约束 / 验收方式}
+- [ ] [P1] ...
+- [ ] [defer-v0.x] ...   # 用户明确说"留下次"才打
+
+# marker 格式见顶部「§ 跨子命令编排协议」第 2 节
 
 ## 关键文件
 | 文件 | 说明 |
@@ -126,7 +197,7 @@ mkdir -p <root>/handoffs/_archive
 ### 规则
 - `handoffs/<slug>.md` 的受众是下一个 CC 会话，写得像技术文档不是散文
 - 关键文件用完整绝对路径
-- 待完成项用 `- [ ] xxx` 显式标记 + 附带思路和决策
+- 待完成项用 `- [ ] [P0/P1/P2/defer-v0.x/external] xxx` 标准格式（见「§ 跨子命令编排协议」第 2 节）— /start 才能解析高亮
 - 踩过的坑写根因和解法
 - `quick` 模式跳过 Phase 1+2
 - 关闭旧 handoff：`/wrap handoff --close <旧 slug>` 或手工 `mv <root>/handoffs/<旧 slug>.md <root>/handoffs/_archive/$(date +%F)-<旧 slug>.md`
@@ -166,19 +237,23 @@ mkdir -p <root>/handoffs/_archive
 
 4. **CLAUDE.md** — 当前项目新约束或路径变化需记录？
 
-### Step 3.5: Paths 健康体检（阶梯式严格度）
+### Step 3.5: Paths 健康体检（**复用上游 / 独立运行才跑**）
+
+**handoff 内部调用**（默认路径）：handoff Phase 3.0a 已跑过 `paths.py audit --brief`，本步**复用结果**，不重跑（详见「§ 跨子命令编排协议」第 3 节）。
+
+**独立 `/wrap recap`**（不经 handoff）：本步必跑：
 
 ```bash
 python3 ~/Dev/devtools/lib/tools/paths.py audit --brief
 ```
 
-按 dead 数量分级处理：
+按 dead 数量分级（与 handoff Phase 3.0a 一致）：
 
 | dead 数 | 处理 |
 |---|---|
 | `0` | 不写入 retro |
-| `1-50` | 把 `audit --brief` 输出记入 retro「未完成项」节 |
-| `> 50` | **升级**：记入「未完成项」节首项 + 建议下次跑 `paths.py scan-dead --strict` 定位 |
+| `1-50` | 记入 retro「未完成项」节 |
+| `> 50` | **升级**：记入「未完成项」首项 + 建议跑 `paths.py scan-dead --strict` |
 
 ### Step 4: 用户侧记录
 
@@ -218,210 +293,87 @@ python3 ~/Dev/devtools/lib/tools/paths.py audit --brief
 
 ---
 
-## retro — Playbook 式复盘
+## retro — Playbook 式复盘（受众：用户）
 
-**Playbook，不是工具调用清单**。受众是用户，产出"这类任务的标准 slash command 编排流程"。
+**Playbook，不是工具调用清单**。产出"这类任务的标准 slash command 编排流程"，让用户下次能抄。
+
+通常由 handoff Phase 1 内部链路生成；也可手工 `/wrap retro` 单跑（已有 retro，做后期补充提炼）。
 
 ### 参数
-- 无参数 → 走「主项目目录 + 中央 symlink」双向链接模式（见下方「输出位置规则」）
-- `--central` → 强制只写中央位置 `~/Dev/stations/docs/knowledge/session-retro-{YYYYMMDD}-{topic-slug}.md`，不建 symlink。明确不属于单一项目（跨多 repo / `~/Dev` meta 级）时用
-- `--stdout` → 只输出屏幕，不落盘
-- `--path <path>` → 显式指定物理文件路径（仍会建中央 symlink + 更新 INDEX.md，除非 `--central`）
-- 短描述（如 `r7 mega`）→ 作为 topic-slug
+- 无参数 → 默认主项目 + 中央 symlink 双链（启发式判主项目同 handoff Phase 3.0）
+- `--central` → 仅写中央 `~/Dev/stations/docs/knowledge/session-retro-{YYYYMMDD}-{topic-slug}.md`（跨多 repo / meta 级用）
+- `--stdout` → 只输出不落盘
+- `--path <path>` → 显式指定物理文件位置
+- 短描述（如 `r7 mega`）→ 作 topic-slug
 
-### 输出位置规则（默认行为）
+### 输出位置（默认行为）
 
-**Step 1 · 判主项目**（复用 handoff Phase 3.0 的启发式）：
-1. 盘点本轮所有 Edit/Write 文件绝对路径
-2. 按 `~/Dev/{stations,labs,content,tools,devtools,migrated}/<top>` 归组
-3. 唯一桶 ≥70% 改动 → 主项目 = 该 repo 根目录
-4. 跨 3+ repo 且根级文件占主 → 无主项目 → 自动走 `--central`
-5. 模糊用 AskUserQuestion 让用户选
+1. **判主项目**（启发式）：盘点本轮 Edit/Write 路径 → 唯一桶 ≥70% → 主项目；跨 3+ repo 自动走 `--central`；模糊 AskUserQuestion
+2. **物理文件**：`<主项目>/docs/retros/session-retro-{YYYYMMDD}-{topic-slug}.md`（topic-slug 与文件名一致即可，无需"文学化"）
+3. **中央 symlink**：`~/Dev/stations/docs/knowledge/session-retro-{YYYYMMDD}-{topic-slug}.md` → 物理文件（用 `~/Dev/tools/cc-configs/tools/retro-symlink/retro_symlink.py link <物理文件>` 一句话搞定，自动算相对路径 + 更新 INDEX.md）
+4. **INDEX.md** 追加倒序行（**仅 retro 写**，见「§ 跨子命令编排协议」第 1 节）
 
-**Step 2 · 写物理文件到主项目**：
-- 路径：`<主项目>/docs/retros/session-retro-{YYYYMMDD}-{topic-slug}.md`
-- 例：`~/Dev/wpl-calc/docs/retros/session-retro-20260501-wpl-calc-v08.md`
-- `docs/retros/` 不存在则 `mkdir -p`
+### 硬约束 · Playbook 格式
 
-**Step 3 · 中央位置建相对 symlink**：
-- 路径：`~/Dev/stations/docs/knowledge/session-retro-{YYYYMMDD}-{topic-slug}.md`
-- macOS 命令（POSIX）：`cd ~/Dev/stations/docs/knowledge && ln -s "$(python3 -c "import os,sys; print(os.path.relpath(sys.argv[1], '.'))" <物理文件绝对路径>)" session-retro-{YYYYMMDD}-{topic-slug}.md`
-- 或用 `~/Dev/tools/cc-configs/tools/retro-symlink/retro_symlink.py link <物理文件>` 一句话搞定（自动算相对路径 + 更新 INDEX.md）
+写完前问自己：
+- 用户下次遇到类似任务，**抄这份 MD 哪几行就能指挥 CC**？
+- 我本该用 skill 却走了 bash 的地方在哪？用户看完能纠正我吗？
+- 这套流程能抽象成多少条 `/command` 编排？
 
-**Step 4 · 更新中央索引 `~/Dev/stations/docs/knowledge/INDEX.md`**：
-- 文件不存在则创建，骨架：
-  ```markdown
-  # Session Retros 索引
+答得出 = 好 playbook；答不出 = 工具调用流水账，作废重写。
 
-  > 中央查询入口。物理文件分散在各项目 `docs/retros/`，本目录是 symlink 集合。
+必有节（顺序固定）：
+1. **核心编排**（ASCII 流程图，slash command 串联，`/start` → 主体 → `/wrap handoff` 收口）
+2. **每 Phase 节**：用什么 `/command` / 触发时机 / 本次怎么做（漏用 skill 老实说"走了 bash"）/ 正确姿势 / 下次记得
+3. **通用 Playbook**：抽象成可复用模板
+4. **本次漏了什么 skill**：诚实标出"本该用 /xxx 但走了 bash"，让用户能纠正
 
-  ## 时间线
-  ```
-- 在「时间线」节追加一行（按日期倒序，最新在上）：
-  `- {YYYY-MM-DD} · {主项目名} · {topic-slug 中文化简述} → {物理路径绝对地址}`
-- 例：`- 2026-05-01 · wpl-calc · v0.8 carry 数学模型重构 → ~/Dev/wpl-calc/docs/retros/session-retro-20260501-wpl-calc-v08.md`（topic-slug 与文件名一致即可，无需"文学化"）
+**反例 vs 正解**：
+- ❌「Write × 3 / Edit × 5 / Bash × 12」工具流水账
+- ✅「Phase 2 PR1 SSOT 改造，验证 /menus-audit（本次走了 bash，下次记得用 skill）」
 
-**`--central` 模式**：跳过 Step 1/2 项目判断，直接落 `~/Dev/stations/docs/knowledge/session-retro-{YYYYMMDD}-{topic-slug}.md`，不建 symlink；INDEX.md 仍追加一行，物理路径写中央位置自身。
-
-### 硬约束 · playbook 格式
-
-#### 必有「核心编排」节（放最前）
-
-ASCII 流程图按阶段串起 slash command / skill：
-
-```
-用户口令「...」
-  ↓
-【入场】     /warmup
-  ↓
-【规划】     Plan mode + AskUserQuestion + ExitPlanMode
-  ↓
-【PR1】      Edit 核心文件
-             /menus-audit
-             /repo ship <repo1> <repo2>
-  ↓
-【PR2】      /refresh-site --kind navbar
-             /deploy <site1>
-             /deploy <site2>
-  ↓
-【收尾】     /wrap handoff
-```
-
-关键数字总结：**X 个现成 skill 本该用但漏了**、**Y 个新造**。
-
-#### 每个 Phase 节必含
-1. 用什么 `/command` 或 skill（标题级）
-2. 触发时机
-3. 本次怎么做的（漏用 skill 老实说"走了 bash"）
-4. 正确姿势
-5. 替代方案
-6. 下次记得（一句话指挥建议）
-
-不要写工具调用次数 / Read/Edit/Write 文件清单 / bash 命令原文 — 这些是工具链细节，不是 playbook。
-
-#### 必有「通用 Playbook」节（后半）
-
-抽象成可复用模板：
-
-```
-下次站群/navbar 改造抄这个走：
-
-1. /warmup
-2. Plan mode + AskUserQuestion
-3. 核心改造（Edit）
-4. /menus-audit
-5. /repo ship <ssot repo>
-6. /refresh-site --kind {navbar,header,content}
-7. /deploy × N
-8. /menus-audit（再跑）
-9. /wrap handoff
-```
-
-#### 必有「本次漏了什么 skill」节
-
-诚实标出本该用 slash command 却走了 bash：
-
-```
-我在本次犯的流程错误：
-1. 开头没 /warmup
-2. 验证用 bash 跑 python3 → 应 /menus-audit
-3. 部署手工 cd + bash deploy.sh × 4 → 应 /deploy <name> × 4
-
-下次你看到我手工 bash 做本该有 skill 的事，直接说"用 /xxx"。
-```
-
-### 怎么识别"应该用的 skill"
-
-1. 通读会话，提取每个关键动作
-2. 查 available-skills 列表对照
-3. 匹配：找到 → 标"本该用 /xxx"；找不到 → 标"无 skill，保留工程工作"
-4. 分类：工程工作 vs 编排动作
-
-常见可 skill 化的动作：
+### 常见可 skill 化动作映射
 
 | 动作 | skill |
 |---|---|
-| 进项目看状态 | `/warmup` |
+| 进项目看状态 | `/start` |
 | 验证 yaml/配置 | `/menus-audit` `/cf audit` `/repo audit` |
 | 同步 SSOT | `/refresh-site --kind {all,navbar,header,content}` |
 | 部署 | `/deploy <name>` `/site ship <name>` |
 | commit + push | `/repo ship <repo1> <repo2>` |
-| 健康检查 | `/health sites` `/health vps` `/health project` |
-| 会话收尾 | `/wrap handoff` `/wrap recap` `/wrap retro` |
+| 健康检查 | `/health {sites,vps,project}` |
 | 整理目录 | `/tidy <path>` |
-| 代码简化 | `/simplify` |
-| 项目脚手架 | `/harness` |
+| 收尾 | `/wrap handoff` |
 
-### 反例 vs 正解
+详细识别流程：通读会话 → 提取每个关键动作 → 查 available-skills 对照 → 找到=标"本该用 /xxx" / 找不到=保留工程工作。
 
-❌ 工具调用清单（流水账）—「Write × 3 / Edit × 5 / Bash × 12」
+## distill — 从项目提炼到全局（受众：全局知识库）
 
-✅ Playbook —「Phase 2 · PR1 · SSOT 改造 · 验证 /menus-audit（本次走了 bash，下次记得用 skill）」
+从当前项目提炼**可复用 commands / 踩坑 / playbook 骨架**到全局。适用任意 `~/Dev/` 或 `~/Dev/Work/` 项目。
 
-### 心智模型
-
-写时问自己：
-1. 用户下次遇到类似任务，抄这份 MD 哪几行就能指挥 CC？
-2. 我本该用 skill 却走了 bash 的地方在哪？用户看完能纠正我吗？
-3. 这套流程能抽象成多少条 `/command` 编排？
-
-答得出 1/2/3 = 好 playbook；答不出 = 工具清单，作废重写。
-
----
-
-## distill — 从项目提炼到全局
-
-从当前项目提炼可复用 commands / 踩坑 / 脚本模式 / Playbook 骨架，内化到全局。**适用任意 ~/Dev/ 或 ~/Dev/Work/ 项目**。
+通常单独跑 `/wrap distill`（不走 handoff 内部链）；高频 distill 是新工作模式从项目下沉到全局的方式。
 
 ### 参数
-- 无参数：分析当前目录，输出提炼报告
-- `--apply`：执行提炼（复制 commands、更新 CLAUDE.md、写 playbook）
-- `--dry-run`：只报告，不写文件
-- `--skip-playbook`：跳过 Phase 6
+- 无参数 → 分析当前目录，输出提炼报告（不落盘）
+- `--apply` → 真正执行（cp commands / 更新 CLAUDE.md / 写 playbook）
+- `--dry-run` → 报告但不写
+- `--skip-playbook` → 跳过 Phase 6
 
-### 流程
+### 流程速览
 
-#### 1. 盘点本项目产出
-扫：`.claude/commands/*.md` / `scripts/*.py` / `HANDOFF.md` 踩坑 / `成果/md/*-改动草稿.md`
-
-#### 2. 对比全局现有
-检查每个本地 command 是否在 `~/.claude/commands/` 存在。同时检查 domain CLAUDE.md 踩坑记录。
-
-#### 3. 生成提炼报告
-表格：类别 / 项目 / 状态（🆕 / ✅）/ 建议
-
-#### 3.5 Slash 生态审计（全局）
-
-扫 `~/Dev/tools/cc-configs/commands/*.md` 所有 description 行，按 4 类问题产出 `~/Dev/stations/docs/knowledge/slash-audit-{YYYYMMDD}.md`：
-
-| 问题 | 识别 | 举例 | 建议 |
-|---|---|---|---|
-| ① 重叠 | 2+ 命令同类动作 | `/wrap recap` vs `/wrap handoff`（后者含前者） | 文档说明分工 |
-| ② 职责错位 | 命令实际是 skill 级工作流 | `/wrap distill` 编排 7 phase | 降级 skill 或文档注明 |
-| ③ 空隙 | 高频动作无 skill | nginx 写入若未来要拆 | 新增 skill |
-| ④ 冗余 | 命令被更强命令完全包含 | bash wrapper | 标"可删 / 保留快捷方式" |
-
-`--apply` 模式：每条建议前 AskUserQuestion 确认；不 apply 则仅产报告。
-
-#### 4. 执行提炼（`--apply`）
-1. 泛化 commands（移除项目特有引用）
-2. `cp` 到 `~/.claude/commands/`
-3. 更新 domain CLAUDE.md 踩坑节
-4. 同步 `_template/.claude/commands/`
-
-#### 5. 验证
-列全局 commands 确认已注册；grep CLAUDE.md 确认踩坑写入。
-
-#### 6. Playbook 归档（默认启用，`--skip-playbook` 关）
-
-cwd 前缀匹配 domain：
+1. **盘点本项目产出**：`.claude/commands/*.md` / `scripts/*.py` / handoff 踩坑节 / 草稿
+2. **对比全局现有**：每个 local command 是否已在 `~/.claude/commands/` 存在；domain CLAUDE.md 踩坑是否已记
+3. **生成提炼报告**：表格（类别 / 项目 / 状态 🆕/✅ / 建议）
+4. **Slash 生态审计**（写到 `~/Dev/stations/docs/knowledge/slash-audit-{YYYYMMDD}.md`）：扫所有 `commands/*.md` description，按 4 类问题 — ① 重叠 / ② 职责错位 / ③ 空隙 / ④ 冗余 — 列建议
+5. **执行提炼**（`--apply`）：泛化（移除项目特有引用）→ `cp` 到 `~/.claude/commands/`（**唯一写入入口**，见「§ 跨子命令编排协议」第 1 节）→ 同名冲突列 diff 让用户决 → 更新 domain CLAUDE.md 踩坑节
+6. **Phase 6 · Playbook 归档**（按 cwd 前缀匹配 domain）：
 
 | cwd 前缀 | domain | playbook 文件 |
 |---|---|---|
 | `~/Dev/Work/bids/` | `bids` | `~/Dev/Work/_playbooks/bids/` |
 | `~/Dev/Work/eco-flow/` | `eco-flow` | `~/Dev/Work/_playbooks/eco-flow/` |
 | `~/Dev/Work/zdwp/projects/reclaim/` | `reclaim` | `~/Dev/Work/_playbooks/reclaim/` |
-| `~/Dev/Work/zdwp/projects/*/` | `zdwp-<子项目名>` | `~/Dev/Work/_playbooks/zdwp-*/` |
+| `~/Dev/Work/zdwp/projects/*/` | `zdwp-<子项目>` | `~/Dev/Work/_playbooks/zdwp-*/` |
 | `~/Dev/<name>/`（站群） | `stations` | `~/Dev/tools/configs/playbooks/stations.md` |
 | `~/Dev/<name>/`（新站） | `web-scaffold` | `~/Dev/tools/configs/playbooks/web-scaffold.md` |
 | `~/Dev/hydro-*/` | `hydro` | `~/Dev/tools/configs/playbooks/hydro.md` |
@@ -429,25 +381,15 @@ cwd 前缀匹配 domain：
 | `~/Dev/tools/cc-configs/` 或 slash 整顿 | `cc-meta` | `~/Dev/tools/configs/playbooks/META.md` §5 |
 | 其他 | 询问用户 | — |
 
-**首次 distill（无 playbook）**：建文件，按 README 模板填时间轴 / CC 命令 Skills / 脚本清单（可复用度 高/中/低）/ 踩坑 / 下次复用建议 / 可抽 skill 候选；INDEX.md 加一行。
-
-**已有 playbook（追加）**：末尾 `## 后续会话追加 <YYYY-MM-DD>` 小节；INDEX.md 更新"最近更新"列。
-
-写入策略：`--apply` 执行；分析模式只输出"将写入 X 字节到 Y 路径"。
-
-#### 7. 验证 Playbook 归档
-- `test -f` 确认生成
-- `grep` INDEX.md 确认索引注册
-- 输出 playbook 路径
+- **首次（无 playbook）**：建文件按 META.md §3 8 节骨架填
+- **已有 playbook**：末尾 `## 后续会话追加 <YYYY-MM-DD>` 小节
+7. **验证**：`test -f` + grep INDEX.md 确认归档；输出 playbook 路径
 
 ### 关键约束
-1. 泛化而非照搬（移除项目名 / 文件名 / 章节号）
-2. 不覆盖已有全局 command — 同名不同内容则列 diff 让用户决定
-3. 踩坑不重复（先检查 domain CLAUDE.md）
-4. 变更前向用户确认
-5. Playbook 写入保持时间轴 + 命令清单简洁颗粒度
-
----
+1. 泛化而非照搬（移除项目特有名 / 文件名 / 章节号）
+2. **不覆盖**已有全局 command — 同名不同内容列 diff 让用户决
+3. 踩坑不重复（先 grep domain CLAUDE.md）
+4. Playbook 时间轴 + 命令清单简洁颗粒度
 
 ## 参考
 
