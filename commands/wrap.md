@@ -8,7 +8,7 @@ description: 会话收尾族 — recap 复盘 / retro 写 playbook / handoff 全
 
 | 子命令 | 受众 | 产出 |
 |---|---|---|
-| `handoff` | 下次会话 | HANDOFF.md + recap + harness 三合一（默认） |
+| `handoff` | 下次会话 | `handoffs/<slug>.md` + recap + harness 三合一（默认） |
 | `recap` | CC 自己 | 更新 memory/skills/commands，session-retro MD |
 | `retro` | 用户 | Playbook 式复盘（slash command 编排流程） |
 | `distill` | 全局知识库 | 从项目提炼 commands / 踩坑 / playbook 骨架 |
@@ -22,8 +22,10 @@ description: 会话收尾族 — recap 复盘 / retro 写 playbook / handoff 全
 一步完成复盘、配置升级、交接文件生成。
 
 ### 参数
-- 无参数 → 完整流程（recap + harness + HANDOFF.md）
-- `quick` → 跳过 recap 和 harness，只生成 HANDOFF.md
+- 无参数 → 完整流程（recap + harness + `handoffs/<slug>.md`）
+- `--slug <name>` → 显式 slug（推荐）。没传则 AskUserQuestion 让用户起或用 `<git-branch>` 兜底
+- `quick` → 跳过 recap 和 harness，只生成 `handoffs/<slug>.md`
+- `--close <slug>` → 闭环：把 `handoffs/<slug>.md` 移到 `handoffs/_archive/$(date +%F)-<slug>.md`，不写新文件
 
 ### Phase 1: 复盘（内部调 recap 流程）
 
@@ -43,39 +45,38 @@ python3 ~/Dev/devtools/lib/tools/paths.py audit --brief
 
 dead > 0 不阻塞，但必须把这一行原样记入生成的 HANDOFF.md「踩过的坑」或「待完成」节。
 
-#### Step 3.0b · 多轮项目识别与版本号闭环
-
-判断本轮是否属于多轮项目（任一命中即是）：
-- 当前目录已有 `HANDOFF-<topic>-v0.N-*.md` 或 `HANDOFF-*-v1.X-*.md`
-- 本轮对话出现 `v0.X` / `v1.X` / "第 X 轮" / "下一轮" / "终点"
-- 上轮 HANDOFF.md 顶部 banner 含 `共 N 轮 → v1.0`
-
-命中后必须用 AskUserQuestion 一次问全 4 项：本轮 v0.几？总共多少轮？v1.0 = 什么样？本轮闭环了哪个子任务？
-
-未命中 → 跳过此步，走默认 `HANDOFF.md`。
-
-##### 文件名约定
-- 单轮：`HANDOFF.md`
-- 多轮：`HANDOFF-<topic>-v0.N-YYYY-MM-DD.md`
-
-##### 多轮 HANDOFF 必含节
-- 顶部 banner：`> 这是 <topic> 项目的 v0.N（共 N 轮 → v1.0）— 终点：<v1.0 验收标准>`
-- 「本轮闭环」节：本轮做完了哪几件事，分别对应路线图哪一步
-- 「下一轮 (v0.N+1)」节：下个会话该做什么 + 启动指令
-
-#### Step 3.0 · 判主项目（确定落地目录）
+#### Step 3.0 · 判主项目（确定 `<root>` 目录）
 
 启发式：
 1. 盘点本轮所有 Edit/Write 文件绝对路径
 2. 按 `~/Dev/{stations,labs,content,tools,devtools,migrated}/<top>` 归组
-3. 唯一桶 ≥70% 改动 → 落该 repo 根；跨 3+ repo 且根级文件占主 → `~/Dev/HANDOFF.md`；模糊用 AskUserQuestion 让用户选
+3. 唯一桶 ≥70% 改动 → `<root>` = 该 repo 根；跨 3+ repo 且根级文件占主 → `<root>` = `~/Dev`；模糊用 AskUserQuestion 让用户选
 
-#### Step 3.1 · 写入
+#### Step 3.0b · slug 确定（option E · 2026-05-02 立）
+
+写到 `<root>/handoffs/<slug>.md`，**禁用**裸 `<root>/HANDOFF.md`（旧 SSOT 已废）。多并行任务靠不同 slug 隔离，互不覆盖。
+
+**slug 来源（优先级）**：
+1. `--slug <name>` 显式参数 → 直接用
+2. 缺失 → AskUserQuestion 让用户给（带候选：当前 git branch / 上轮 slug / `main`）
+3. 用户没回 → 用 git branch；branch = `main`/`master` → 用 `main` 兜底
+
+**slug 命名**：kebab-case + 任务关键词（`nav-merge` / `ops-console-hammerspoon` / `28-doms-audit`）。**禁带日期 / 版本号** — 日期看 mtime，多轮同 slug 覆盖更新。
+
+**多轮 / 多版本**：保持同 slug，文件覆盖；**不**开 `<slug>-v0.1.md` `<slug>-v0.2.md`。要保留历史 → 先关闭旧 slug（`/wrap handoff --close <旧 slug>`，mv 进 `_archive/`）再开新 slug。
+
+#### Step 3.0c · 准备目录
+
+```bash
+mkdir -p <root>/handoffs/_archive
+```
+
+#### Step 3.1 · 写入 `<root>/handoffs/<slug>.md`
 
 格式：
 
 ```markdown
-# Handoff · {项目名}
+# Handoff · {项目名} · {slug}
 
 > {YYYY-MM-DD} · {一句话当前状态}
 
@@ -98,6 +99,8 @@ dead > 0 不阻塞，但必须把这一行原样记入生成的 HANDOFF.md「踩
 {建议第一条指令}
 ```
 
+可选多轮 banner（顶部追加）：`> 共 N 轮 → v1.0 · 本轮闭环：xxx`
+
 ### Phase 4: 输出汇总
 
 ```
@@ -106,7 +109,8 @@ dead > 0 不阻塞，但必须把这一行原样记入生成的 HANDOFF.md「踩
 复盘（中央 symlink）：~/Dev/stations/docs/knowledge/session-retro-{date}.md
 记忆：更新 {N} 条 / 新增 {N} 条
 配置：{更新了什么 / 无需更新}
-交接：{HANDOFF.md 的绝对路径}
+交接：{<root>/handoffs/<slug>.md 的绝对路径}
+本项目并行 handoff：{N} 份（含本次）— 见 `ls <root>/handoffs/`
 待办：{N} 项未完成
 下个会话启动：{建议指令}
 ```
@@ -114,13 +118,14 @@ dead > 0 不阻塞，但必须把这一行原样记入生成的 HANDOFF.md「踩
 无主项目（`--central` 或跨多 repo）→ 复盘行只显示中央路径。
 
 ### 规则
-- HANDOFF.md 的受众是下一个 CC 会话，写得像技术文档不是散文
+- `handoffs/<slug>.md` 的受众是下一个 CC 会话，写得像技术文档不是散文
 - 关键文件用完整绝对路径
-- 待完成项附带思路和决策，不只是标题
+- 待完成项用 `- [ ] xxx` 显式标记 + 附带思路和决策
 - 踩过的坑写根因和解法
 - `quick` 模式跳过 Phase 1+2
-- 旧 HANDOFF（话题已换且有保留价值）→ `mv` 到 `~/Dev/stations/docs/handoffs/{YYYYMMDD}-{topic}.md`
-- HANDOFF 落地：单 station 改动 → station 目录；跨站群 / ~/Dev 结构 → `~/Dev/HANDOFF.md`
+- 关闭旧 handoff：`/wrap handoff --close <旧 slug>` 或手工 `mv <root>/handoffs/<旧 slug>.md <root>/handoffs/_archive/$(date +%F)-<旧 slug>.md`
+- 落地：单 station 改动 → `<station>/handoffs/<slug>.md`；跨站群 / ~/Dev meta 级 → `~/Dev/handoffs/<slug>.md`
+- 没有 INDEX.md / 没有 symlink — `ls handoffs/` 就是 query
 
 ---
 

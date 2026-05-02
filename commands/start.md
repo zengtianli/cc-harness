@@ -34,7 +34,7 @@ python3 ~/Dev/devtools/lib/tools/paths.py audit --brief
 
 1. **项目** — CWD、git branch、脏/干净、未推 commit、最近一次 commit
 2. **CC 配置** — 是否有 `.claude/`、CLAUDE.md（+ H1）、`harness.yaml` 的全局 + 本项目 skills、合计加载数
-3. **交接状态** — 本项目 HANDOFF.md（若无则看全局 `~/Dev/HANDOFF.md`）年龄 + H1 + 抽取的"下一轮/待办/遗留"条目
+3. **交接状态** — 当前层 `handoffs/*.md` 全列（每条 age + H1）；`>1` 份并行时高亮 slug 数量；最新一份提取 `- [ ]` / 「下一轮/待办/遗留」条目；本层无 → 走 `~/Dev/handoffs/` Dev-meta 层；legacy `HANDOFF*.md` 兜底
 4. **📍 paths** — `paths.py audit --brief` 的单行输出原样展示；dead > 0 在第 5 段追加 hint "路径死链偏多，考虑跑 `paths.py scan-dead --strict` 定位"
 
 ---
@@ -250,7 +250,7 @@ mcp__auggie__codebase-retrieval(
 
 建议：
   → engineering-mode 已加载，破坏性操作记得 Plan mode
-  → HANDOFF.md 1 天前，可读取上次进度
+  → handoffs/<slug>.md 1 天前，可读取上次进度（多份并行则提示 slug 数）
   → 下一步按 META.md §5 trigger words 匹配 playbook
 
 提交? [Y/n]
