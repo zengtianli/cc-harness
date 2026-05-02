@@ -37,13 +37,19 @@ description: 会话收尾族 — recap 复盘 / retro 写 playbook / handoff 全
 
 ### Phase 3: 生成 HANDOFF.md
 
-#### Step 3.0a · Paths 健康体检（提示不阻塞）
+#### Step 3.0a · Paths 健康体检（阶梯式严格度）
 
 ```bash
 python3 ~/Dev/devtools/lib/tools/paths.py audit --brief
 ```
 
-dead > 0 不阻塞，但必须把这一行原样记入生成的 HANDOFF.md「踩过的坑」或「待完成」节。
+按 dead 数量分级处理（不阻塞 commit，但写入 handoff）：
+
+| dead 数 | 处理 |
+|---|---|
+| `0` | 不写入 handoff |
+| `1-50` | 把 `audit --brief` 输出原样记入 handoff「踩过的坑」节 |
+| `> 50` | **升级**：记入 handoff「待完成」节首项 + 必须建议下次跑 `paths.py scan-dead --strict` 定位 + 给出"路径死链偏多"flag |
 
 #### Step 3.0 · 判主项目（确定 `<root>` 目录）
 
@@ -160,13 +166,19 @@ mkdir -p <root>/handoffs/_archive
 
 4. **CLAUDE.md** — 当前项目新约束或路径变化需记录？
 
-### Step 3.5: Paths 健康体检（提示不阻塞）
+### Step 3.5: Paths 健康体检（阶梯式严格度）
 
 ```bash
 python3 ~/Dev/devtools/lib/tools/paths.py audit --brief
 ```
 
-dead > 0 不阻塞但记入 retro 文件「未完成项」节。
+按 dead 数量分级处理：
+
+| dead 数 | 处理 |
+|---|---|
+| `0` | 不写入 retro |
+| `1-50` | 把 `audit --brief` 输出记入 retro「未完成项」节 |
+| `> 50` | **升级**：记入「未完成项」节首项 + 建议下次跑 `paths.py scan-dead --strict` 定位 |
 
 ### Step 4: 用户侧记录
 
@@ -228,7 +240,7 @@ dead > 0 不阻塞但记入 retro 文件「未完成项」节。
 
 **Step 2 · 写物理文件到主项目**：
 - 路径：`<主项目>/docs/retros/session-retro-{YYYYMMDD}-{topic-slug}.md`
-- 例：`~/Dev/wpl-calc/docs/retros/session-retro-20260501-carry-math-v0.8.md`
+- 例：`~/Dev/wpl-calc/docs/retros/session-retro-20260501-wpl-calc-v08.md`
 - `docs/retros/` 不存在则 `mkdir -p`
 
 **Step 3 · 中央位置建相对 symlink**：
@@ -247,7 +259,7 @@ dead > 0 不阻塞但记入 retro 文件「未完成项」节。
   ```
 - 在「时间线」节追加一行（按日期倒序，最新在上）：
   `- {YYYY-MM-DD} · {主项目名} · {topic-slug 中文化简述} → {物理路径绝对地址}`
-- 例：`- 2026-05-01 · wpl-calc · v0.8 carry 数学模型重构 → ~/Dev/wpl-calc/docs/retros/session-retro-20260501-carry-math-v0.8.md`
+- 例：`- 2026-05-01 · wpl-calc · v0.8 carry 数学模型重构 → ~/Dev/wpl-calc/docs/retros/session-retro-20260501-wpl-calc-v08.md`（topic-slug 与文件名一致即可，无需"文学化"）
 
 **`--central` 模式**：跳过 Step 1/2 项目判断，直接落 `~/Dev/stations/docs/knowledge/session-retro-{YYYYMMDD}-{topic-slug}.md`，不建 symlink；INDEX.md 仍追加一行，物理路径写中央位置自身。
 
@@ -330,7 +342,7 @@ ASCII 流程图按阶段串起 slash command / skill：
 | 动作 | skill |
 |---|---|
 | 进项目看状态 | `/warmup` |
-| 验证 yaml/配置 | `/menus-audit` `/cf-audit` `/repo audit` |
+| 验证 yaml/配置 | `/menus-audit` `/cf audit` `/repo audit` |
 | 同步 SSOT | `/refresh-site --kind {all,navbar,header,content}` |
 | 部署 | `/deploy <name>` `/site ship <name>` |
 | commit + push | `/repo ship <repo1> <repo2>` |
@@ -413,6 +425,7 @@ cwd 前缀匹配 domain：
 | `~/Dev/<name>/`（站群） | `stations` | `~/Dev/tools/configs/playbooks/stations.md` |
 | `~/Dev/<name>/`（新站） | `web-scaffold` | `~/Dev/tools/configs/playbooks/web-scaffold.md` |
 | `~/Dev/hydro-*/` | `hydro` | `~/Dev/tools/configs/playbooks/hydro.md` |
+| `~/Dev/personal-kb/` | `personal-kb` | `~/Dev/tools/configs/playbooks/personal-kb.md` |
 | `~/Dev/tools/cc-configs/` 或 slash 整顿 | `cc-meta` | `~/Dev/tools/configs/playbooks/META.md` §5 |
 | 其他 | 询问用户 | — |
 
@@ -442,4 +455,4 @@ cwd 前缀匹配 domain：
 - 中央 retro 索引：`~/Dev/stations/docs/knowledge/INDEX.md`（symlink 集合 + 时间线）
 - retro symlink 工具：`~/Dev/tools/cc-configs/tools/retro-symlink/retro_symlink.py`（link 单文件 / migrate 批量回迁）
 - 旧示例（单一中央）：`~/Dev/stations/docs/knowledge/session-retro-20260419-r7-mega.md`
-- 新示例（物理 + symlink）：`~/Dev/wpl-calc/docs/retros/session-retro-20260501-carry-math-v0.8.md` ← `~/Dev/stations/docs/knowledge/session-retro-20260501-carry-math-v0.8.md`
+- 新示例（物理 + symlink）：`~/Dev/wpl-calc/docs/retros/session-retro-20260501-wpl-calc-v08.md` ← `~/Dev/stations/docs/knowledge/session-retro-20260501-wpl-calc-v08.md`
