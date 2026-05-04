@@ -17,7 +17,7 @@ The single source of truth for all Claude Code customizations — slash commands
 
 | Layer | What | Where |
 |-------|------|-------|
-| **Commands** | 19 active slash commands + 12 archived | `commands/` |
+| **Commands** | 30 active slash commands + 4 archived | `commands/` |
 | **Skills** | 14 auto-triggered context injections | `skills/` |
 | **Agents** | 2 specialized agent definitions | `agents/` |
 | **Rules** | Command rule files | `rules/` |
