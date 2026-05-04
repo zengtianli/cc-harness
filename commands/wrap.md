@@ -339,7 +339,7 @@ python3 ~/Dev/devtools/lib/tools/paths.py audit --brief
 | 进项目看状态 | `/start` |
 | 验证 yaml/配置 | `/menus-audit` `/cf audit` `/repo audit` |
 | 同步 SSOT | `/refresh-site --kind {all,navbar,header,content}` |
-| 部署 | `/deploy <name>` `/site ship <name>` |
+| 部署 | `/deploy <name>`（已上线迭代） / `/site ship <name>`（首次上线 + CF/nginx 创建） |
 | commit + push | `/repo ship <repo1> <repo2>` |
 | 健康检查 | `/health {sites,vps,project}` |
 | 整理目录 | `/tidy <path>` |

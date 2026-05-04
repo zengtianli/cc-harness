@@ -270,11 +270,22 @@ echo "Next: nginx/CF Access 需改 → /site ship $name"
 
 ---
 
-## ship — 一键部署新静态站
+## ship — 一键部署新静态站（**首次上线专用**）
 
 `/site ship <name> [--source DIR] [--no-access]`
 
 编排 rsync + Nginx + `/cf dns/origin/access` + 验证。
+
+**何时用 `/site ship` vs `/deploy`**：
+
+| 场景 | 用 |
+|---|---|
+| 首次上线一个新子域（CF DNS/Access/nginx vhost 都还不存在） | `/site ship <name>` |
+| 已上线站点改完代码再发一次 | `/deploy` 或 `/deploy <name>`（跑现成 deploy.sh） |
+| 改了几个 repo 不确定影响哪几站 | `/deploy changed` |
+| 跨多站同步同一变更 | `/deploy fanout` |
+
+`ship` 含 CF/nginx/Access 这些**首次性创建动作**，已存在自动跳过（幂等），但**不要拿来当日常 deploy** —— 一是慢（多次幂等检查），二是语义混淆。
 
 ### 参数
 - `<name>` — 子域名（也是 `/var/www/<name>` 目录名）
