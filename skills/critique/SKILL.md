@@ -1,6 +1,6 @@
 ---
 name: critique
-description: 按需深度审计用户最近的工作流 / 决策 / 会话行为，找出不专业、不优化、浪费资源、反模式的地方并激进指正。用户说 /critique 或"帮我审一下 / 指正 / 挑刺"时触发。配合 feedback_proactive_critique memory（always-on）做 on-demand 深扫。
+description: 按需深度审计用户最近的工作流 / 决策 / 会话行为，找出不专业、不优化、浪费资源、反模式的地方并激进指正。用户说 /critique 或"帮我审一下 / 指正 / 挑刺"时触发。**内置 always-on 三段式铁律**：发现反模式立即停下来明确指出（点问题→给根因→给修法），不批人不凑数。
 ---
 
 # /critique · 工作流激进审计
