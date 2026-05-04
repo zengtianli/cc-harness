@@ -10,9 +10,7 @@
 source: ~/Dev/tools/cc-configs/domain-skills
 
 global_skills:
-  - context
   - plan-first
-  - harness
   - engineering-mode
 
 projects:
