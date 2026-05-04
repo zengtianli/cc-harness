@@ -1,6 +1,6 @@
 # wiki/ — 项目 Wiki 化模板族
 
-把项目文档按 **Wikipedia 风格**组织：1 个 Main Page (`WIKI.md`) + N 个独立子条目 (`docs/wiki/*.md`) + 标准 markdown link `[text](path.md)`（**不用 Obsidian `[[]]`**）。
+把项目文档按 **Wikipedia 风格**组织：1 个 Main Page (`WIKI.md`) + N 个独立子条目 (`docs/wiki/*.md`) + 标准 markdown link（**不用 Obsidian 双方括号风格**）。
 
 参考实现：`~/Dev/content/anthropic-account-hygiene/` (WIKI.md + docs/wiki/ 共 8 条目)。
 
@@ -20,10 +20,10 @@
 | `project_name` | 项目名（从目录名自动） | `anthropic-account-hygiene` |
 | `summary_30s` | § 0 30 秒看懂 | "你是 X，问题是 Y，方案是 Z" |
 | `current_status` | § 1 当前阶段 / 状态 | "Phase 4 观察期 (5/3 → 5/10)" |
-| `subentries_block` | § 2 核心条目导航（已渲染 markdown 列表） | `- [foo](docs/wiki/foo.md) — desc\n- ...` |
+| `subentries_block` | § 2 核心条目导航（已渲染的 markdown 列表，每行 `-` 开头 wikilink） | 调用方预渲染 |
 | `workflow_table` | § 3 工作流表格（markdown table） | `| 场景 | 跑什么 |\n|---\|---\|\n...` |
 | `file_map_table` | § 4 文档地图 | 同上 |
-| `glossary` | § 5 术语速查 | `- **[foo](path)** — 定义\n- ...` |
+| `glossary` | § 5 术语速查（术语 + 跳转 link 列表） | 调用方预渲染 |
 | `has_references` (条件) | 是否有 docs/references/ | true / false（控制提示语） |
 
 ### sub-entry.md.j2
