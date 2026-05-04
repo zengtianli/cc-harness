@@ -1,0 +1,315 @@
+---
+allowed-tools: Bash, Read, Write, Edit, Glob, Grep, mcp__auggie__codebase-retrieval
+description: Obsidian vault wiki 工作流族 — new 立 topic / entry 加条目 / verify 验完整性 / link 项目 wiki / rebuild 重生 _meta。强制 frontmatter + [[wikilinks]] + 50-150 行 + MOC。
+---
+
+# /wiki — Obsidian vault wiki 工作流
+
+把工作内容体系化进 `~/Obsidian/dev-vault/topics/<topic>/`。强制 Obsidian-friendly 约定：frontmatter / `[[wikilinks]]` / 50-150 行 / 每 topic 有 `_INDEX.md` MOC。
+
+```
+/wiki new <topic-slug> "<descrip>"   立新 topic：INDEX + 3-5 entry 骨架（按内容密度调）
+/wiki entry <topic> <slug>           加 entry 到既有 topic
+/wiki verify [<topic>]               检查 frontmatter / wikilinks / 行数（不传 = 全 vault）
+/wiki link <project-path>            symlink 项目 docs/wiki 进 vault（封装 obsidian_sync.py link）
+/wiki rebuild                        重生 _meta（封装 obsidian_sync.py rebuild-index）
+```
+
+约定参考 `~/Dev/tools/configs/playbooks/obsidian-wiki.md`。本 command 是该 playbook 的**自动化执行版**。
+
+---
+
+## 全局约定（所有子命令必守）
+
+### 路径
+
+- Vault 根：`~/Obsidian/dev-vault/`
+- Topic 目录：`~/Obsidian/dev-vault/topics/<topic-slug>/`
+- 每 topic 必有：`_INDEX.md` MOC + N 个 entry md
+- 跨项目项目级 wiki（symlink）：`topics/<topic-from-topic-index>/<project-name>/` ← 项目的 `docs/wiki/`
+
+### Frontmatter（每个 md 必有）
+
+```yaml
+---
+tags: [<topic>, <subtag1>, <subtag2>]
+aliases: [<别名 1>, <别名 2>]
+created: YYYY-MM-DD
+---
+```
+
+`_INDEX.md` 加 `moc` 进 tags。
+
+### 链接风格
+
+- **直接写在 vault 的 topic** → 全用 `[[wikilinks]]`，禁 `[](file.md)`
+- **symlink 进来的项目 wiki** → 保持项目内原有 markdown link（不动）
+- 跨 topic 引用：`[[../<topic>/<entry>]]` 或 `[[../<topic>/_INDEX|<别名>]]`
+
+### 长度
+
+- Reference 类 entry：**50-150 行**
+- 行动页 / INDEX：**50-200 行**
+- 超 200 行 → 拆；30 行以下 → 合并或不写
+
+### 数量
+
+- 每 topic 默认 ≤ 8 entry（含 INDEX）
+- 超 10 必 AskUserQuestion 复述边界
+
+### MOC（_INDEX.md）必有
+
+- 一句话定位
+- 目录（按主题分组的 entry 列表）
+- 关键速查表（2-4 表）
+- 跨 topic 相关链接
+- "改这里？去 SoT"指示
+
+---
+
+## /wiki new
+
+立新 topic — 创建目录 + INDEX + 引导 entry 生成。
+
+### 流程
+
+```
+1. 校验 topic-slug：kebab-case，不带空格
+2. 检查是否已存在：[[ -e ~/Obsidian/dev-vault/topics/<slug> ]] → 已存在则报告 + exit
+3. AskUserQuestion 3 项：
+   ├─ 内容源（哪些 path / repo 抽？）
+   ├─ 估几个 entry（4-6 推荐，>8 必复述）
+   └─ 是否跨 topic 引用（哪些 sibling topic）
+4. 第一动作 mcp__auggie__codebase-retrieval（如内容源 indexable）拿主题清单
+5. mkdir -p ~/Obsidian/dev-vault/topics/<slug>
+6. Write _INDEX.md 骨架（按下方模板）
+7. 列建议的 entry 名 + 主题给用户拍板
+8. 用户批准 → 进 /wiki entry 流程逐个生成
+9. 完成后 → /wiki verify <slug> + 提示更新 README
+```
+
+### _INDEX.md 模板
+
+```markdown
+---
+tags: [moc, <topic>]
+aliases: [<topic 中文名>]
+created: <YYYY-MM-DD>
+---
+
+# <topic 中文名> · MOC
+
+> <一句话定位>。SoT 在 `<源路径>`。这里是阅读副本。
+
+## 目录
+
+- [[<entry-1>]] — <一句话简介>
+- [[<entry-2>]] — <一句话简介>
+- ...
+
+## 关键速查（2-4 个表，按 topic 实际）
+
+| ... | ... |
+|---|---|
+
+## 来源
+
+| 这里的条目 | 原始 SoT |
+|---|---|
+| [[<entry-1>]] | `<源文件路径>` |
+| ... | ... |
+
+**改文档去 SoT，不要改这里**。
+
+## 相关 topic
+
+- [[../<sibling-1>/_INDEX]]
+- [[../<sibling-2>/_INDEX]]
+```
+
+---
+
+## /wiki entry
+
+加 entry 到既有 topic。
+
+### 流程
+
+```
+1. 校验 topic 存在：[[ -d ~/Obsidian/dev-vault/topics/<topic> ]]
+2. 校验 entry 不存在
+3. 询问内容源（如 /wiki new 时未指定）
+4. 第一动作 auggie（如适用）抽核心要点
+5. Write entry md（按下方模板）
+6. 更新 _INDEX.md 目录节加新行
+7. /wiki verify <topic> 自动跑（不阻塞但报告问题）
+```
+
+### Entry 模板
+
+```markdown
+---
+tags: [<topic>, <subtag>]
+aliases: [<别名>]
+created: <YYYY-MM-DD>
+---
+
+# <entry 标题>
+
+> <一句话定位 / 价值>
+
+## <主体节 1>
+
+<高密度内容，不 transcribe。提炼 + 表格 + 速查清单>
+
+## <主体节 2>
+
+...
+
+## 反模式 / 常见坑（如适用）
+
+❌ ...
+❌ ...
+
+## 相关
+
+- [[<sibling-entry>]]
+- [[../<other-topic>/<entry>]]
+
+---
+
+_<可选脚注：触发事件 / 历史背景 1 行>_
+```
+
+---
+
+## /wiki verify
+
+检查 vault wiki 完整性。无参数 = 全 vault；传 topic = 只查那个 topic。
+
+### 检查项（5 个）
+
+```bash
+TOPIC_PATH="${1:-~/Obsidian/dev-vault/topics}"
+
+# 1. Frontmatter 缺失
+echo "=== Frontmatter ==="
+missing=0
+for f in $TOPIC_PATH/*.md $TOPIC_PATH/*/*.md; do
+  [ -f "$f" ] || continue
+  head -1 "$f" 2>/dev/null | grep -q '^---$' || { echo "❌ $f"; missing=$((missing+1)); }
+done
+[ $missing -eq 0 ] && echo "✅ 全部带 frontmatter"
+
+# 2. 行数（50-200 范围；INDEX 可放宽）
+echo "=== 行数检查 ==="
+for f in $TOPIC_PATH/*/*.md; do
+  [ -f "$f" ] || continue
+  lines=$(wc -l < "$f")
+  if [[ $lines -lt 30 ]]; then echo "⚠ 太短 ($lines): $f"
+  elif [[ $lines -gt 200 ]]; then echo "⚠ 太长 ($lines): $f"
+  fi
+done
+
+# 3. markdown link（应该是 [[wikilinks]]，不应有 [text](xx.md)）
+echo "=== markdown 死链 ==="
+grep -rEn '\]\([a-zA-Z0-9_-]+\.md\)' $TOPIC_PATH/ 2>/dev/null \
+  | grep -vE '`\[\]|不要这样|wiki 用|建议|反例' | head -10 || echo "✅ 0"
+
+# 4. broken wikilinks（跨 topic + 同 topic）
+echo "=== broken wikilinks ==="
+for f in $TOPIC_PATH/*/*.md; do
+  [ -f "$f" ] || continue
+  for link in $(grep -oE '\[\[[a-zA-Z0-9/_-]+(\|[^]]+)?\]\]' "$f" | sed 's/\[\[//; s/|.*\]\]//; s/\]\]//' | sort -u); do
+    dir=$(dirname "$f")
+    if [[ "$link" == ../* ]]; then
+      target_dir="$dir/$(dirname $link)"
+      target_name=$(basename "$link")
+      if [ ! -e "$target_dir/${target_name}.md" ] && [ ! -e "$target_dir/${target_name}/_INDEX.md" ]; then
+        echo "⚠ broken: [[$link]] in $f"
+      fi
+    elif [ ! -e "$dir/${link}.md" ]; then
+      # 排除代码块内的反例（[[wikilink]] 用做示例）
+      grep -q "\`\[\[${link}\]\]\`" "$f" || echo "⚠ broken: [[$link]] in $f"
+    fi
+  done
+done | sort -u | head -10
+
+# 5. INDEX 缺失
+echo "=== INDEX 缺失 ==="
+for d in $TOPIC_PATH/*/; do
+  # 跳过 symlinked dir
+  [ -L "${d%/}" ] && continue
+  [ ! -f "$d/_INDEX.md" ] && echo "⚠ no _INDEX.md: $d"
+done
+```
+
+输出格式：每项一行 ✅ / ⚠ / ❌。
+
+---
+
+## /wiki link
+
+把项目的 `docs/wiki/` symlink 进 vault（封装现成的 `obsidian_sync.py link`）。
+
+### 流程
+
+```
+1. 校验 project-path 存在 + 有 docs/wiki/ 子目录
+2. python3 ~/Dev/devtools/lib/tools/obsidian_sync.py link <project-path>
+3. 自动反查 topic-index.yaml 找该项目对应 topic
+4. 建 symlink 到 ~/Obsidian/dev-vault/topics/<topic>/<project-name>/
+5. 报告 md_files 数 + topic 归属
+```
+
+无 `docs/wiki/` 怎么办：
+- 提示用户先用 `/wiki new` 立 topic 把内容直接写进 vault
+- 或在项目内先建 `docs/wiki/` + `obsidian-wiki.md` playbook 拆了再 link
+
+---
+
+## /wiki rebuild
+
+重生 `_meta/projects-index.md` + `_meta/topic-graph.md`。
+
+```bash
+python3 ~/Dev/devtools/lib/tools/obsidian_sync.py rebuild-index
+```
+
+什么时候用：
+- `/wiki link <new-project>` 后
+- `/wiki unlink <old-project>` 后（如有 unlink）
+- 怀疑 _meta 漂移时
+
+---
+
+## 反模式（命令运行时立即纠正）
+
+❌ topic-slug 用驼峰 / 含空格 / 含中文 → 强制 kebab-case
+❌ 没 INDEX 就生 entry → /wiki entry 必须先确认 INDEX 存在
+❌ 单 topic 写 12+ entry → 超 10 必 AskUserQuestion 复述边界
+❌ 把 STATUS / README 放进 docs/wiki/ → /wiki 拒绝接受根目录 MD 入 wiki
+❌ entry 用 markdown link 而非 wikilink → /wiki verify 报红
+❌ entry < 30 行 / > 200 行 → /wiki verify 报警
+
+---
+
+## 与其他 skill 的分工
+
+| 场景 | 用谁 |
+|---|---|
+| 把工作内容体系化进 vault | **本 command** |
+| 拆长 reference 多条目（项目内） | 走 `~/Dev/tools/configs/playbooks/obsidian-wiki.md` 流程 |
+| 整理目录文件命名 | `/tidy` |
+| 写项目 README / CLAUDE / STATUS | 不走 wiki，单文件高密度 |
+| 命令本身的 SSOT 治理 | `/refresh-site` `/menus-audit` |
+
+---
+
+## 完成定义
+
+- [ ] 新 topic 目录创建 + INDEX + N entry 全写完
+- [ ] `/wiki verify <topic>` 全 ✅
+- [ ] vault README 加新 topic 入口（手动 Edit 或本 command 自动加）
+- [ ] 报告：N 文件 / 总行数 / 跨 topic 引用清单
+- [ ] 提示用户在 Obsidian 里 `Cmd+G` 看 graph view 验证
