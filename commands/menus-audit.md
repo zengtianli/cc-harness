@@ -1,8 +1,8 @@
 ---
-description: 检测站群菜单/导航 yaml SSOT (~/Dev/tools/configs/menus/) 与各消费者源码的漂移（19 类，含路径域）
+description: 检测站群菜单/导航 yaml SSOT (~/Dev/tools/configs/menus/) 与各消费者源码的漂移（17 类，含路径域）
 ---
 
-跨 11 个源做只读对账，配套 `~/Dev/tools/configs/menus/` 图模型（entities/ + relations/ + consumers.yaml + sites/*.yaml + navbar.yaml），并融合路径注册表（`~/Dev/paths.yaml`）漂移检查。
+跨多源做只读对账，配套 `~/Dev/tools/configs/menus/` 图模型（entities/ + relations/ + consumers.yaml + sites/*.yaml + navbar.yaml），并融合路径注册表（`~/Dev/paths.yaml`）漂移检查。
 
 ## 用法
 
@@ -17,7 +17,7 @@ python3 ~/Dev/devtools/lib/tools/menus.py audit          # 默认：paths-drift 
 python3 ~/Dev/devtools/lib/tools/menus.py audit --strict # paths-drift 失败也 exit 1
 ```
 
-## 报告分类（19 类）
+## 报告分类（17 类）
 
 **图层不变量（2026-04-22 新增）**：
 
@@ -31,21 +31,19 @@ python3 ~/Dev/devtools/lib/tools/menus.py audit --strict # paths-drift 失败也
 - `website-nav-drift` — `sites/website.yaml` ≠ `website/lib/profile-config.ts` 的 `navigationConfig`
 - `website-shared-nav-drift` — `navbar.yaml` 渲染 ≠ `website/lib/shared-navbar.generated.ts`
 - `ops-console-drift` — `sites/ops-console.yaml` ≠ `ops-console/components/section-nav.tsx` 的 `ITEMS`
-- `cmds-drift` — `sites/cmds.yaml` ≠ `cmds/generate.py` 的 `CATEGORY_MAP/ORDER/COLOR`
 - `site-header-drift` — `sites/*.yaml.header` ≠ 各站 `site-header.html`
 - `site-content-drift` — `templates/site-content.css` ≠ 各站 `site-content.css`
 - `footer-html-drift` — footer.yaml 派生 ≠ 各站 site-footer.html
 - `website-shared-footer-drift` — `footer.yaml` ≠ website/ops-console/web-stack 共享 footer
 
-**服务契约 / 漂移（多类）**：
+**服务契约 / 外部对账**：
 
 - `services-consistency` — `web-stack/services/*/` pyproject.toml 有 version、api.py 有 `/api/metadata` 路由（static audit，不 probe live 端口）
-- `static-sites-filter-drift` — cmds generate.py 引用共享 `devtools/lib/templates/site-filter.js` + `markdown_utils.parse_frontmatter`（logs 保留独立 radio-filter 不抽）
 - `script-hardcoded-url-drift` — 脚本里硬编码站点 URL ≠ subdomains.yaml SSOT
 - `nginx-vhost-vs-ssot-drift` — nginx vhost 文件 ≠ subdomains.yaml SSOT
 - `auggie-workspaces-web-drift` — auggie-workspaces.yaml web 类目 ≠ subdomains.yaml
 - `access-cf-drift` — Cloudflare Access App 配置 ≠ subdomains.yaml `access_type`
-- `mega-duplicate-urls` — mega navbar 同一 URL 出现多次（advisory）
+- `mega-duplicate-urls` — mega navbar 同一 URL 出现多次（advisory，warn-only）
 
 **路径域（2026-04-24 新增）**：
 
@@ -53,8 +51,8 @@ python3 ~/Dev/devtools/lib/tools/menus.py audit --strict # paths-drift 失败也
 
 ## 退出码
 
-- `0` — 19/19 绿（或 18 绿 + paths-drift 警告 且无 `--strict`）
-- `1` — 18 类任一漂移 / `--strict` 模式下 paths-drift 也失败（可用作 CI gate）
+- `0` — 17/17 绿（或 16 绿 + paths-drift 警告 且无 `--strict`）
+- `1` — 任一 strict 类漂移 / `--strict` 模式下 paths-drift 也失败（可用作 CI gate）
 
 ## 相关命令
 
@@ -64,8 +62,8 @@ python3 ~/Dev/devtools/lib/tools/menus.py audit --strict # paths-drift 失败也
 - `python3 menus.py render-navbar -w` — navbar.yaml → site-navbar.html
 - `python3 menus.py build-website-navbar -w` — navbar.yaml → shared-navbar.generated.ts
 - `python3 menus.py build-catalog -w` — 重建 catalog.yaml
-- `/navbar-refresh` — site-navbar.html → 6 个 vendor
-- `/site-refresh-all` — 11 步全同步骨架
+- `/refresh-site --kind navbar` — site-navbar.html → 多个 vendor
+- `/refresh-site` — 全同步骨架
 
 ## 路径域（已融入 audit）
 
@@ -83,5 +81,5 @@ python3 ~/Dev/devtools/lib/tools/paths.py audit --strict
 ## 规则
 
 - 只读，无副作用
-- 自 2026-04-22 重构后菜单类全绿基线；2026-04-24 起加入 paths-drift；后续逐步扩展到 19 类。任一红项对应一个具体修复命令，按 MD 内提示跑
-- Pre-commit hook 装在 7 个 repo（audit 失败阻断 commit，逃生门 `--no-verify`）
+- 自 2026-04-22 重构后菜单类全绿基线；2026-04-24 起加入 paths-drift；2026-04-29/05-04 Track A 扩到 19 类；2026-05-04 决策 2A 删 4 静态站后回到 17 类
+- Pre-commit hook 装在 4 repo（stations monorepo + devtools + tools/{configs,cc-configs}），audit 失败阻断 commit，逃生门 `--no-verify`
