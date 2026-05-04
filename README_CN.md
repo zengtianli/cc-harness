@@ -17,7 +17,7 @@ Claude Code 配置中心 — 斜杠命令 + 自动触发技能 + Agent 定义 + 
 
 | 层 | 内容 | 位置 |
 |----|------|------|
-| **Commands** | 19 个活跃命令 + 12 个已归档 | `commands/` |
+| **Commands** | 30 个活跃命令 + 4 个已归档 | `commands/` |
 | **Skills** | 14 个自动触发的上下文注入 | `skills/` |
 | **Agents** | 2 个专用 Agent 定义 | `agents/` |
 | **Rules** | 命令规则文件 | `rules/` |
@@ -102,9 +102,9 @@ bash install.sh
 
 ### 已归档命令
 
-12 个命令移入 `commands/archive/`（零调用或已被替代）。仍可通过 `archive:name` 前缀访问：
+4 个命令在 `commands/archive/`（零调用或已被替代）。仍可通过 `archive:name` 前缀访问：
 
-`auggie-map` · `build-hydro` · `cf-dns` · `fix-printer` · `gen-report` · `migrate-hydro` · `prep-basic-info` · `prep-ecoflow-calc` · `prep-engineering` · `review-deep` · `review-docx` · `vps-status`
+`dissect-report` · `gen-report` · `prep-ecoflow-calc` · `prep-engineering`
 
 ---
 
