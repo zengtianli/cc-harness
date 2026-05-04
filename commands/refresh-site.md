@@ -65,7 +65,7 @@ cd ~/Dev/stations/cmds   && python3 generate.py
 cd ~/Dev/stations/logs   && python3 generate.py
 cd ~/Dev/stations/assets && python3 generate.py
 
-# 11. audit 14 类全绿
+# 11. audit 17 类全绿
 python3 ~/Dev/devtools/lib/tools/menus.py audit
 ```
 
