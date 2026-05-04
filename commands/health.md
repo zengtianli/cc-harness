@@ -57,6 +57,23 @@ python3 ~/Dev/devtools/lib/tools/sites_health.py "$@"
 2. **7d Hits 暂不可用**：VPS nginx 默认 combined log_format 不含 `$host`；开启需改 `/etc/nginx/nginx.conf` log_format 加 `$host`
 3. `auggie` / `panel` / `sub` 等 API 站返回 405/400 属正常（GET `/` 不支持），不代表服务死
 
+### 记录快照（silent fail，不阻塞结论）
+
+每次跑完 `/health <scope>` 后追加一条快照到 `ops_history.db`：
+
+```bash
+python3 ~/Dev/personal-kb/bin/ops_history.py record-health \
+  --scope "<sites|services|nav|vps|project>" \
+  --passed <N> --failed <N> --total <N> \
+  --details '<JSON, optional>' 2>/dev/null || true
+```
+
+**规则**：
+- 适用 `sites` / `services` / `nav` / `vps` / `project` 五个 subscope；写入 `scope` 字段透传
+- `--details` 可选 — 塞被检查项数组 / 失败列表 JSON，便于回溯
+- 兜底 `|| true` — DB 失败不影响 health 结论
+- 消费者：`ops-console /ops-history` 趋势图（未来）
+
 ### 规则
 - 凭证无需（curl + ssh）
 - 并发 8 路 curl + 6 路 SSH，27 站约 15-30 秒

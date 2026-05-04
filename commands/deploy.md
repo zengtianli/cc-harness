@@ -38,6 +38,26 @@ description: 部署族 — (default) 当前目录 / changed 按 git diff 扇出 
 - 服务名 → `ssh root@104.218.100.67 "systemctl is-active <service>"` 必须返回 `active`
 - 任一未过 → 报错，打印排查路径，不声称"完成"
 
+#### 5. 记录历史（silent fail，不阻塞 deploy 结论）
+
+部署完成（成败均记），追加一条 deploy 历史到 `ops_history.db`：
+
+```bash
+python3 ~/Dev/personal-kb/bin/ops_history.py record-deploy \
+  --target "<repo or station name>" \
+  --status "<success|failure|skipped>" \
+  --branch "$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo unknown)" \
+  --commit "$(git rev-parse --short HEAD 2>/dev/null || echo unknown)" \
+  --duration "<elapsed seconds, optional>" \
+  --notes "<optional context>" 2>/dev/null || true
+```
+
+**规则**：
+- `2>/dev/null || true` 兜底 — DB 写失败不影响 deploy 结论（exit 0 仍代表 deploy 成功，仅历史漏记）
+- `--target` 用 repo 目录名 / station id（与 services.ts 子域 id 对齐为佳）
+- `--status` 严格三选一：success / failure / skipped
+- 历史消费者：`ops-console /ops-history` 页面 30 天 deploy 频次柱状图
+
 ### 参数
 
 `$ARGUMENTS` 可选：
