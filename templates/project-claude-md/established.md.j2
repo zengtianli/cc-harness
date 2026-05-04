@@ -1,0 +1,56 @@
+# {{project_name}}
+
+{{description}}
+
+## Quick Reference
+
+| 项目 | 路径/值 |
+|---|---|
+| 类型 | `{{type}}` |
+| 阶段 | `{{stage}}` |
+| 入口 | `{{entry}}` |
+{{#if deploy}}| 部署 | {{deploy}} |
+{{/if}}
+
+## 常用命令
+
+```bash
+{{commands}}
+```
+
+## 项目结构
+
+```
+{{tree_2}}
+```
+
+## 技术栈
+
+{{#if stack}}{{stack}}{{/if}}
+
+- 语言/框架: 待补
+- 关键依赖: 待补
+- 测试: 待补
+
+## 数据源
+
+{{#if notes}}{{notes}}{{/if}}
+
+- 主要数据/资源目录: 待补
+- 外部依赖: 待补
+
+## 开发注意事项
+
+- 修改前先看 `handoffs/` 里的活跃任务
+- 破坏性操作走 plan mode，重要决策让用户拍板
+- commit 后 push（不停在本地）
+
+## 部署 / 验证
+
+{{#if deploy}}
+{{deploy}}
+{{/if}}
+
+- 部署命令: 待补
+- 验证 URL: 待补
+- 健康检查: `/health project`

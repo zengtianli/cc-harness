@@ -1,0 +1,77 @@
+# {{project_name}}
+
+{{description}}
+
+## Quick Reference
+
+| 项目 | 路径/值 |
+|---|---|
+| 类型 | `{{type}}` |
+| 阶段 | `{{stage}}` |
+| 入口 | `{{entry}}` |
+{{#if deploy}}| 部署 | {{deploy}} |
+{{/if}}
+
+## 常用命令
+
+```bash
+{{commands}}
+```
+
+## 项目结构
+
+```
+{{tree_2}}
+```
+
+## 技术栈
+
+{{#if stack}}{{stack}}{{/if}}
+
+- 语言/框架: 待补
+- 关键依赖: 待补
+- 测试: 待补
+
+## 数据源
+
+{{#if notes}}{{notes}}{{/if}}
+
+- 主要数据/资源目录: 待补
+- 外部依赖: 待补
+
+## 开发注意事项
+
+- 修改前先看 `handoffs/` 里的活跃任务
+- 破坏性操作走 plan mode，重要决策让用户拍板
+- commit 后 push（不停在本地）
+
+## 部署 / 验证
+
+{{#if deploy}}
+{{deploy}}
+{{/if}}
+
+- 部署命令: 待补
+- 验证 URL: 待补
+- 健康检查: `/health project`
+
+## Done Conditions
+
+完成的判定标准（可被 `/wrap` 引用做闭环检查）：
+
+- [ ] 核心命令通过烟测
+- [ ] commit + push 完成
+- [ ] 部署 URL 返回预期
+- [ ] handoffs 待办归零（或显式 defer）
+
+## Skill 绑定
+
+本项目相关 skill（建议在 `~/Dev/tools/cc-configs/harness.yaml` 注册）：
+
+- 建议: 待补（如 `engineering-mode` / `frontend-tweak` / `docx` 等）
+
+## Agent 定义建议
+
+复杂多步工作流可定义专用 agent，放 `.claude/agents/` 或全局 `~/Dev/tools/cc-configs/agents/`：
+
+- 建议: 待补

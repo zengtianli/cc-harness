@@ -33,14 +33,18 @@ python3 ~/Dev/devtools/lib/tools/paths.py audit --brief
 ### 输出段
 
 1. **项目** — CWD、git branch、脏/干净、未推 commit、最近一次 commit
-2. **CC 配置** — 是否有 `.claude/`、CLAUDE.md（+ H1）、`harness.yaml` 的全局 + 本项目 skills、合计加载数
-3. **交接状态** — 多输入感知（与 `/wrap` 对称）：
+2. **🔗 跨项目主题**（仅在 cwd 命中 `topic-index.yaml` 时显示） — 当前 topic + description + primary 入口 + 同 topic 兄弟项目清单。**避免"我在 X 目录但不知道 Y 目录有现成基建"**。
+   - 数据源：`~/Dev/tools/configs/topic-index.yaml`（10 topics × directories 反向索引）
+   - 实现：`warmup.py section_topics()` → `python3 ~/Dev/devtools/lib/tools/topic_index.py lookup <cwd>`
+   - 维护：加新项目→找最匹配 topic 的 `directories:` 加一行；找不到→加新 topic
+3. **CC 配置** — 是否有 `.claude/`、CLAUDE.md（+ H1）、`harness.yaml` 的全局 + 本项目 skills、合计加载数
+4. **交接状态** — 多输入感知（与 `/wrap` 对称）：
    - **当前层 `handoffs/*.md` 全列**（每条 age + H1）；本层无 → 走 `~/Dev/handoffs/` Dev-meta 层；legacy `HANDOFF*.md` 兜底
    - **单 handoff** → 提取前 6 条待办（priority marker 高亮：`**[P0]**` 加粗 / `~~[defer-vX.Y]~~` 灰化 / `⏳[external]` 等候）
    - **多 handoff 并行**（`>1` 份）→ 跨全部 handoff 汇总待办（每 slug ≤3 条，总 ≤12），按 slug 分组展示；priority marker 同上规则解析
    - **slug 推荐**（仅多 handoff 触发）→ warmup 调 `_suggest_slug(cwd, existing, git_branch)`：branch 匹配某 slug → 复用；否则推荐"基于 branch / cwd-name / 含日期"新 slug，避免串线
    - **其他活跃 handoff**（跨项目最近 3 份）→ 通知性展示（不解析待办，只看到上下文）
-4. **📍 paths** — `paths.py audit --brief` 的单行输出原样展示；dead `1-50` 第 5 段追加 hint；dead `>50` 升级为「下一步」首项 + 建议 `paths.py scan-dead --strict`（与 `/wrap` Phase 3.0a 阶梯一致）
+5. **📍 paths** — `paths.py audit --brief` 的单行输出原样展示；dead `1-50` 第 5 段追加 hint；dead `>50` 升级为「下一步」首项 + 建议 `paths.py scan-dead --strict`（与 `/wrap` Phase 3.0a 阶梯一致）
 
 ---
 
@@ -103,7 +107,36 @@ mcp__auggie__codebase-retrieval(
 
 ---
 
-## Phase 3 — 推荐脚手架
+## Phase 3 — 推荐脚手架（scaffold.py 驱动）
+
+### 入口
+
+```bash
+# 探测 type / stage / gaps
+python3 ~/Dev/devtools/lib/tools/scaffold.py detect [path]
+
+# 预览某项产物（不写文件）
+python3 ~/Dev/devtools/lib/tools/scaffold.py preview [path] --kind <claude-md|readme-en|readme-cn|gitignore|dot-claude> [--stage <s>] [--type <t>]
+
+# 应用单项（默认 dry-run，加 --yes 实写）
+python3 ~/Dev/devtools/lib/tools/scaffold.py apply [path] --kind <k> [--yes]
+
+# 应用所有 gaps（推荐主入口）
+python3 ~/Dev/devtools/lib/tools/scaffold.py apply [path] --all [--yes]
+```
+
+### 模板路径
+
+| 类型 | 模板根 |
+|---|---|
+| CLAUDE.md（4 stage） | `~/Dev/tools/cc-configs/templates/project-claude-md/{seed,growing,established,mature}.md.j2` |
+| README（4 type variant） | `~/Dev/tools/cc-configs/templates/readme/{app-en,app-cn,content-en,minimal-en}.md.j2` |
+| `.claude/` 骨架 | `~/Dev/tools/cc-configs/templates/project-dot-claude/` |
+| `.gitignore` baseline | `~/Dev/tools/cc-configs/templates/gitignore-baseline/{python,node,docs,go}.txt` |
+
+scaffold.py 会按 `detect` 输出的 `type + stage` 自动选模板 variant + 替换占位符（`{{project_name}}` / `{{description}}` / `{{type}}` / `{{stage}}` / `{{tree_2}}` / `{{commands}}` / `{{stack}}` / `{{deploy}}`）。
+
+### 阶段对应表
 
 按 stage 给具体补什么 + 内容预览：
 
@@ -189,6 +222,8 @@ mcp__auggie__codebase-retrieval(
 ---
 
 ## CLAUDE.md / README 生成规范
+
+> 模板已落地到 `~/Dev/tools/cc-configs/templates/`，scaffold.py 自动按 type+stage 选变体 + 替换占位符。下文为模板设计原则参考。
 
 ### CLAUDE.md（中文）
 
