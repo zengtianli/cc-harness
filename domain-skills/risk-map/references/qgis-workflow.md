@@ -27,7 +27,7 @@
 ## 脚本位置
 
 ```
-~/Dev/labs/hydro-qgis/pipeline/
+~/Dev/tools/hydro-qgis/pipeline/
 ```
 
 ## 10步工作流
@@ -212,12 +212,12 @@ output/
 
 **方法1：QGIS Python控制台**
 ```python
-exec(open('/Users/tianli/Dev/labs/hydro-qgis/pipeline/01_generate_river_points.py').read())
+exec(open('/Users/tianli/Dev/tools/hydro-qgis/pipeline/01_generate_river_points.py').read())
 ```
 
 **方法2：批量执行**
 ```bash
-cd ~/Dev/labs/hydro-qgis/pipeline/
+cd ~/Dev/tools/hydro-qgis/pipeline/
 ./run_pipeline.sh 1-5    # 执行步骤1-5
 ./run_pipeline.sh 6-10   # 执行步骤6-10
 ```
