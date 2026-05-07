@@ -52,3 +52,19 @@
 - 模式描述: 源数据按行业/类别分 sheet 列位不同，目标下发模板跨类汇总；按业务主键（信用代码 + 名称）匹配回填 N 列。坑：Excel 18 位代码存成 float 需 by_name 回退 / 多 sheet 同单位必须 merge 而非覆盖 / 匹配率 <100% 必列 unmatched 清单。本轮台州 1976 行 100% 命中。
 - 涉及项目: 04 水预算单位名录整理
 - 潜在 skill 类型: skill（项目内 `.claude/skills/fill-water-budget/`，已创建）；后续若跨省用可考虑抽到全局 `/xlsx-fill` 通用骨架
+
+## AI batch 翻译 markdown 双轨（frontmatter *_en + .en.md sibling）
+- 发现时间: 2026-05-06
+- 出现次数: 1
+- 状态: active
+- 模式描述: 中文站国际化时翻 N 篇 .md：扫范围 + 词典提取（jieba/N-gram + menus.yaml SSOT 锁高置信）+ AskUserQuestion 抽检关键术语（机构/项目/头衔）+ 起 3-4 agent 并发翻（每 8-12 篇）+ 双产物（原 .md frontmatter 加 *_en sibling 字段 + 同目录 .en.md 完整英文）+ build size sentinel + puppeteer 实测 + commit。本轮 32 篇 / 64 文件 / 25-30 min/agent。无 ANTHROPIC_API_KEY 时直接用 Claude subagent 翻（agent 本身就是 Claude）。
+- 涉及项目: stations/website
+- 潜在 skill 类型: skill（/translate-content <range> <glossary>），≥3 次再正式建
+
+## next.js 15 standalone 常见坑诊断（recursiveDelete / cross-app Link / RSC fail / chunk hash mismatch）
+- 发现时间: 2026-05-06
+- 出现次数: 1
+- 状态: active
+- 模式描述: standalone + outputFileTracingRoot + 外部 symlink 配置组合，触发 4 类已知坑：(1) cleanDistDir follow symlink 删 target；(2) cross-app Link 自动 prefetch RSC fail；(3) middleware self-fetch SSL EPROTO；(4) build hash mismatch CF 缓存 stale。诊断脚本扫 4 类，给修复建议（prebuild rm / Link→a / nextUrl.clone+protocol=http / CF purge）。
+- 涉及项目: stations/website
+- 潜在 skill 类型: skill（/diagnose-next-standalone），≥3 次再正式建
