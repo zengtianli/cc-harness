@@ -68,3 +68,11 @@
 - 模式描述: standalone + outputFileTracingRoot + 外部 symlink 配置组合，触发 4 类已知坑：(1) cleanDistDir follow symlink 删 target；(2) cross-app Link 自动 prefetch RSC fail；(3) middleware self-fetch SSL EPROTO；(4) build hash mismatch CF 缓存 stale。诊断脚本扫 4 类，给修复建议（prebuild rm / Link→a / nextUrl.clone+protocol=http / CF purge）。
 - 涉及项目: stations/website
 - 潜在 skill 类型: skill（/diagnose-next-standalone），≥3 次再正式建
+
+## tailwind content[] 漂移审计（共享包消费者覆盖率）
+- 发现时间: 2026-05-07
+- 出现次数: 1
+- 状态: active
+- 模式描述: 共享 UI 组件搬到 monorepo 包后（如 @tlz/ui），消费 app 的 tailwind.config.ts content[] 没加包源 glob → responsive variant + arbitrary value 静默丢 → dropdown / drawer / 任何用 md:* 或 [arbitrary] 的视觉组件错位。本轮 navbar 「左侧抽屉」bug 根因即此。检测：grep deployed CSS 看 md\\:block / md\\:hidden / 期望 arbitrary 是否在；缺即漏扫。修：append "../<pkg>/src/**/*.{ts,tsx}" 到 content[]。
+- 涉及项目: stations/website + stations/ops-console
+- 潜在 skill 类型: audit 类（/menus-audit 加一类 tailwind-content-coverage），或独立 /tailwind-audit
