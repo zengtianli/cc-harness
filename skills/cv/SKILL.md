@@ -1,5 +1,5 @@
 ---
-name: resume
+name: cv
 description: 简历自动化项目上下文。SSOT (profile.yaml) + Jinja2 模板族 + build.py 渲染管线。当在 ~/Dev/content/resume/ 工作或讨论简历生成、岗位定制简历、应聘登记表时触发。
 ---
 
@@ -59,7 +59,7 @@ applications/<公司-岗位>/
 
 ## 命令
 
-`/resume {build,tailor,validate,new-app,form}` — 5 个子命令，详见 `commands/resume.md`
+`/cv {build,tailor,validate,new-app,form}` — 5 个子命令，详见 `commands/cv.md`
 
 ## 关键 project id（在 profile.yaml 引用用）
 

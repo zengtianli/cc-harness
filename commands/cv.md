@@ -2,9 +2,9 @@
 description: 简历工作流族 — build 渲染简历 / tailor 岗位定制 / validate 校验 / new-app 新岗位骨架 / form 应聘登记表
 ---
 
-# /resume — 简历工作流统一入口
+# /cv — 简历工作流统一入口
 
-`/resume <subcommand> [args]`
+`/cv <subcommand> [args]`
 
 | 子命令 | 干啥 | 工具 |
 |---|---|---|
@@ -23,7 +23,7 @@ description: 简历工作流族 — build 渲染简历 / tailor 岗位定制 / v
 
 ## build — 渲染简历
 
-`/resume build <template> [--out md|docx|pdf|all] [-o OUT_DIR] [--meta FILE]`
+`/cv build <template> [--out md|docx|pdf|all] [-o OUT_DIR] [--meta FILE]`
 
 ### 模板名（5 个）
 
@@ -56,7 +56,7 @@ cd ~/Dev/content/resume
 
 ## tailor — 岗位定制简历
 
-`/resume tailor <application-id>`
+`/cv tailor <application-id>`
 
 ### 流程
 
@@ -88,7 +88,7 @@ custom_summary: "...一句话定位..."                  # 可选，覆盖 basic
 
 ## validate — 校验
 
-`/resume validate [<file>]`
+`/cv validate [<file>]`
 
 ```bash
 cd ~/Dev/content/resume
@@ -107,7 +107,7 @@ cd ~/Dev/content/resume
 
 ## new-app — 新建 application 骨架
 
-`/resume new-app <公司名-岗位名>`
+`/cv new-app <公司名-岗位名>`
 
 创建标准目录：
 
@@ -153,7 +153,7 @@ top_n_skills: 8
 
 ## form — 应聘登记表
 
-`/resume form [-o OUT_DIR] [--name suffix]`
+`/cv form [-o OUT_DIR] [--name suffix]`
 
 ```bash
 cd ~/Dev/content/resume
