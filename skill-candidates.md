@@ -76,3 +76,12 @@
 - 模式描述: 共享 UI 组件搬到 monorepo 包后（如 @tlz/ui），消费 app 的 tailwind.config.ts content[] 没加包源 glob → responsive variant + arbitrary value 静默丢 → dropdown / drawer / 任何用 md:* 或 [arbitrary] 的视觉组件错位。本轮 navbar 「左侧抽屉」bug 根因即此。检测：grep deployed CSS 看 md\\:block / md\\:hidden / 期望 arbitrary 是否在；缺即漏扫。修：append "../<pkg>/src/**/*.{ts,tsx}" 到 content[]。
 - 涉及项目: stations/website + stations/ops-console
 - 潜在 skill 类型: audit 类（/menus-audit 加一类 tailwind-content-coverage），或独立 /tailwind-audit
+
+## 资产估值 · 锚点对标 + 因子分解（房产 / 二手车 / 投资品）
+- 发现时间: 2026-05-08
+- 出现次数: 1
+- 状态: active (n=1, 等下次 comp analysis 项目)
+- 模式描述: anchor-based comparable analysis with factor decomposition：① 数据池清洗（剔法拍 / 同户型筛选 / 标准化口径）② 因子分解（楼层 / 时间 / 位置 / 装修 各独立量化）③ 数据驱动 vs 估算 老实分（行业规则≠数据 / 不允许"保守 pad"伪装数据）④ 多锚收敛 + 单锚直推 双路径 ⑤ 敏感性分析（每因子 ±N% 看估值带宽）。本次应用于西溪蝶园 17-1-801 售房定价。
+- 涉及项目: ~/Dev/sale-estates
+- 潜在 skill 类型: 工程脚本（Python lib + CLI）> slash command。已落地 `~/Dev/sale-estates/tools/{parse_butterfly_park.py, valuate.py}` 作为本项目 SoT；如再有 1-2 个 comp analysis 项目（卖第二套房 / 二手车估值 / 股票投资 comparable 分析），泛化到 `~/Dev/devtools/lib/tools/comp_analysis.py` + slash `/valuate`。
+- 教训: v1 凭"用户说位置好"verbal 估 +1-2% / 楼层 5.0% 上加 0.3% 没数据支撑的"保守 pad" — **把估算包装成数据是反模式**。代码 + CSV 把每个数字的来源逼到台面，无处藏 verbal 估算。
