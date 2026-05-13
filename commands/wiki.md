@@ -106,7 +106,7 @@ cd ~/Dev/Work/reclaim && /wiki entry water-efficiency-method
 
 # 显式指任意大 vault
 /wiki entry mega-navbar --vault ~/Dev/stations
-# → 自动检测 ~/Dev/stations/topics/ 是否存在，存在则分层，否则平铺
+# → 自动检测 vault 下 topics/ 是否存在，存在则分层，否则平铺
 ```
 
 **多目的地的实务建议**：默认走本地（cwd）。需要跨项目复用 / Obsidian 应用查看 → `--super`。**不复制内容到多处** —— SoT 单一，多处 = 漂移。本地 wiki 可外链到 super vault entry，反之亦然。
