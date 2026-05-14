@@ -1,6 +1,6 @@
 ---
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, mcp__auggie__codebase-retrieval
-description: Wiki 工作流族。默认 = cwd 本地 vault（平铺）。super vault 显式 --super。强制 frontmatter + [[wikilinks]] + 50-150 行 + README MOC。
+description: Wiki 工作流族。默认 = cwd 本地 vault（平铺）。super vault 显式 --super。强制 frontmatter + [[wikilinks]] + README MOC。长度服务内容（把事情说清楚就行），不设硬上限。
 ---
 
 # /wiki — 本地 vault 优先 wiki 工作流
@@ -56,16 +56,19 @@ created: YYYY-MM-DD
 - **symlink 进来的项目 wiki** → 保持项目内原有 markdown link（不动）
 - 跨 topic 引用：`[[../<topic>/<entry>]]` 或 `[[../<topic>/_INDEX|<别名>]]`
 
-### 长度
+### 长度 · 内容驱动，不设硬上限（2026-05-13 用户原话「不能被行数限制，把事情说清楚就行」）
 
-- Reference 类 entry：**50-150 行**
-- 行动页 / INDEX：**50-200 行**
-- 超 200 行 → 拆；30 行以下 → 合并或不写
+**铁律**：长度服务内容。把事情说清楚 — 该长就长，该短就短。**不允许为压在某个区间而牺牲深度或冗余填充**。
+
+- 业务/反模式/SSOT 多 → 该 entry 就长（可能 300-500 行也合理）
+- 元数据/数据型/工具型 entity → 该 entry 就短（30-50 行也合理）
+- 拆条件**不是行数**，是**单一 entry 涵盖了多个本应独立的话题**（如方法论+流水+治理混写）
+- 合并条件**不是行数**，是**多个 entry 讲同一件事的不同侧面**
 
 ### 数量
 
-- 每 topic 默认 ≤ 8 entry（含 INDEX）
-- 超 10 必 AskUserQuestion 复述边界
+- 每 topic 建议 ≤ 8 entry（含 INDEX）— 软约束，超了不报错
+- 超 15 entry 时 AskUserQuestion 复述边界（确认是否该拆 topic）
 
 ### MOC 必有（本地平铺 = `wiki/README.md`；分层 = `_INDEX.md`）
 
@@ -350,10 +353,10 @@ python3 ~/Dev/devtools/lib/tools/obsidian_sync.py rebuild-index
 
 ❌ topic-slug 用驼峰 / 含空格 / 含中文 → 强制 kebab-case
 ❌ 没 INDEX 就生 entry → /wiki entry 必须先确认 INDEX 存在
-❌ 单 topic 写 12+ entry → 超 10 必 AskUserQuestion 复述边界
+❌ 单 topic 写 15+ entry → AskUserQuestion 复述边界
 ❌ 把 STATUS / README 放进 wiki/ → /wiki 拒绝接受根目录 MD 入 wiki
 ❌ entry 用 markdown link 而非 wikilink → /wiki verify 报红
-❌ entry < 30 行 / > 200 行 → /wiki verify 报警
+❌ 为了凑长度填充冗余 / 为了压短度漏掉必要业务深度 → 反模式（2026-05-13 立 · 用户原话「把事情说清楚就行」）
 
 ---
 
@@ -374,7 +377,7 @@ python3 ~/Dev/devtools/lib/tools/obsidian_sync.py rebuild-index
 ## 完成定义
 
 **本地平铺**：
-- [ ] `<cwd>/wiki/<slug>.md` 写完，含 frontmatter + ≥2 个 `[[wikilinks]]` + 50-150 行
+- [ ] `<cwd>/wiki/<slug>.md` 写完，含 frontmatter + ≥2 个 `[[wikilinks]]`（长度服务内容，不卡区间）
 - [ ] `<cwd>/wiki/README.md` MOC 存在并已加新 entry 行
 - [ ] `/wiki verify` 全 ✅
 - [ ] 报告：N 文件 / 总行数 / wikilinks 数
