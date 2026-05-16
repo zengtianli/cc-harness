@@ -12,6 +12,7 @@ source: ~/Dev/tools/cc-configs/domain-skills
 global_skills:
   - plan-first
   - engineering-mode
+  - verify-data
 
 projects:
   risk-map:
@@ -51,7 +52,7 @@ projects:
     skills: []
     notes: 个人知识库 SQLite DB（求职/投资/软著），CLI 在 bin/{apply,inv,sc}.py，详见项目 CLAUDE.md
   mailroom:
-    path: ~/Dev/mailroom
+    path: ~/Dev/labs/mailroom
     skills: []
     notes: 多邮箱聚合（126 + Gmail IMAP）+ 内容分析（llm_client.py haiku）+ 动作派送（reminder / hsbc-statement / archive），main entry python3 -m mailroom
   devtools:
@@ -59,7 +60,7 @@ projects:
     skills: []
     notes: 工具基建 repo（CC hooks / Git 工具 / paths / menus / repo_manager 等），全局工具，按需在子目录引用
   wpl-calc:
-    path: ~/Dev/wpl-calc
+    path: ~/Dev/stations/wpl-calc
     skills: []
     notes: HSBC WPL / Lombard 计算器（前端工具），无需特殊 skill 分发
   stations:
